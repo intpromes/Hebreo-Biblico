@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f4f8a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}*,*::before,*::after{box-sizing:border-box}</style>
+<title>Diccionario Hebreo Bíblico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Noto+Serif+Hebrew:wght@500;600&family=Noto+Rashi+Hebrew:wght@400;600&display=swap">
+<style>
+/* Layout: una columna de lectura; cabecera fija con búsqueda, tabla léxica de 4 columnas como el ejemplo, fila expandible con cita y nota */
+:root{
+  --bg:#ffffff; --surface:#f3f5f8; --fg:#1d2430; --muted:#5f6b7c; --line:#dde2ea;
+  --tekhelet:#1f4f8a; --tekhelet-soft:#e6eef8; --gold:#8a6a1f;
+  --f-display:"Alegreya",Georgia,serif;
+  --f-body:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
+  --f-rashi:"Noto Rashi Hebrew","Noto Serif Hebrew",serif;
+  --f-heb:"Noto Serif Hebrew","SBL Hebrew","Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ee; --muted:#9aa5b5; --line:#2a323e;
+  --tekhelet:#7fb0ec; --tekhelet-soft:#1c2a3d; --gold:#d6b25e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ee; --muted:#9aa5b5; --line:#2a323e;
+  --tekhelet:#7fb0ec; --tekhelet-soft:#1c2a3d; --gold:#d6b25e; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+header{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+h1{font-family:var(--f-display);font-weight:700;font-size:1.75rem;margin:0;text-wrap:balance;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h1 .heb{font-family:var(--f-heb);color:var(--tekhelet);font-size:1.5rem;font-weight:600}
+.sub{color:var(--muted);margin:0;font-size:.95rem}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--line)}
+.dir{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-radius:10px;padding:3px;gap:3px}
+.dir button{border:0;background:transparent;color:var(--muted);font:500 .95rem var(--f-body);padding:8px 6px;border-radius:8px;cursor:pointer}
+.dir button[aria-pressed="true"]{background:var(--bg);color:var(--tekhelet);box-shadow:0 1px 3px rgb(0 0 0/.12)}
+.search{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;background:var(--bg)}
+.search:focus-within{border-color:var(--tekhelet)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--fg);font:1.05rem var(--f-body);padding:11px 0}
+.search input.he{font-family:var(--f-heb);direction:rtl}
+.clear{border:0;background:none;color:var(--muted);font-size:1.3rem;cursor:pointer;padding:4px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:500 .88rem var(--f-body);padding:5px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--tekhelet);border-color:var(--tekhelet);color:var(--bg)}
+.letters{display:flex;gap:2px;overflow-x:auto;direction:rtl;scrollbar-width:none}
+.letters::-webkit-scrollbar{display:none}
+.letters button{flex:none;font-family:var(--f-heb);font-size:1.15rem;width:32px;height:34px;border:0;border-radius:6px;background:transparent;color:var(--tekhelet);cursor:pointer}
+.letters button[aria-pressed="true"]{background:var(--tekhelet-soft);font-weight:600}
+.status{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:.88rem;padding-top:10px}
+.status button{border:0;background:var(--tekhelet-soft);color:var(--tekhelet);font:500 .85rem var(--f-body);padding:4px 10px;border-radius:999px;cursor:pointer}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--f-body);font-weight:700;text-align:start;padding:14px 8px 12px;border-bottom:3px solid var(--line);font-size:1rem}
+td{padding:14px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.row{cursor:pointer}
+tr.row:hover td,tr.row.open td{background:var(--surface)}
+.w{display:flex;flex-direction:column;gap:2px;min-width:92px}
+.w .top{display:flex;align-items:center;gap:8px}
+.spk{border:0;background:none;padding:2px;cursor:pointer;color:var(--muted);line-height:0;border-radius:6px}
+.spk:hover{color:var(--tekhelet)}
+.spk svg{width:22px;height:22px}
+.he-w{font-family:var(--f-heb);font-size:1.6rem;font-weight:600;color:var(--tekhelet);direction:rtl;line-height:1.5}
+.rashi{font-family:var(--f-rashi);font-size:1.15rem;color:var(--gold);direction:rtl;line-height:1.3}
+.sefardi{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.sefardi .big{font-family:var(--f-rashi);font-size:2.2rem;color:var(--gold);direction:rtl;line-height:1.3}
+.sefardi .cap{color:var(--muted);font-size:.85rem;max-width:40ch}
+.tr{font-size:1.02rem}
+.root{font-family:var(--f-heb);color:var(--tekhelet);direction:rtl;white-space:nowrap;font-size:1.15rem;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline dotted 1px;text-underline-offset:5px}
+.root.none{color:var(--muted);text-decoration:none;cursor:default}
+.cat{text-align:center;color:var(--fg)}
+.cat em{color:var(--tekhelet)}
+.cat .mod{color:var(--tekhelet)}
+.mean{min-width:110px}
+.det td{background:var(--surface);padding:4px 12px 16px;border-bottom:1px solid var(--line)}
+.det .box{display:flex;flex-direction:column;gap:8px;font-size:.98rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
+.meta b{color:var(--fg);font-weight:500}
+.note{border-inline-start:3px solid var(--gold);padding-inline-start:10px;margin:0;max-width:62ch}
+.note .lbl{display:block;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:40px 8px}
+.install{align-self:flex-start;border:0;background:var(--tekhelet);color:var(--bg);font:700 .95rem var(--f-body);padding:9px 16px;border-radius:999px;cursor:pointer}
+.spk.on{color:var(--tekhelet);animation:pulse .8s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+@media (prefers-reduced-motion:reduce){.spk.on{animation:none}}
+.toast{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:.92rem;line-height:1.4;z-index:20;box-shadow:0 6px 20px rgb(0 0 0/.25)}
+footer{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:62ch}
+button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outline-offset:2px}
+@media (max-width:480px){th,td{padding-inline:4px}.w,.mean{min-width:0}.cat,.mean{font-size:.9rem}.root{font-size:1rem}.he-w{font-size:1.45rem}th{font-size:.92rem}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Diccionario Hebreo Bíblico <span class="heb" lang="he">מִלּוֹן</span></h1>
+    <button id="install" class="install" hidden>⬇ Instalar app</button>
+    <p class="sub">Hebreo del Tanaj ↔ español. Debajo de cada palabra aparece su forma en <span class="rashi" style="font-size:1rem">כתב רש״י</span>, la semicursiva sefaradí. Toca una fila para ver cita, número Strong y comentario; toca la raíz para ver su familia.</p>
+  </header>
+
+  <div class="bar">
+    <div class="dir" role="group" aria-label="Dirección">
+      <button id="d-he" aria-pressed="true">Hebreo → Español</button>
+      <button id="d-es" aria-pressed="false">Español → Hebreo</button>
+    </div>
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="q" type="search" autocomplete="off" placeholder="Busca en hebreo (con o sin nikud) o transliteración">
+      <button class="clear" id="clr" aria-label="Borrar búsqueda" hidden>×</button>
+    </label>
+    <div class="chips" id="chips"></div>
+    <div class="letters" id="letters" aria-label="Índice alfabético"></div>
+  </div>
+
+  <div class="status"><span id="count"></span><button id="reset" hidden>Quitar filtro de raíz</button></div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Palabra</th><th>Raíz</th><th style="text-align:center">Categoría</th><th>Significado</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+
+  <footer>Los verbos se citan en su forma léxica bíblica (perfecto, 3.ª persona masculina singular) con su binyán. Las citas siguen la numeración del texto hebreo masorético. El Nombre divino (יהוה) no se pronuncia: se lee <i>Adonai</i>. La línea dorada muestra la escritura semicursiva sefaradí, llamada «letra Rashí», que nació de la mano de los escribas de Sefarad y se usó para comentarios rabínicos y textos en ladino.</footer>
+  <div id="toast" class="toast" role="status" hidden></div>
+</div>
+
+<script>
+// c: s=sustantivo v=verbo a=adjetivo p=partícula/pronombre n=nombre propio
+// [hebreo, translit, raíz, cat, modelo, género/binyán, significado, cita, Strong, nota]
+const D=[
+["אָב","av","","s","","masculino","padre; antepasado, fundador","Gn 2:24","H1",""],
+["אָבַד","avad","א-ב-ד","v","","qal","perecer, perderse, extraviarse","Dt 26:5","H6","«Arami oved avi»: los sabios lo leen como «un arameo quiso destruir a mi padre» (Hagadá de Pésaj)."],
+["אֲבֵדָה","avedá","א-ב-ד","s","","femenino","cosa perdida, objeto extraviado","Éx 22:8","H9","Base de la mitzvá de hashavat avedá, devolver lo perdido (Dt 22:1-3)."],
+["אֲבַדּוֹן","avadón","א-ב-ד","s","","masculino","destrucción; Abadón, lugar de los muertos","Job 26:6","H11",""],
+["אָבָה","avá","א-ב-ה","v","","qal","querer, consentir, estar dispuesto","Is 1:19","H14","Casi siempre aparece negado: «y no quisisteis»."],
+["אָבִיב","aviv","א-ב-ב","s","katil","masculino","espiga tierna; (mes de) Aviv","Éx 13:4","H24","En la Torá no es «primavera» en abstracto, sino la cebada en espiga. Por eso Pésaj debe caer en jodesh ha-aviv."],
+["אֶבֶן","even","","s","ketel","femenino","piedra","Gn 28:11","H68",""],
+["אָדָם","adam","א-ד-ם","s","","masculino","ser humano, humanidad; Adán","Gn 1:26","H120","Emparentado con adamá (suelo): el hombre es tomado de la tierra (Gn 2:7)."],
+["אֲדָמָה","adamá","א-ד-ם","s","","femenino","tierra, suelo cultivable","Gn 2:7","H127",""],
+["אָדֹם","adom","א-ד-ם","a","katol","masculino","rojo, rojizo","Gn 25:30","H122",""],
+["אָהַב","ahav","א-ה-ב","v","","qal","amar","Dt 6:5","H157","«Veahavtá et Adonai Eloheja»: el amor como mandamiento, expresado en actos."],
+["אַהֲבָה","ahavá","א-ה-ב","s","","femenino","amor","Cnt 8:6","H160",""],
+["אֹהֶל","óhel","","s","kotel","masculino","tienda, carpa","Gn 18:1","H168","Óhel moed: la Tienda del Encuentro en el desierto."],
+["אוֹר","or","א-ו-ר","s","","masculino","luz","Gn 1:3","H216",""],
+["אָח","aj","","s","","masculino","hermano; pariente, compatriota","Gn 4:9","H251",""],
+["אָחוֹת","ajot","","s","","femenino","hermana","Gn 12:13","H269",""],
+["אֶחָד","ejad","א-ח-ד","a","","masculino","uno, único","Dt 6:4","H259","La última palabra del Shemá; se prolonga la dálet al recitarlo."],
+["אַחֲרִית","ajarit","א-ח-ר","s","","femenino","final, porvenir, postrimería","Gn 49:1","H319","Be'ajarit ha-yamim: «al final de los días»."],
+["אֵל","El","","n","","masculino","Dios, poderoso","Gn 14:18","H410",""],
+["אֱלֹהִים","Elohim","","n","","masculino (plural)","Dios; también dioses, jueces","Gn 1:1","H430","Forma plural con verbo en singular cuando designa al Dios de Israel. La tradición lo asocia a la midat ha-din, el atributo de justicia."],
+["אִישׁ","ish","","s","","masculino","hombre, varón; cada uno","Gn 2:23","H376",""],
+["אִשָּׁה","ishá","","s","","femenino","mujer, esposa","Gn 2:23","H802","Juego de palabras del texto: «será llamada ishá porque del ish fue tomada»."],
+["אָכַל","ajal","א-כ-ל","v","","qal","comer, consumir, devorar","Gn 2:16","H398",""],
+["אָמַר","amar","א-מ-ר","v","","qal","decir","Gn 1:3","H559","Vayómer Elohim: el mundo fue creado con diez dichos (Pirké Avot 5:1)."],
+["אָמֵן","amén","א-מ-ן","p","","adverbio","así sea, ciertamente","Dt 27:15","H543",""],
+["הֶאֱמִין","he'emín","א-מ-ן","v","","hif'il","creer, confiar, tener fe","Gn 15:6","H539",""],
+["אֱמוּנָה","emuná","א-מ-ן","s","ktulá","femenino","fidelidad, firmeza, fe","Hab 2:4","H530","En la Biblia es sobre todo constancia y fidelidad, no solo creencia intelectual."],
+["אֱמֶת","emet","א-מ-ן","s","","femenino","verdad, fidelidad","Sal 119:160","H571",""],
+["אֶרֶץ","érets","","s","ketel","femenino","tierra, país","Gn 1:1","H776","Érets Israel: la Tierra de Israel."],
+["אָנֹכִי","anojí","","p","","pronombre","yo","Éx 20:2","H595","Primera palabra de los Diez Mandamientos."],
+["אֲנִי","aní","","p","","pronombre","yo","Éx 6:2","H589",""],
+["בַּיִת","báyit","","s","","masculino","casa, familia, templo","Gn 12:1","H1004","Beit ha-Mikdash: la Casa del Santuario, el Templo."],
+["בֵּן","ben","ב-נ-ה","s","","masculino","hijo","Gn 4:25","H1121",""],
+["בַּת","bat","ב-נ-ה","s","","femenino","hija","Gn 6:1","H1323",""],
+["בָּנָה","baná","ב-נ-ה","v","","qal","edificar, construir","Gn 2:22","H1129","Los sabios leen banayij (tus hijos) como bonayij (tus constructores) (Is 54:13, Berajot 64a)."],
+["בָּרָא","bará","ב-ר-א","v","","qal","crear","Gn 1:1","H1254","En qal su sujeto es siempre Dios: crear de la nada."],
+["בְּרֵאשִׁית","bereshit","ר-א-ש","p","","preposición + sustantivo","en el principio","Gn 1:1","H7225","Rashí señala que la forma es constructa: «al principio de crear Dios…»."],
+["בָּרוּךְ","barúj","ב-ר-ך","a","katul","masculino","bendito","Gn 9:26","H1288","Inicio de toda berajá: «Barúj atá Adonai»."],
+["בֵּרַךְ","berej","ב-ר-ך","v","","pi'el","bendecir","Gn 12:3","H1288",""],
+["בְּרָכָה","berajá","ב-ר-ך","s","ktalá","femenino","bendición","Gn 12:2","H1293",""],
+["בְּרִית","berit","","s","","femenino","pacto, alianza","Gn 17:7","H1285","Se «corta» un pacto (karat berit), por el rito de Gn 15."],
+["גָּדוֹל","gadol","ג-ד-ל","a","katol","masculino","grande","Gn 1:16","H1419",""],
+["גּוֹי","goy","","s","","masculino","nación, pueblo","Gn 12:2","H1471","En la Biblia se aplica también a Israel: «goy gadol»."],
+["דָּבָר","davar","ד-ב-ר","s","katal","masculino","palabra; cosa, asunto","Gn 15:1","H1697","Aséret ha-dibrot: las Diez Palabras."],
+["דִּבֶּר","diber","ד-ב-ר","v","","pi'el","hablar","Éx 20:1","H1696",""],
+["דָּם","dam","","s","","masculino","sangre","Lv 17:11","H1818","«La vida de la carne está en la sangre»."],
+["דֶּרֶךְ","dérej","","s","ketel","masculino / femenino","camino; conducta","Sal 1:6","H1870",""],
+["הָיָה","hayá","ה-י-ה","v","","qal","ser, estar, llegar a ser, suceder","Gn 1:3","H1961",""],
+["הָלַךְ","halaj","ה-ל-ך","v","","qal","andar, ir, caminar","Gn 12:4","H1980","De aquí halajá: el camino por el que se anda."],
+["הַר","har","","s","","masculino","monte, montaña","Éx 19:20","H2022",""],
+["זֶבַח","zévaj","ז-ב-ח","s","ketel","masculino","sacrificio","Lv 3:1","H2077",""],
+["זָכַר","zajar","ז-כ-ר","v","","qal","recordar, acordarse","Éx 20:8","H2142","«Zajor et yom ha-Shabat»; en Dt 5:12 dice «shamor». Los sabios: ambos fueron dichos a la vez."],
+["זֶרַע","zera","ז-ר-ע","s","ketel","masculino","semilla; descendencia","Gn 12:7","H2233",""],
+["חָטָא","jatá","ח-ט-א","v","","qal","pecar; errar el blanco","Sal 51:6","H2398",""],
+["חַטָּאת","jatat","ח-ט-א","s","","femenino","pecado; ofrenda por el pecado","Lv 4:3","H2403",""],
+["חַי","jay","ח-י-ה","a","","masculino","vivo, viviente","Gn 2:7","H2416",""],
+["חַיִּים","jayim","ח-י-ה","s","","masculino (plural)","vida","Dt 30:19","H2416","«Uvajartá ba-jayim»: escoge la vida."],
+["חָכְמָה","jojmá","ח-כ-ם","s","","femenino","sabiduría","Pr 1:7","H2451",""],
+["חֶסֶד","jésed","ח-ס-ד","s","ketel","masculino","bondad, amor leal, misericordia","Sal 136:1","H2617","Lealtad que va más allá de lo debido. Guemilut jasadim es uno de los tres pilares del mundo (Avot 1:2)."],
+["טוֹב","tov","ט-ו-ב","a","","masculino","bueno","Gn 1:4","H2896",""],
+["יָד","yad","","s","","femenino","mano; poder","Éx 13:9","H3027",""],
+["יָדַע","yadá","י-ד-ע","v","","qal","conocer, saber","Gn 4:1","H3045",""],
+["יְהוָה","Adonai (Tetragrámaton)","ה-י-ה","n","","nombre divino","el Nombre propio de Dios","Éx 3:15","H3068","Shem ha-meforash. No se pronuncia: en la lectura se dice Adonai y en conversación ha-Shem."],
+["יוֹם","yom","","s","","masculino","día","Gn 1:5","H3117",""],
+["יָם","yam","","s","","masculino","mar; occidente","Éx 15:4","H3220",""],
+["יָצָא","yatsá","י-צ-א","v","","qal","salir","Éx 12:41","H3318","Yetsiat Mitsráyim: la salida de Egipto."],
+["יָשַׁב","yashav","י-ש-ב","v","","qal","sentarse, habitar, morar","Sal 1:1","H3427",""],
+["יִשְׂרָאֵל","Israel","","n","","masculino","Israel","Gn 35:10","H3478",""],
+["כָּבוֹד","kavod","כ-ב-ד","s","katol","masculino","gloria, honra; peso","Is 6:3","H3519","La raíz significa «ser pesado»: la gloria es lo que tiene peso."],
+["כֹּהֵן","kohen","כ-ה-ן","s","kotel","masculino","sacerdote","Gn 14:18","H3548",""],
+["כִּי","ki","","p","","conjunción","que, porque, cuando, ciertamente","Gn 1:4","H3588",""],
+["כָּתַב","katav","כ-ת-ב","v","","qal","escribir","Éx 34:27","H3789",""],
+["לֵב","lev","","s","","masculino","corazón; mente, voluntad","1 S 16:7","H3820","En la Biblia el corazón piensa y decide, no solo siente."],
+["לֶחֶם","léjem","ל-ח-ם","s","ketel","masculino","pan; alimento","Gn 3:19","H3899",""],
+["לֹא","lo","","p","","adverbio","no","Éx 20:13","H3808",""],
+["מֹשֶׁה","Moshé","מ-ש-ה","n","","masculino","Moisés","Éx 2:10","H4872","«Porque de las aguas lo saqué (meshitíhu)»."],
+["מִזְבֵּחַ","mizbéaj","ז-ב-ח","s","miktel","masculino","altar","Gn 8:20","H4196",""],
+["מַיִם","máyim","","s","","masculino (plural)","agua, aguas","Gn 1:2","H4325",""],
+["מֶלֶךְ","mélej","מ-ל-ך","s","ketel","masculino","rey","Dt 17:15","H4428",""],
+["מָלַךְ","malaj","מ-ל-ך","v","","qal","reinar","Éx 15:18","H4427","«Adonai yimloj le'olam va'ed»."],
+["מִצְוָה","mitsvá","צ-ו-ה","s","","femenino","mandamiento","Dt 30:11","H4687","Según la tradición, la Torá contiene 613 mitzvot (Makot 23b)."],
+["מִשְׁפָּט","mishpat","ש-פ-ט","s","miktal","masculino","juicio, justicia, derecho; costumbre","Miq 6:8","H4941",""],
+["נָבִיא","naví","נ-ב-א","s","katil","masculino","profeta","Dt 18:15","H5030",""],
+["נֶפֶשׁ","néfesh","נ-פ-ש","s","ketel","femenino","alma, ser viviente; vida; garganta","Gn 2:7","H5315","No es un alma separada del cuerpo: es la persona viva entera."],
+["נָשָׂא","nasá","נ-ש-א","v","","qal","levantar, llevar, cargar; perdonar","Nm 6:26","H5375",""],
+["נָתַן","natán","נ-ת-ן","v","","qal","dar, poner, entregar","Gn 1:29","H5414",""],
+["עֶבֶד","éved","ע-ב-ד","s","ketel","masculino","siervo, servidor, esclavo","Nm 12:7","H5650","«Mi siervo Moisés»: título de honor."],
+["עָבַד","avad","ע-ב-ד","v","","qal","servir, trabajar; dar culto","Éx 20:9","H5647","Avodá: trabajo y también culto a Dios."],
+["עוֹלָם","olam","ע-ל-ם","s","kotal","masculino","eternidad, perpetuidad; mundo","Sal 136:1","H5769","En la Biblia es sobre todo tiempo sin fin; el sentido «mundo» es posterior."],
+["עַיִן","áyin","","s","","femenino","ojo; fuente, manantial","Gn 16:7","H5869",""],
+["עִיר","ir","","s","","femenino","ciudad","Gn 4:17","H5892",""],
+["עַם","am","","s","","masculino","pueblo","Éx 3:7","H5971",""],
+["עָשָׂה","asá","ע-ש-ה","v","","qal","hacer","Gn 1:7","H6213",""],
+["פָּנִים","panim","פ-נ-ה","s","","masculino (plural)","rostro, cara; presencia","Nm 6:25","H6440",""],
+["צַדִּיק","tsadik","צ-ד-ק","a","kattil","masculino","justo","Gn 6:9","H6662",""],
+["צֶדֶק","tsédek","צ-ד-ק","s","ketel","masculino","justicia, rectitud","Dt 16:20","H6664","«Tsédek tsédek tirdof»: la justicia, la justicia perseguirás."],
+["צְדָקָה","tsedaká","צ-ד-ק","s","ktalá","femenino","justicia, rectitud; (rabínico) caridad","Gn 15:6","H6666","En la Biblia es rectitud; los sabios la usan para la ayuda al pobre, porque darla es justicia, no favor."],
+["צִוָּה","tsivá","צ-ו-ה","v","","pi'el","ordenar, mandar","Gn 2:16","H6680",""],
+["קָדוֹשׁ","kadosh","ק-ד-ש","a","katol","masculino","santo, apartado","Lv 19:2","H6918","«Kedoshim tihyú»: santo es lo separado para Dios."],
+["קֹדֶשׁ","kódesh","ק-ד-ש","s","kotel","masculino","santidad; lugar santo","Éx 3:5","H6944",""],
+["קִדֵּשׁ","kidesh","ק-ד-ש","v","","pi'el","santificar, consagrar","Gn 2:3","H6942","De aquí el Kidush del Shabat."],
+["קוֹל","kol","","s","","masculino","voz, sonido","Gn 3:8","H6963",""],
+["קָרָא","kará","ק-ר-א","v","","qal","llamar, clamar; leer, proclamar","Gn 1:5","H7121","Mikrá, la Escritura, es «lo que se lee»."],
+["רֹאשׁ","rosh","ר-א-ש","s","","masculino","cabeza; principio, jefe","Éx 12:2","H7218",""],
+["רָאָה","raá","ר-א-ה","v","","qal","ver","Gn 1:4","H7200",""],
+["רוּחַ","rúaj","ר-ו-ח","s","","femenino","espíritu; viento, aliento","Gn 1:2","H7307",""],
+["רַע","ra","ר-ע-ע","a","","masculino","malo, malvado","Gn 2:9","H7451",""],
+["שַׁבָּת","Shabat","ש-ב-ת","s","","femenino","sábado, día de reposo","Éx 20:8","H7676",""],
+["שָׁבַת","shavat","ש-ב-ת","v","","qal","cesar, descansar","Gn 2:2","H7673",""],
+["שׁוּב","shuv","ש-ו-ב","v","","qal","volver, regresar; arrepentirse","Dt 30:2","H7725","De aquí teshuvá: el arrepentimiento es un regreso."],
+["שָׁלוֹם","shalom","ש-ל-ם","s","katol","masculino","paz; plenitud, bienestar","Nm 6:26","H7965","La raíz es «estar completo»: paz es que nada falte."],
+["שֵׁם","shem","","s","","masculino","nombre; fama","Gn 11:4","H8034",""],
+["שָׁמַיִם","shamáyim","","s","","masculino (plural)","cielo, cielos","Gn 1:1","H8064",""],
+["שָׁמַע","shamá","ש-מ-ע","v","","qal","oír, escuchar; obedecer","Dt 6:4","H8085","Shemá Israel: oír en hebreo bíblico es también obedecer."],
+["שָׁמַר","shamar","ש-מ-ר","v","","qal","guardar, cuidar, observar","Gn 2:15","H8104",""],
+["שָׁפַט","shafat","ש-פ-ט","v","","qal","juzgar, gobernar","Gn 18:25","H8199",""],
+["תּוֹרָה","Torá","י-ר-ה","s","","femenino","instrucción, enseñanza, ley","Jos 1:8","H8451","De horá, enseñar: es instrucción más que mero código legal."],
+["תְּפִלָּה","tefilá","פ-ל-ל","s","","femenino","oración","1 R 8:28","H8605",""],
+["הִתְפַּלֵּל","hitpalel","פ-ל-ל","v","","hitpa'el","orar, rezar","1 S 1:10","H6419","El hitpael sugiere que orar es también juzgarse a uno mismo."],
+// ——— Verbos ———
+["אָחַז","ajaz","א-ח-ז","v","","qal","tomar, agarrar, asir","Gn 25:26","H270","Yaakov nace asido (ojez) del talón (akev) de Esav."],
+["אָסַף","asaf","א-ס-ף","v","","qal","reunir, recoger, cosechar","Éx 23:10","H622","«Fue reunido con su pueblo»: expresión bíblica para la muerte de los patriarcas."],
+["אָסַר","asar","א-ס-ר","v","","qal","atar, encarcelar; prohibir","Gn 42:24","H631","De aquí el término rabínico asur, prohibido."],
+["אָרַר","arar","א-ר-ר","v","","qal","maldecir","Gn 3:14","H779",""],
+["בּוֹא","bo","ב-ו-א","v","","qal","venir, entrar, llegar","Gn 7:1","H935",""],
+["בּוֹשׁ","bosh","ב-ו-ש","v","","qal","avergonzarse","Sal 25:3","H954",""],
+["בָּחַר","bajar","ב-ח-ר","v","","qal","escoger, elegir","Dt 7:6","H977","Am ha-nivjar: el pueblo elegido, para una tarea, no por mérito propio (Dt 7:7)."],
+["בָּטַח","bataj","ב-ט-ח","v","","qal","confiar, sentirse seguro","Pr 3:5","H982",""],
+["בִּין","bin","ב-י-ן","v","","qal","entender, discernir","Dn 9:2","H995","Biná: el entendimiento que deduce una cosa de otra."],
+["בָּכָה","bajá","ב-כ-ה","v","","qal","llorar","Gn 21:16","H1058",""],
+["בִּקֵּשׁ","bikesh","ב-ק-ש","v","","pi'el","buscar, pedir","Sal 27:8","H1245",""],
+["גָּאַל","gaal","ג-א-ל","v","","qal","redimir, rescatar","Éx 6:6","H1350","El goel es el pariente que rescata; Dios se presenta como goel de Israel."],
+["גָּדַל","gadal","ג-ד-ל","v","","qal","crecer, ser grande","Gn 21:8","H1431",""],
+["גָּלָה","galá","ג-ל-ה","v","","qal","descubrir, revelar; ir al exilio","2 R 25:21","H1540","De aquí galut, el exilio."],
+["דָּרַשׁ","darash","ד-ר-ש","v","","qal","buscar, inquirir, consultar","Dt 4:29","H1875","De aquí midrash: indagar el texto."],
+["הִלֵּל","hilel","ה-ל-ל","v","","pi'el","alabar","Sal 150:1","H1984","Haleluyá: «alabad a Yah»."],
+["הָרַג","harag","ה-ר-ג","v","","qal","matar","Gn 4:8","H2026",""],
+["זָבַח","zavaj","ז-ב-ח","v","","qal","sacrificar","Éx 20:24","H2076",""],
+["חָזַק","jazak","ח-ז-ק","v","","qal","ser fuerte, fortalecerse","Jos 1:6","H2388","Jazak ve-ematz. Al terminar cada libro de la Torá se dice «Jazak, jazak ve-nitjazek»."],
+["חָיָה","jayá","ח-י-ה","v","","qal","vivir","Gn 5:3","H2421",""],
+["חָנַן","janan","ח-נ-ן","v","","qal","tener gracia, favorecer","Nm 6:25","H2603",""],
+["חָפֵץ","jafets","ח-פ-ץ","v","","qal","desear, complacerse en","Ez 18:32","H2654",""],
+["חָשַׁב","jashav","ח-ש-ב","v","","qal","pensar, considerar, contar como","Gn 15:6","H2803",""],
+["יָכֹל","yajol","י-כ-ל","v","","qal","poder, ser capaz","Gn 13:16","H3201",""],
+["יָלַד","yalad","י-ל-ד","v","","qal","dar a luz, engendrar","Gn 4:1","H3205","Toledot: generaciones, genealogías."],
+["יָסַף","yasaf","י-ס-ף","v","","qal","añadir, volver a hacer","Gn 4:2","H3254",""],
+["יָרֵא","yaré","י-ר-א","v","","qal","temer, reverenciar","Éx 14:31","H3372",""],
+["יָרַד","yarad","י-ר-ד","v","","qal","descender, bajar","Gn 28:12","H3381",""],
+["יָרַשׁ","yarash","י-ר-ש","v","","qal","heredar, tomar posesión","Dt 1:8","H3423",""],
+["הוֹשִׁיעַ","hoshía","י-ש-ע","v","","hif'il","salvar, librar","Éx 14:30","H3467","Hoshía-ná: «salva, te ruego» (Sal 118:25)."],
+["כָּלָה","kalá","כ-ל-ה","v","","qal","acabarse, completarse","Gn 21:15","H3615",""],
+["כִּפֶּר","kiper","כ-פ-ר","v","","pi'el","expiar, hacer propiciación","Lv 16:30","H3722","Yom Kipur: el día de las expiaciones."],
+["כָּרַת","karat","כ-ר-ת","v","","qal","cortar; concertar (un pacto)","Gn 15:18","H3772","Karet: la pena de ser «cortado» del pueblo."],
+["לָמַד","lamad","ל-מ-ד","v","","qal","aprender; (pi'el) enseñar","Dt 5:1","H3925","Talmud y talmid (alumno) vienen de esta raíz."],
+["לָקַח","lakaj","ל-ק-ח","v","","qal","tomar, recibir","Gn 2:15","H3947",""],
+["מוּת","mut","מ-ו-ת","v","","qal","morir","Gn 2:17","H4191",""],
+["מָלֵא","malé","מ-ל-א","v","","qal","llenar, estar lleno","Gn 1:22","H4390",""],
+["מָצָא","matsá","מ-צ-א","v","","qal","encontrar, hallar","Gn 6:8","H4672",""],
+["מָשַׁח","mashaj","מ-ש-ח","v","","qal","ungir","1 S 16:13","H4886",""],
+["נָגַע","nagá","נ-ג-ע","v","","qal","tocar, alcanzar","Gn 3:3","H5060",""],
+["נִחֵם","nijem","נ-ח-ם","v","","pi'el","consolar","Is 40:1","H5162","«Najamú najamú amí»: inicio de las siete haftarot de consolación."],
+["נָטָה","natá","נ-ט-ה","v","","qal","extender, inclinar","Éx 14:21","H5186",""],
+["נָפַל","nafal","נ-פ-ל","v","","qal","caer","Gn 15:12","H5307",""],
+["הִצִּיל","hitsil","נ-צ-ל","v","","hif'il","librar, rescatar","Éx 3:8","H5337",""],
+["סָפַר","safar","ס-פ-ר","v","","qal","contar; (pi'el) relatar","Gn 15:5","H5608","Séfer (libro) y sofer (escriba) vienen de esta raíz."],
+["עָבַר","avar","ע-ב-ר","v","","qal","pasar, cruzar; transgredir","Gn 12:6","H5674","Ivrí (hebreo) se explica como «el del otro lado» del río (Bereshit Rabá 42:8)."],
+["עָזַב","azav","ע-ז-ב","v","","qal","dejar, abandonar","Gn 2:24","H5800",""],
+["עָלָה","alá","ע-ל-ה","v","","qal","subir","Gn 13:1","H5927","A la Tierra de Israel y a Jerusalén siempre se «sube»: aliyá."],
+["עָמַד","amad","ע-מ-ד","v","","qal","estar de pie, permanecer","Éx 3:5","H5975","Amidá: la oración que se dice de pie."],
+["עָנָה","aná","ע-נ-ה","v","","qal","responder","Gn 18:27","H6030",""],
+["פָּקַד","pakad","פ-ק-ד","v","","qal","visitar, atender; contar, nombrar","Gn 21:1","H6485",""],
+["פָּתַח","pataj","פ-ת-ח","v","","qal","abrir","Gn 8:6","H6605",""],
+["צָעַק","tsaak","צ-ע-ק","v","","qal","clamar, gritar","Éx 14:15","H6817",""],
+["קָבַץ","kavats","ק-ב-ץ","v","","qal","reunir, juntar","Dt 30:3","H6908","Kibuts galuyot: la reunión de los exiliados."],
+["קָבַר","kavar","ק-ב-ר","v","","qal","enterrar","Gn 23:4","H6912",""],
+["קוּם","kum","ק-ו-ם","v","","qal","levantarse, alzarse; cumplirse","Gn 13:17","H6965",""],
+["קָרַב","karav","ק-ר-ב","v","","qal","acercarse; (hif'il) ofrecer","Éx 3:5","H7126",""],
+["רָדַף","radaf","ר-ד-ף","v","","qal","perseguir, ir tras","Dt 16:20","H7291",""],
+["רִחֵם","rijem","ר-ח-ם","v","","pi'el","compadecerse, tener misericordia","Éx 33:19","H7355",""],
+["שָׂמַח","samaj","ש-מ-ח","v","","qal","alegrarse","Dt 16:14","H8055","«Vesamajtá be-jagueja»: la alegría en las fiestas es un mandamiento."],
+["שָׂנֵא","sané","ש-נ-א","v","","qal","odiar","Lv 19:17","H8130",""],
+["שָׁאַל","shaal","ש-א-ל","v","","qal","preguntar, pedir","Dt 32:7","H7592",""],
+["נִשְׁבַּע","nishbá","ש-ב-ע","v","","nif'al","jurar","Gn 22:16","H7650","Relacionado con shevá (siete): jurar es quizá «obligarse por siete»."],
+["שָׁבַר","shavar","ש-ב-ר","v","","qal","quebrar, romper","Éx 32:19","H7665",""],
+["שָׁכַב","shajav","ש-כ-ב","v","","qal","acostarse, yacer","Dt 6:7","H7901",""],
+["שָׁכַח","shajaj","ש-כ-ח","v","","qal","olvidar","Dt 8:11","H7911",""],
+["שָׁכַן","shajan","ש-כ-ן","v","","qal","habitar, morar","Éx 25:8","H7931","«Veshajantí betojam»: de aquí mishkán y Shejiná, la Presencia divina."],
+["שָׁלַח","shalaj","ש-ל-ח","v","","qal","enviar, extender","Éx 3:10","H7971",""],
+["שָׁפַךְ","shafaj","ש-פ-ך","v","","qal","derramar","Gn 9:6","H8210",""],
+["שָׁתָה","shatá","ש-ת-ה","v","","qal","beber","Gn 9:21","H8354",""],
+// ——— Sustantivos ———
+["אָדוֹן","adón","","s","","masculino","señor, amo","Gn 18:12","H113",""],
+["אֲדֹנָי","Adonai","","n","","nombre divino","Señor (mío)","Gn 18:3","H136","Forma que se lee en lugar del Tetragrámaton."],
+["אֹזֶן","ozen","","s","kotel","femenino","oído, oreja","Dt 29:3","H241",""],
+["אַיִל","áyil","","s","","masculino","carnero","Gn 22:13","H352",""],
+["אֵם","em","","s","","femenino","madre","Gn 2:24","H517",""],
+["אַמָּה","amá","","s","","femenino","codo (medida, ~45-48 cm)","Gn 6:15","H520","Medida del antebrazo; base de las dimensiones del arca y del Mishkán."],
+["אֱנוֹשׁ","enosh","","s","","masculino","hombre mortal, humanidad","Sal 103:15","H582","Destaca la fragilidad humana."],
+["אָרוֹן","arón","","s","","masculino","arca, cofre","Éx 25:10","H727","Arón ha-berit: el arca del pacto."],
+["אַרְיֵה","aryé","","s","","masculino","león","Gn 49:9","H738",""],
+["אֵשׁ","esh","","s","","femenino","fuego","Éx 3:2","H784",""],
+["בְּהֵמָה","behemá","","s","","femenino","bestia, ganado","Gn 1:24","H929",""],
+["בְּכוֹר","bejor","ב-כ-ר","s","","masculino","primogénito","Éx 4:22","H1060",""],
+["בֹּקֶר","bóker","","s","kotel","masculino","mañana","Gn 1:5","H1242",""],
+["בָּקָר","bakar","","s","katal","masculino","ganado vacuno","Gn 12:16","H1241",""],
+["בָּשָׂר","basar","","s","katal","masculino","carne; ser humano","Gn 2:24","H1320",""],
+["גְּבוּל","guevul","ג-ב-ל","s","","masculino","frontera, límite, territorio","Dt 19:14","H1366",""],
+["גִּבּוֹר","guibor","ג-ב-ר","s","kattol","masculino","valiente, héroe, poderoso","Gn 10:8","H1368",""],
+["גּוֹרָל","goral","","s","","masculino","suerte, porción","Lv 16:8","H1486",""],
+["גַּן","gan","ג-נ-ן","s","","masculino","jardín, huerto","Gn 2:8","H1588",""],
+["גֶּפֶן","guéfen","","s","ketel","femenino","vid","Gn 40:9","H1612",""],
+["גֵּר","guer","ג-ו-ר","s","","masculino","extranjero residente, forastero","Lv 19:34","H1616","La Torá ordena amar al guer «porque extranjeros fuisteis en Egipto». En la época rabínica designa al converso."],
+["דּוֹר","dor","ד-ו-ר","s","","masculino","generación","Gn 6:9","H1755",""],
+["דַּעַת","dáat","י-ד-ע","s","","femenino","conocimiento","Gn 2:9","H1847",""],
+["הֵיכָל","hejal","","s","","masculino","palacio, templo","Sal 11:4","H1964",""],
+["זָהָב","zahav","","s","katal","masculino","oro","Gn 2:11","H2091",""],
+["זָקֵן","zakén","ז-ק-ן","s","","masculino","anciano","Éx 3:16","H2205",""],
+["חֹדֶשׁ","jódesh","ח-ד-ש","s","kotel","masculino","mes; luna nueva","Éx 12:2","H2320","Primer mandamiento dado a Israel como pueblo: santificar el mes (Rashí a Gn 1:1)."],
+["חוֹמָה","jomá","","s","","femenino","muralla","Jos 6:20","H2346",""],
+["חֹק","jok","ח-ק-ק","s","","masculino","estatuto, decreto","Éx 15:25","H2706","Los jukim son preceptos cuya razón no se explica, como la vaca roja."],
+["חֶרֶב","jérev","ח-ר-ב","s","ketel","femenino","espada","Gn 3:24","H2719",""],
+["חֹשֶׁךְ","jóshej","ח-ש-ך","s","kotel","masculino","oscuridad","Gn 1:2","H2822",""],
+["חֵן","jen","ח-נ-ן","s","","masculino","gracia, favor","Gn 6:8","H2580",""],
+["יַיִן","yáyin","","s","","masculino","vino","Gn 9:21","H3196",""],
+["יֶלֶד","yéled","י-ל-ד","s","ketel","masculino","niño, muchacho","Gn 21:8","H3206",""],
+["יָמִין","yamín","","s","","femenino","mano derecha; sur","Gn 48:13","H3225",""],
+["יְשׁוּעָה","yeshuá","י-ש-ע","s","","femenino","salvación, liberación","Éx 14:13","H3444",""],
+["יִרְאָה","yirá","י-ר-א","s","","femenino","temor, reverencia","Pr 1:7","H3374","Yirat shamáyim: temor del Cielo, principio de la sabiduría."],
+["כֶּבֶשׂ","kéves","","s","ketel","masculino","cordero","Éx 29:38","H3532",""],
+["כֹּחַ","kóaj","","s","","masculino","fuerza, poder","Dt 8:18","H3581",""],
+["כְּלִי","kli","","s","","masculino","utensilio, vasija, objeto","Gn 24:53","H3627",""],
+["כָּנָף","kanaf","","s","","femenino","ala; borde del manto","Nm 15:38","H3671","En los bordes (kanfei) del manto se ponen los tsitsit."],
+["כִּסֵּא","kisé","","s","","masculino","trono","Is 6:1","H3678",""],
+["כֶּסֶף","késef","","s","ketel","masculino","plata; dinero","Gn 13:2","H3701",""],
+["כְּרוּב","kruv","","s","","masculino","querubín","Gn 3:24","H3742",""],
+["לַיְלָה","láyla","","s","","masculino","noche","Gn 1:5","H3915","Termina en -á pero es masculino."],
+["לָשׁוֹן","lashón","","s","","femenino","lengua; idioma","Gn 10:5","H3956","Leshón ha-kódesh: la lengua santa."],
+["מִדְבָּר","midbar","ד-ב-ר","s","miktal","masculino","desierto","Nm 1:1","H4057","Bamidbar, «en el desierto», es el nombre hebreo de Números."],
+["מוֹעֵד","moed","י-ע-ד","s","","masculino","tiempo señalado, festividad; encuentro","Lv 23:2","H4150",""],
+["מָוֶת","mávet","מ-ו-ת","s","","masculino","muerte","Dt 30:19","H4194",""],
+["מִלְחָמָה","miljamá","ל-ח-ם","s","","femenino","guerra","Éx 13:17","H4421",""],
+["מַלְאָךְ","maláj","ל-א-ך","s","","masculino","mensajero; ángel","Gn 22:11","H4397","Significa ante todo «enviado»; también se aplica a mensajeros humanos."],
+["מִנְחָה","minjá","","s","","femenino","ofrenda, tributo, regalo","Gn 4:3","H4503","Da nombre a la oración de la tarde."],
+["מַעֲשֶׂה","maasé","ע-ש-ה","s","","masculino","obra, hecho, acción","Gn 5:29","H4639",""],
+["מָקוֹם","makom","ק-ו-ם","s","","masculino","lugar","Gn 28:11","H4725","Los sabios llaman a Dios ha-Makom: Él es el lugar del mundo (Bereshit Rabá 68:9)."],
+["מִקְדָּשׁ","mikdash","ק-ד-ש","s","miktal","masculino","santuario","Éx 25:8","H4720",""],
+["מִשְׁכָּן","mishkán","ש-כ-ן","s","miktal","masculino","tabernáculo, morada","Éx 25:9","H4908",""],
+["מִשְׁפָּחָה","mishpajá","ש-פ-ח","s","","femenino","familia, clan","Gn 12:3","H4940",""],
+["נָהָר","nahar","","s","katal","masculino","río","Gn 2:10","H5104",""],
+["נַחַל","najal","","s","","masculino","arroyo, torrente, valle","Dt 8:7","H5158",""],
+["נַחֲלָה","najalá","נ-ח-ל","s","","femenino","heredad, herencia","Dt 4:21","H5159",""],
+["נַעַר","náar","","s","","masculino","muchacho, joven; criado","Gn 22:12","H5288",""],
+["נָשִׂיא","nasí","נ-ש-א","s","katil","masculino","príncipe, jefe","Gn 23:6","H5387",""],
+["נְשָׁמָה","neshamá","נ-ש-ם","s","","femenino","aliento, soplo de vida","Gn 2:7","H5397",""],
+["סוּס","sus","","s","","masculino","caballo","Éx 15:1","H5483",""],
+["סֵפֶר","séfer","ס-פ-ר","s","","masculino","libro, rollo, documento","Éx 17:14","H5612","Séfer Torá: el rollo de la Torá."],
+["עֵד","ed","ע-ו-ד","s","","masculino","testigo","Dt 19:15","H5707","Se requieren dos o tres testigos."],
+["עֵדָה","edá","י-ע-ד","s","","femenino","congregación, comunidad","Éx 12:3","H5712","De Nm 14:27 los sabios deducen que el minián es de diez (Meguilá 23b)."],
+["עֵדֶן","Éden","","n","","masculino","Edén","Gn 2:8","H5731",""],
+["עָוֹן","avón","ע-ו-ה","s","","masculino","iniquidad, culpa; castigo","Éx 34:7","H5771","Avón es el pecado deliberado; jet, el error."],
+["עוֹלָה","olá","ע-ל-ה","s","","femenino","holocausto (ofrenda que sube)","Gn 22:2","H5930",""],
+["עָפָר","afar","","s","katal","masculino","polvo, tierra","Gn 2:7","H6083",""],
+["עֵץ","ets","","s","","masculino","árbol; madera","Gn 2:9","H6086","Ets jayim: árbol de vida, nombre que se da a la Torá (Pr 3:18)."],
+["עֶרֶב","érev","ע-ר-ב","s","ketel","masculino","tarde","Gn 1:5","H6153","«Vayehí érev vayehí bóker»: por eso el día judío comienza al atardecer."],
+["עֵת","et","","s","","femenino","tiempo, momento","Ecl 3:1","H6256",""],
+["פֶּה","pe","","s","","masculino","boca","Dt 8:3","H6310","Torá she-be'al pe: la Torá oral."],
+["פֶּסַח","Pésaj","פ-ס-ח","s","ketel","masculino","Pascua; cordero pascual","Éx 12:11","H6453","De pasaj, «pasar por encima»: Dios pasó de largo las casas de Israel."],
+["פְּרִי","perí","פ-ר-ה","s","","masculino","fruto","Gn 1:11","H6529",""],
+["צָבָא","tsavá","צ-ב-א","s","katal","masculino","ejército, hueste","Gn 2:1","H6635","Adonai Tsevaot: Señor de los ejércitos."],
+["צֹאן","tson","","s","","femenino (colectivo)","rebaño menor, ovejas y cabras","Gn 4:2","H6629",""],
+["צֵל","tsel","","s","","masculino","sombra; protección","Sal 91:1","H6738",""],
+["קֶבֶר","kéver","ק-ב-ר","s","ketel","masculino","sepulcro","Gn 23:4","H6913",""],
+["קָהָל","kahal","ק-ה-ל","s","katal","masculino","asamblea, congregación","Dt 31:30","H6951",""],
+["קֶרֶב","kérev","ק-ר-ב","s","ketel","masculino","interior, en medio de","Gn 18:12","H7130",""],
+["קָרְבָּן","korbán","ק-ר-ב","s","","masculino","ofrenda, sacrificio","Lv 1:2","H7133","Lo que se «acerca»: el sacrificio acerca al hombre a Dios."],
+["קֶרֶן","kéren","","s","ketel","femenino","cuerno; rayo de luz","Gn 22:13","H7161","El rostro de Moshé «irradiaba» (karán) (Éx 34:29). Una mala traducción lo convirtió en «cuernos»."],
+["רֶגֶל","réguel","","s","ketel","femenino","pie; vez","Éx 3:5","H7272","Shalosh regalim: las tres fiestas de peregrinación."],
+["רַחֲמִים","rajamim","ר-ח-ם","s","","masculino (plural)","compasión, misericordia","Gn 43:14","H7356","Emparentado con rejem, el útero: amor de madre."],
+["רֵעַ","réa","ר-ע-ה","s","","masculino","prójimo, compañero","Lv 19:18","H7453","«Ve'ahavtá le-reajá kamoja»: para Rabí Akiva, gran principio de la Torá."],
+["רָעָב","raav","ר-ע-ב","s","katal","masculino","hambre","Gn 12:10","H7458",""],
+["רֹעֶה","roé","ר-ע-ה","s","","masculino","pastor","Gn 4:2","H7462","«Adonai roí»: el Señor es mi pastor (Sal 23:1)."],
+["שְׁאוֹל","Sheol","","n","","femenino","Sheol, morada de los muertos","Gn 37:35","H7585",""],
+["שֵׁבֶט","shévet","","s","ketel","masculino","tribu; vara, cetro","Gn 49:16","H7626",""],
+["שָׂדֶה","sadé","","s","","masculino","campo","Gn 2:5","H7704",""],
+["שִׁיר","shir","ש-י-ר","s","","masculino","canto, cántico","Sal 33:3","H7892","Shir ha-shirim: el Cantar de los Cantares."],
+["שֶׁמֶן","shémen","","s","ketel","masculino","aceite","Gn 28:18","H8081",""],
+["שֶׁמֶשׁ","shémesh","","s","ketel","masculino / femenino","sol","Gn 15:12","H8121",""],
+["שָׁנָה","shaná","ש-נ-ה","s","","femenino","año","Gn 1:14","H8141","Rosh ha-Shaná: cabeza del año."],
+["שַׁעַר","sháar","","s","","masculino","puerta (de ciudad)","Dt 6:9","H8179","En las puertas se sentaban los jueces y ancianos."],
+["שַׂר","sar","","s","","masculino","príncipe, jefe, oficial","Gn 12:15","H8269",""],
+["שׁוֹפָר","shofar","","s","","masculino","cuerno de carnero","Éx 19:16","H7782",""],
+["שָׂפָה","safá","","s","","femenino","labio; lengua, idioma; orilla","Gn 11:1","H8193",""],
+["תְּהִלָּה","tehilá","ה-ל-ל","s","","femenino","alabanza","Sal 145:1","H8416","Tehilim (Salmos): «alabanzas»."],
+["תּוֹךְ","toj","","s","","masculino","medio, centro","Gn 1:6","H8432",""],
+["תּוֹעֵבָה","toevá","ת-ע-ב","s","","femenino","abominación","Dt 18:12","H8441",""],
+// ——— Adjetivos ———
+["אַחֵר","ajer","א-ח-ר","a","","masculino","otro","Éx 20:3","H312",""],
+["זָר","zar","ז-ו-ר","a","","masculino","extraño, ajeno, profano","Lv 10:1","H2114","Esh zará: el fuego extraño de Nadav y Avihú."],
+["חָדָשׁ","jadash","ח-ד-ש","a","katal","masculino","nuevo","Ecl 1:9","H2319","«Ein kol jadash tájat ha-shémesh»."],
+["חָזָק","jazak","ח-ז-ק","a","katal","masculino","fuerte","Éx 3:19","H2389","Be-yad jazaká: con mano fuerte."],
+["חָכָם","jajam","ח-כ-ם","a","katal","masculino","sabio","Pr 1:5","H2450",""],
+["חַנּוּן","janún","ח-נ-ן","a","kattul","masculino","clemente","Éx 34:6","H2587","Parte de los Trece Atributos de Misericordia."],
+["טָהוֹר","tahor","ט-ה-ר","a","katol","masculino","puro (ritualmente)","Gn 7:2","H2889",""],
+["טָמֵא","tamé","ט-מ-א","a","","masculino","impuro (ritualmente)","Lv 11:4","H2931",""],
+["יָשָׁר","yashar","י-ש-ר","a","katal","masculino","recto, justo","Dt 6:18","H3477",""],
+["נוֹרָא","norá","י-ר-א","a","","masculino","temible, imponente","Gn 28:17","H3372",""],
+["קָטֹן","katón","ק-ט-ן","a","katol","masculino","pequeño, menor","Gn 1:16","H6996",""],
+["רִאשׁוֹן","rishón","ר-א-ש","a","","masculino","primero, anterior","Gn 8:13","H7223",""],
+["רַב","rav","ר-ב-ב","a","","masculino","mucho, numeroso, grande","Gn 6:5","H7227","En época rabínica, «maestro»."],
+["רַחוּם","rajum","ר-ח-ם","a","kattul","masculino","compasivo","Éx 34:6","H7349","«El rajum ve-janún»: inicio de los Trece Atributos."],
+["רָשָׁע","rashá","ר-ש-ע","a","katal","masculino","malvado, impío, culpable","Sal 1:1","H7563",""],
+["שָׁלֵם","shalem","ש-ל-ם","a","","masculino","completo, íntegro","Gn 15:16","H8003",""],
+["תָּם","tam","ת-מ-ם","a","","masculino","íntegro, sencillo","Gn 25:27","H8535",""],
+["תָּמִים","tamim","ת-מ-ם","a","katil","masculino","perfecto, íntegro, sin defecto","Gn 17:1","H8549","«Hithalej lefanay veheyé tamim»."],
+["עָנִי","aní","ע-נ-ה","a","","masculino","pobre, afligido","Dt 15:11","H6041",""],
+// ——— Partículas y pronombres ———
+["אַתָּה","atá","","p","","pronombre","tú (masculino)","Gn 3:11","H859",""],
+["הוּא","hu","","p","","pronombre","él; ese","Gn 3:16","H1931",""],
+["הִיא","hi","","p","","pronombre","ella; esa","Gn 3:20","H1931","En la Torá a menudo se escribe הוא y se lee hi (kerí ukhtiv)."],
+["אֲנַחְנוּ","anájnu","","p","","pronombre","nosotros","Gn 13:8","H587",""],
+["אֵת","et","","p","","partícula","marca de objeto directo (sin traducción)","Gn 1:1","H853","Rabí Akiva enseñaba que cada et incluye algo más (Pesajim 22b)."],
+["אֲשֶׁר","asher","","p","","relativo","que, el cual, donde","Gn 1:7","H834",""],
+["אִם","im","","p","","conjunción","si; o","Éx 19:5","H518",""],
+["אַל","al","","p","","adverbio","no (prohibición puntual)","Éx 3:5","H408","Lo es la prohibición permanente; al, la inmediata."],
+["אֶל","el","","p","","preposición","hacia, a","Gn 12:1","H413",""],
+["עַל","al","","p","","preposición","sobre, encima de; acerca de","Gn 1:2","H5921",""],
+["עַד","ad","","p","","preposición","hasta","Gn 3:19","H5704",""],
+["עִם","im","","p","","preposición","con","Gn 26:3","H5973",""],
+["מִן","min","","p","","preposición","de, desde; más que","Gn 2:17","H4480",""],
+["בֵּין","bein","","p","","preposición","entre","Gn 1:4","H996",""],
+["תַּחַת","tájat","","p","","preposición","debajo de; en lugar de","Gn 22:13","H8478",""],
+["לִפְנֵי","lifnei","פ-נ-ה","p","","preposición","delante de, ante","Gn 6:11","H6440",""],
+["גַּם","gam","","p","","adverbio","también, aun","Gn 3:6","H1571",""],
+["כֹּה","ko","","p","","adverbio","así","Éx 4:22","H3541","«Ko amar Adonai»: fórmula de los profetas."],
+["הִנֵּה","hiné","","p","","interjección","he aquí, mira","Gn 1:29","H2009",""],
+["הִנֵּנִי","hineni","","p","","interjección","heme aquí","Gn 22:1","H2009","Respuesta de Avraham, Moshé y Shmuel: disponibilidad total."],
+["מָה","ma","","p","","interrogativo","¿qué?","Gn 4:10","H4100",""],
+["מִי","mi","","p","","interrogativo","¿quién?","Éx 15:11","H4310","«Mi jamoja ba-elim Adonai»."],
+["אַיֵּה","ayé","","p","","interrogativo","¿dónde?","Gn 18:9","H346",""],
+["לָמָּה","lama","","p","","interrogativo","¿por qué?","Gn 4:6","H4100",""],
+["אַךְ","aj","","p","","adverbio","solamente; ciertamente","Gn 7:23","H389",""],
+["אָז","az","","p","","adverbio","entonces","Éx 15:1","H227",""],
+["עַתָּה","atá","","p","","adverbio","ahora","Gn 3:22","H6258",""],
+["יֵשׁ","yesh","","p","","partícula","hay, existe","Gn 28:16","H3426",""],
+["אֵין","ein","","p","","partícula","no hay, no existe","Gn 2:5","H369",""],
+["כֹּל","kol","","p","","sustantivo / cuantificador","todo, cada","Gn 1:31","H3605",""],
+["מְאֹד","meod","","p","","adverbio","mucho, muy; fuerza","Gn 1:31","H3966","«Bejol meodeja» (Dt 6:5): con todo tu poder, o tus bienes según los sabios."],
+["שָׁם","sham","","p","","adverbio","allí","Gn 2:8","H8033",""],
+["פֹּה","po","","p","","adverbio","aquí","Gn 19:12","H6311",""],
+["לָכֵן","lajen","","p","","adverbio","por tanto","Gn 4:15","H3651",""],
+["פֶּן","pen","","p","","conjunción","para que no, no sea que","Gn 3:3","H6435",""],
+["תָּמִיד","tamid","","p","","adverbio","continuamente, siempre","Éx 27:20","H8548","Ner tamid: la luz perpetua."],
+// ——— Numerales ———
+["שְׁנַיִם","shnáyim","ש-נ-ה","u","","masculino","dos","Gn 6:19","H8147",""],
+["שָׁלֹשׁ","shalosh","","u","","femenino","tres","Gn 6:10","H7969",""],
+["אַרְבַּע","arbá","","u","","femenino","cuatro","Gn 2:10","H702",""],
+["שֶׁבַע","sheva","ש-ב-ע","u","","femenino","siete","Gn 7:4","H7651","Número de la plenitud: la creación, el Shabat, la shemitá."],
+["עֶשֶׂר","éser","","u","","femenino","diez","Gn 18:32","H6235",""],
+["מֵאָה","meá","","u","","femenino","cien","Gn 17:17","H3967",""],
+["אֶלֶף","élef","","u","","masculino","mil","Éx 20:6","H505",""],
+// ——— Nombres propios ———
+["אַבְרָהָם","Avraham","","n","","masculino","Abraham","Gn 17:5","H85","«Padre de multitud de naciones»."],
+["יִצְחָק","Yitsjak","צ-ח-ק","n","","masculino","Isaac","Gn 21:3","H3327","«Reirá»: por la risa de Sara."],
+["יַעֲקֹב","Yaakov","ע-ק-ב","n","","masculino","Jacob","Gn 25:26","H3290",""],
+["אַהֲרֹן","Aharón","","n","","masculino","Aarón","Éx 4:14","H175",""],
+["יְהוּדָה","Yehudá","י-ד-ה","n","","masculino","Judá","Gn 29:35","H3063","«Esta vez alabaré (odé) a Adonai». De aquí yehudí, judío."],
+["דָּוִד","David","","n","","masculino","David","1 S 16:13","H1732",""],
+["יְרוּשָׁלַיִם","Yerushaláyim","","n","","femenino","Jerusalén","Jos 10:1","H3389","El texto masorético casi siempre la escribe sin la segunda yod; se lee Yerushaláyim."],
+["צִיּוֹן","Tsiyón","","n","","femenino","Sion","Sal 2:6","H6726",""],
+["יַרְדֵּן","Yardén","י-ר-ד","n","","masculino","Jordán","Gn 13:10","H3383","Relacionado con yarad: «el que desciende»."],
+["מִצְרַיִם","Mitsráyim","","n","","femenino","Egipto","Gn 12:10","H4714","Los sabios lo relacionan con metsarim, estrecheces."],
+["כְּנַעַן","Kenáan","","n","","masculino","Canaán","Gn 12:5","H3667",""],
+["שָׂטָן","satán","ש-ט-ן","s","","masculino","adversario, acusador","Job 1:6","H7854","En la Biblia es un acusador sometido a Dios, no un poder rival."],
+// ——— Verbos (ampliación) ———
+["אָבַל","aval","א-ב-ל","v","","qal","hacer duelo, lamentarse","Is 3:26","H56",""],
+["הֶאֱזִין","he'ezín","א-ז-ן","v","","hif'il","escuchar, prestar oído","Dt 32:1","H238","«Haazinu ha-shamáyim»: inicio del cántico de Moshé."],
+["אָמַץ","amats","א-מ-ץ","v","","qal","ser valiente, firme","Jos 1:6","H553",""],
+["אָפָה","afá","א-פ-ה","v","","qal","hornear","Gn 19:3","H644",""],
+["בָּגַד","bagad","ב-ג-ד","v","","qal","traicionar, ser infiel","Mal 2:14","H898","Comparte raíz con béged (vestido): lo que encubre."],
+["בָּזָה","bazá","ב-ז-ה","v","","qal","despreciar","Gn 25:34","H959",""],
+["בָּלַע","bala","ב-ל-ע","v","","qal","tragar, devorar","Nm 16:30","H1104",""],
+["בָּעַר","baar","ב-ע-ר","v","","qal","arder, quemar","Éx 3:2","H1197","La zarza ardía (boer) y no se consumía."],
+["בָּקַע","baká","ב-ק-ע","v","","qal","partir, hender","Éx 14:16","H1234",""],
+["בָּרַח","baraj","ב-ר-ח","v","","qal","huir","Gn 27:43","H1272",""],
+["בִּשֵּׁל","bishel","ב-ש-ל","v","","pi'el","cocer, guisar","Éx 23:19","H1310","«No cocerás el cabrito en la leche de su madre»: base de la separación de carne y leche."],
+["גָּבַר","gavar","ג-ב-ר","v","","qal","prevalecer, ser fuerte","Gn 7:18","H1396",""],
+["גָּזַל","gazal","ג-ז-ל","v","","qal","robar con violencia, despojar","Lv 19:13","H1497",""],
+["גָּלַל","galal","ג-ל-ל","v","","qal","rodar","Gn 29:10","H1556",""],
+["גָּנַב","ganav","ג-נ-ב","v","","qal","robar a escondidas","Éx 20:13","H1589","Los sabios aplican «lo tignov» del Decálogo al secuestro de personas (Sanhedrín 86a)."],
+["גֵּרֵשׁ","gueresh","ג-ר-ש","v","","pi'el","expulsar, echar","Gn 3:24","H1644",""],
+["דָּבַק","davak","ד-ב-ק","v","","qal","adherirse, unirse","Gn 2:24","H1692","De aquí devekut: el apego a Dios (Dt 11:22)."],
+["דָּמָה","damá","ד-מ-ה","v","","qal","parecerse, ser semejante","Sal 144:4","H1819",""],
+["דָּרַךְ","darak","ד-ר-ך","v","","qal","pisar, caminar; tensar el arco","Dt 11:24","H1869",""],
+["הָגָה","hagá","ה-ג-ה","v","","qal","meditar, murmurar","Sal 1:2","H1897","Meditar en voz baja: el estudio judío se pronuncia, no solo se lee."],
+["הָפַךְ","hafaj","ה-פ-ך","v","","qal","volcar, trastornar, transformar","Gn 19:25","H2015",""],
+["זָנָה","zaná","ז-נ-ה","v","","qal","prostituirse; ser infiel","Éx 34:16","H2181",""],
+["זָעַק","zaak","ז-ע-ק","v","","qal","clamar, gritar","Jue 3:9","H2199",""],
+["זָרַח","zaraj","ז-ר-ח","v","","qal","brillar, salir (el sol)","Is 60:1","H2224","De aquí mizraj, el oriente."],
+["זָרַע","zara","ז-ר-ע","v","","qal","sembrar","Gn 26:12","H2232",""],
+["חָבַשׁ","javash","ח-ב-ש","v","","qal","ensillar; vendar","Gn 22:3","H2280","Avraham ensilló él mismo su asno: el amor rompe la costumbre (Rashí)."],
+["חָגַג","jagag","ח-ג-ג","v","","qal","celebrar una fiesta, peregrinar","Éx 23:14","H2287",""],
+["חָדַל","jadal","ח-ד-ל","v","","qal","cesar, dejar de","Gn 11:8","H2308",""],
+["חָלָה","jalá","ח-ל-ה","v","","qal","enfermar, debilitarse","Gn 48:1","H2470",""],
+["חָלַם","jalam","ח-ל-ם","v","","qal","soñar","Gn 37:5","H2492",""],
+["חָמַד","jamad","ח-מ-ד","v","","qal","codiciar, desear","Éx 20:14","H2530","Único mandamiento del Decálogo sobre un sentimiento."],
+["חָנָה","janá","ח-נ-ה","v","","qal","acampar","Éx 19:2","H2583","Vayijan en singular: Israel acampó «como un solo hombre con un solo corazón» (Rashí)."],
+["חָסָה","jasá","ח-ס-ה","v","","qal","refugiarse","Sal 2:12","H2620",""],
+["חָפַר","jafar","ח-פ-ר","v","","qal","cavar","Gn 26:18","H2658",""],
+["חָקַר","jakar","ח-ק-ר","v","","qal","investigar, escudriñar","Job 28:27","H2713",""],
+["חָרַשׁ","jarash","ח-ר-ש","v","","qal","arar; (hif'il) callar","Dt 22:10","H2790",""],
+["חָתַם","jatam","ח-ת-ם","v","","qal","sellar","Dn 9:24","H2856",""],
+["טָבַל","taval","ט-ב-ל","v","","qal","sumergir, mojar","Gn 37:31","H2881","De aquí tevilá, la inmersión ritual."],
+["טָהֵר","taher","ט-ה-ר","v","","qal","ser puro, purificarse","Lv 15:13","H2891",""],
+["טָרַף","taraf","ט-ר-ף","v","","qal","despedazar","Gn 37:33","H2963","De aquí treifá: el animal desgarrado, no apto para comer."],
+["יָגַע","yaga","י-ג-ע","v","","qal","fatigarse, esforzarse","Is 40:31","H3021",""],
+["הוֹדָה","hodá","י-ד-ה","v","","hif'il","alabar, dar gracias; confesar","Sal 136:1","H3034","«Hodu la-Adonai ki tov»."],
+["יָחַל","yajal","י-ח-ל","v","","pi'el","esperar, aguardar","Sal 130:7","H3176",""],
+["יָטַב","yatav","י-ט-ב","v","","qal","ir bien, ser bueno","Dt 5:16","H3190",""],
+["יָעַץ","yaats","י-ע-ץ","v","","qal","aconsejar","Éx 18:19","H3289",""],
+["יָצַק","yatsak","י-צ-ק","v","","qal","derramar, verter","Gn 28:18","H3332",""],
+["יָצַר","yatsar","י-צ-ר","v","","qal","formar, modelar","Gn 2:7","H3335","Vayitser con dos yod: el hombre fue formado con dos inclinaciones (Berajot 61a)."],
+["יָרָה","yará","י-ר-ה","v","","qal","lanzar; (hif'il) enseñar","Éx 24:12","H3384","Raíz de Torá: la enseñanza que apunta al blanco."],
+["כִּבֵּד","kibed","כ-ב-ד","v","","pi'el","honrar; (qal) ser pesado","Éx 20:12","H3513","«Kabed et avija ve-et imeja»."],
+["כִּזֵּב","kizev","כ-ז-ב","v","","pi'el","mentir, engañar","Nm 23:19","H3576",""],
+["כִּסָּה","kisá","כ-ס-ה","v","","pi'el","cubrir","Gn 9:23","H3680",""],
+["כָּעַס","kaas","כ-ע-ס","v","","qal","enojarse","Ecl 7:9","H3707",""],
+["כָּשַׁל","kashal","כ-ש-ל","v","","qal","tropezar, caer","Is 40:30","H3782",""],
+["לָבַשׁ","lavash","ל-ב-ש","v","","qal","vestirse","Gn 28:20","H3847",""],
+["לוּן","lun","ל-ו-ן","v","","qal","pasar la noche; (nif'al) murmurar","Gn 19:2","H3885",""],
+["נִלְחַם","niljam","ל-ח-ם","v","","nif'al","combatir, pelear","Éx 14:14","H3898","«Adonai yilajem lajem»."],
+["לָכַד","lajad","ל-כ-ד","v","","qal","capturar, tomar","Jos 6:20","H3920",""],
+["מָאַס","maas","מ-א-ס","v","","qal","rechazar, despreciar","1 S 15:23","H3988",""],
+["מִהֵר","miher","מ-ה-ר","v","","pi'el","apresurarse","Gn 18:6","H4116",""],
+["מָכַר","majar","מ-כ-ר","v","","qal","vender","Gn 37:28","H4376",""],
+["מָנָה","maná","מ-נ-ה","v","","qal","contar, numerar","Gn 13:16","H4487",""],
+["מָנַע","mana","מ-נ-ע","v","","qal","retener, negar","Gn 30:2","H4513",""],
+["מָשַׁל","mashal","מ-ש-ל","v","","qal","gobernar, dominar","Gn 1:18","H4910",""],
+["נִבָּא","nibá","נ-ב-א","v","","nif'al","profetizar","Ez 37:7","H5012",""],
+["הִגִּיד","higuid","נ-ג-ד","v","","hif'il","declarar, contar, anunciar","Gn 3:11","H5046","«Vehigadtá le-vinja» (Éx 13:8): de aquí la Hagadá de Pésaj."],
+["נָדַר","nadar","נ-ד-ר","v","","qal","hacer un voto","Gn 28:20","H5087",""],
+["נוּחַ","nuaj","נ-ו-ח","v","","qal","reposar, descansar","Éx 20:11","H5117",""],
+["נוּס","nus","נ-ו-ס","v","","qal","huir","Éx 14:25","H5127",""],
+["נָחַל","najal","נ-ח-ל","v","","qal","heredar, poseer","Éx 23:30","H5157",""],
+["הִכָּה","hiká","נ-כ-ה","v","","hif'il","golpear, herir, matar","Éx 2:12","H5221","Makot (plagas) viene de esta raíz."],
+["הִכִּיר","hikir","נ-כ-ר","v","","hif'il","reconocer","Gn 37:33","H5234",""],
+["נִסָּה","nisá","נ-ס-ה","v","","pi'el","probar, poner a prueba","Gn 22:1","H5254","Las diez pruebas de Avraham (Avot 5:3)."],
+["נָסַע","nasa","נ-ס-ע","v","","qal","partir, levantar el campamento, viajar","Gn 12:9","H5265",""],
+["נָצַר","natsar","נ-צ-ר","v","","qal","guardar, vigilar","Pr 4:23","H5341",""],
+["נָקַם","nakam","נ-ק-ם","v","","qal","vengar","Lv 19:18","H5358",""],
+["נָשַׁק","nashak","נ-ש-ק","v","","qal","besar","Gn 27:26","H5401",""],
+["סָבַב","savav","ס-ב-ב","v","","qal","rodear, dar vuelta","Jos 6:3","H5437",""],
+["סָגַר","sagar","ס-ג-ר","v","","qal","cerrar","Gn 7:16","H5462",""],
+["סוּר","sur","ס-ו-ר","v","","qal","apartarse, desviarse","Éx 3:3","H5493",""],
+["סָלַח","salaj","ס-ל-ח","v","","qal","perdonar","Nm 14:20","H5545","«Salajti kidvareja»: en el Tanaj, solo Dios es sujeto de salaj."],
+["סָמַךְ","samaj","ס-מ-ך","v","","qal","apoyar; imponer las manos","Lv 1:4","H5564","De aquí semijá: la ordenación rabínica."],
+["הִסְתִּיר","histir","ס-ת-ר","v","","hif'il","esconder, ocultar","Dt 31:18","H5641","Hester panim: Dios oculta su rostro."],
+["עוּר","ur","ע-ו-ר","v","","qal","despertar","Is 51:9","H5782",""],
+["עָזַר","azar","ע-ז-ר","v","","qal","ayudar","1 S 7:12","H5826",""],
+["עִנָּה","iná","ע-נ-ה","v","","pi'el","afligir, oprimir","Gn 15:13","H6031","«Veinitem et nafshoteijem» (Lv 16:29): el ayuno de Yom Kipur."],
+["עָצַר","atsar","ע-צ-ר","v","","qal","detener, retener","Gn 16:2","H6113",""],
+["עָרַךְ","araj","ע-ר-ך","v","","qal","ordenar, disponer","Gn 22:9","H6186",""],
+["פָּדָה","padá","פ-ד-ה","v","","qal","rescatar, redimir","Dt 7:8","H6299","Pidyón ha-ben: el rescate del primogénito."],
+["פּוּץ","puts","פ-ו-ץ","v","","qal","dispersarse","Gn 11:8","H6327",""],
+["נִפְלָא","nifla","פ-ל-א","v","","nif'al","ser maravilloso, difícil","Gn 18:14","H6381",""],
+["פָּנָה","paná","פ-נ-ה","v","","qal","volverse, girarse","Éx 2:12","H6437",""],
+["פָּעַל","paal","פ-ע-ל","v","","qal","obrar, hacer","Éx 15:17","H6466","Paal es también el nombre del binyán qal en gramática."],
+["פָּרָה","pará","פ-ר-ה","v","","qal","dar fruto, fructificar","Gn 1:28","H6509","«Peru u-revu»: primer mandamiento de la Torá."],
+["פָּרַשׂ","paras","פ-ר-ש","v","","qal","extender","Éx 9:29","H6566",""],
+["פָּשַׁע","pashá","פ-ש-ע","v","","qal","rebelarse","Is 1:2","H6586",""],
+["צָדַק","tsadak","צ-ד-ק","v","","qal","ser justo, tener razón","Gn 38:26","H6663",""],
+["צוּם","tsum","צ-ו-ם","v","","qal","ayunar","Zac 7:5","H6684",""],
+["צָחַק","tsajak","צ-ח-ק","v","","qal","reír","Gn 18:12","H6711",""],
+["צָמַח","tsamaj","צ-מ-ח","v","","qal","brotar, germinar","Gn 2:5","H6779",""],
+["צָפָה","tsafá","צ-פ-ה","v","","qal","vigilar, otear","Gn 31:49","H6822",""],
+["קִוָּה","kivá","ק-ו-ה","v","","pi'el","esperar, tener esperanza","Sal 27:14","H6960",""],
+["קִלֵּל","kilel","ק-ל-ל","v","","pi'el","maldecir; (qal) ser ligero","Gn 12:3","H7043",""],
+["קָנָה","kaná","ק-נ-ה","v","","qal","adquirir, comprar","Gn 14:19","H7069","Konei shamáyim va-árets: dueño del cielo y la tierra."],
+["קִנֵּא","kiné","ק-נ-א","v","","pi'el","sentir celos, envidiar","Gn 30:1","H7065",""],
+["קָצַר","katsar","ק-צ-ר","v","","qal","segar, cosechar","Lv 19:9","H7114",""],
+["קָשַׁר","kashar","ק-ש-ר","v","","qal","atar; conspirar","Dt 6:8","H7194","Base de los tefilín."],
+["רָבָה","ravá","ר-ב-ה","v","","qal","multiplicarse, aumentar","Gn 1:28","H7235",""],
+["רָגַז","ragaz","ר-ג-ז","v","","qal","temblar, agitarse","Éx 15:14","H7264",""],
+["רוּם","rum","ר-ו-ם","v","","qal","ser alto, elevarse","Is 6:1","H7311",""],
+["רוּץ","ruts","ר-ו-ץ","v","","qal","correr","Gn 18:7","H7323",""],
+["רָחַץ","rajats","ר-ח-ץ","v","","qal","lavar, bañarse","Gn 18:4","H7364",""],
+["רָפָא","rafá","ר-פ-א","v","","qal","sanar","Éx 15:26","H7495","«Aní Adonai rof'eja»."],
+["רָצָה","ratsá","ר-צ-ה","v","","qal","agradarse, aceptar","Sal 147:11","H7521",""],
+["רָצַח","ratsaj","ר-צ-ח","v","","qal","asesinar","Éx 20:13","H7523","«Lo tirtsaj» prohíbe asesinar, no toda muerte: la Torá usa otros verbos para la guerra y la pena judicial."],
+["שָׂבַע","savá","ש-ב-ע","v","","qal","saciarse","Dt 8:10","H7646","«Veajaltá vesavata uverajta»: fuente del Birkat ha-Mazón."],
+["שִׂים","sim","ש-י-ם","v","","qal","poner, colocar","Gn 2:8","H7760",""],
+["הִשְׂכִּיל","hiskil","ש-כ-ל","v","","hif'il","entender; prosperar","Jos 1:8","H7919",""],
+["שָׂרַף","saraf","ש-ר-ף","v","","qal","quemar","Gn 11:3","H8313","De aquí serafim, «los ardientes» (Is 6:2)."],
+["נִשְׁאַר","nishar","ש-א-ר","v","","nif'al","quedar, sobrar","Gn 7:23","H7604","She'ar Yashuv: «un remanente volverá» (Is 7:3)."],
+["הִשְׁחִית","hishjit","ש-ח-ת","v","","hif'il","destruir, corromper","Gn 6:12","H7843","Bal tashjit: la prohibición de destruir sin necesidad (Dt 20:19)."],
+["הִשְׁתַּחֲוָה","hishtajavá","ש-ח-ה","v","","hishtaf'el","postrarse, inclinarse","Gn 22:5","H7812",""],
+["שִׁיר","shir","ש-י-ר","v","","qal","cantar","Éx 15:1","H7891","«Az yashir Moshé»: en futuro, los sabios ven una alusión a la resurrección (Sanhedrín 91b)."],
+["הִשְׁכִּים","hishkim","ש-כ-ם","v","","hif'il","madrugar","Gn 22:3","H7925",""],
+["הִשְׁלִיךְ","hishlij","ש-ל-ך","v","","hif'il","arrojar, echar","Éx 7:9","H7993",""],
+["שִׁלֵּם","shilem","ש-ל-ם","v","","pi'el","pagar, restituir","Éx 22:2","H7999",""],
+["הִשְׁמִיד","hishmid","ש-מ-ד","v","","hif'il","exterminar","Dt 9:3","H8045",""],
+["שָׁמֵם","shamem","ש-מ-ם","v","","qal","quedar desolado, asombrarse","Lv 26:32","H8074",""],
+["נִשְׁעַן","nishan","ש-ע-ן","v","","nif'al","apoyarse","Is 10:20","H8172",""],
+["הִשְׁקָה","hishká","ש-ק-ה","v","","hif'il","dar de beber, regar","Gn 29:7","H8248",""],
+["שָׁקַל","shakal","ש-ק-ל","v","","qal","pesar","Gn 23:16","H8254",""],
+["שֵׁרֵת","sheret","ש-ר-ת","v","","pi'el","ministrar, servir (en el culto)","Éx 28:35","H8334",""],
+["תָּמַךְ","tamaj","ת-מ-ך","v","","qal","sostener, asir","Pr 3:18","H8551",""],
+["תָּעָה","taá","ת-ע-ה","v","","qal","errar, extraviarse","Gn 21:14","H8582",""],
+["תָּפַשׂ","tafas","ת-פ-ש","v","","qal","agarrar, apresar","Gn 39:12","H8610",""],
+["תָּקַע","taká","ת-ק-ע","v","","qal","tocar (trompeta); clavar","Nm 10:3","H8628","Tekiá: el sonido largo del shofar."],
+// ——— Sustantivos (ampliación) ———
+["אֵבֶל","ével","א-ב-ל","s","ketel","masculino","duelo, luto","Gn 50:10","H60",""],
+["אֶבְיוֹן","evyón","א-ב-ה","s","","masculino","pobre, necesitado","Dt 15:11","H34",""],
+["אֵזוֹב","ezov","","s","","masculino","hisopo","Éx 12:22","H231",""],
+["אֳנִיָּה","oniyá","","s","","femenino","barco, nave","Jon 1:3","H591",""],
+["אֵפוֹד","efod","","s","","masculino","efod (vestidura sacerdotal)","Éx 28:6","H646",""],
+["אַף","af","א-נ-ף","s","","masculino","nariz; ira","Gn 2:7","H639","Érej apáyim: «largo de nariz», es decir, lento para la ira (Éx 34:6)."],
+["אֶצְבַּע","etsba","","s","","femenino","dedo","Éx 31:18","H676",""],
+["אֹרַח","óraj","","s","","masculino","senda, camino","Sal 16:11","H734",""],
+["אָשָׁם","asham","א-ש-ם","s","","masculino","culpa; ofrenda por la culpa","Lv 5:15","H817",""],
+["אַלְמָנָה","almaná","","s","","femenino","viuda","Dt 10:18","H490",""],
+["אֶשְׁכּוֹל","eshkol","","s","","masculino","racimo","Nm 13:23","H811",""],
+["בֶּגֶד","béged","ב-ג-ד","s","ketel","masculino","vestido, prenda","Gn 39:12","H899",""],
+["בּוֹר","bor","","s","","masculino","pozo, cisterna","Gn 37:24","H953",""],
+["בֶּטֶן","béten","","s","ketel","femenino","vientre, seno","Gn 25:23","H990",""],
+["בַּעַל","báal","ב-ע-ל","s","","masculino","dueño, esposo; Baal (ídolo)","Éx 21:28","H1167",""],
+["בָּמָה","bamá","","s","","femenino","lugar alto (de culto)","1 R 3:2","H1116",""],
+["בָּרָק","barak","","s","katal","masculino","relámpago","Éx 19:16","H1300",""],
+["גְּאֻלָּה","gueulá","ג-א-ל","s","ktulá","femenino","redención, derecho de rescate","Lv 25:24","H1353",""],
+["גֶּבֶר","guéver","ג-ב-ר","s","ketel","masculino","varón, hombre fuerte","Job 3:3","H1397",""],
+["גִּבְעָה","guivá","","s","","femenino","colina","Éx 17:9","H1389",""],
+["גַּיְא","gai","","s","","masculino","valle","Sal 23:4","H1516","Gué tsalmávet: el valle de sombra de muerte."],
+["גָּלוּת","galut","ג-ל-ה","s","","femenino","exilio, cautiverio","Jer 29:22","H1546",""],
+["גָּמָל","gamal","","s","katal","masculino","camello","Gn 24:10","H1581",""],
+["דָּג","dag","","s","","masculino","pez","Gn 9:2","H1709",""],
+["דְּבַשׁ","dvash","","s","","masculino","miel (también de dátil)","Éx 3:8","H1706","La «miel» de la Tierra de Israel es sobre todo de dátiles (Rashí a Dt 26:2)."],
+["דֶּלֶת","délet","","s","ketel","femenino","puerta, hoja de la puerta","Gn 19:6","H1817",""],
+["דְּמוּת","demut","ד-מ-ה","s","","femenino","semejanza, figura","Gn 1:26","H1823",""],
+["דֶּשֶׁא","déshe","","s","ketel","masculino","hierba tierna","Gn 1:11","H1877",""],
+["הֶבֶל","hével","","s","ketel","masculino","vapor, soplo; vanidad","Ecl 1:2","H1892","Havel havalim: no «vanidad» moral, sino lo pasajero como el aliento. Es también el nombre de Abel."],
+["הוֹד","hod","","s","","masculino","majestad, esplendor","Sal 104:1","H1935",""],
+["הָדָר","hadar","","s","katal","masculino","esplendor, hermosura","Sal 104:1","H1926","Hidur mitsvá: embellecer el precepto."],
+["הָמוֹן","hamón","","s","katol","masculino","multitud; estruendo","Gn 17:4","H1995",""],
+["זְאֵב","zeev","","s","","masculino","lobo","Gn 49:27","H2061",""],
+["זַיִת","záyit","","s","","masculino","olivo, aceituna","Gn 8:11","H2132",""],
+["זָכָר","zajar","ז-כ-ר","s","katal","masculino","varón, macho","Gn 1:27","H2145",""],
+["זְרוֹעַ","zroa","","s","","femenino","brazo; poder","Éx 6:6","H2220","Recordado en el plato del Séder."],
+["חַג","jag","ח-ג-ג","s","","masculino","fiesta, peregrinación","Éx 12:14","H2282",""],
+["חֶבֶל","jével","","s","ketel","masculino","cuerda; porción, región","Jos 2:15","H2256",""],
+["חֵטְא","jet","ח-ט-א","s","","masculino","pecado, falta","Lv 19:17","H2399",""],
+["חִטָּה","jitá","","s","","femenino","trigo","Dt 8:8","H2406","Primera de las siete especies de la Tierra."],
+["חַיָּה","jayá","ח-י-ה","s","","femenino","animal (salvaje); ser viviente","Gn 1:24","H2416",""],
+["חָלָב","jalav","","s","katal","masculino","leche","Éx 3:8","H2461",""],
+["חֵלֶב","jélev","","s","ketel","masculino","grasa; lo mejor","Lv 3:16","H2459",""],
+["חֲלוֹם","jalom","ח-ל-ם","s","","masculino","sueño","Gn 37:5","H2472",""],
+["חֵלֶק","jélek","ח-ל-ק","s","ketel","masculino","porción, parte","Dt 10:9","H2506",""],
+["חֵמָה","jemá","י-ח-ם","s","","femenino","furor, ira ardiente","Gn 27:44","H2534",""],
+["חֲמוֹר","jamor","","s","","masculino","asno","Gn 22:3","H2543",""],
+["חָמָס","jamás","ח-מ-ס","s","katal","masculino","violencia, injusticia","Gn 6:11","H2555","Causa del diluvio según el texto."],
+["חֹמֶר","jómer","","s","kotel","masculino","arcilla, barro","Gn 11:3","H2563",""],
+["חָזוֹן","jazón","ח-ז-ה","s","katol","masculino","visión profética","Is 1:1","H2377",""],
+["חָצֵר","jatser","","s","","femenino","atrio, patio","Éx 27:9","H2691",""],
+["חֻקָּה","jukká","ח-ק-ק","s","","femenino","estatuto, ordenanza","Lv 18:4","H2708",""],
+["חֹרֶף","jóref","","s","kotel","masculino","invierno","Gn 8:22","H2779",""],
+["טַל","tal","","s","","masculino","rocío","Gn 27:28","H2919",""],
+["יַבָּשָׁה","yabashá","י-ב-ש","s","","femenino","tierra seca","Gn 1:9","H3004",""],
+["יַעַר","yáar","","s","","masculino","bosque","1 S 14:25","H3293",""],
+["יֵצֶר","yétser","י-צ-ר","s","","masculino","inclinación, impulso; forma","Gn 8:21","H3336","Yétser ha-rá y yétser ha-tov: las dos inclinaciones del ser humano."],
+["יָתוֹם","yatom","","s","katol","masculino","huérfano","Dt 10:18","H3490",""],
+["כֹּכָב","kojav","","s","","masculino","estrella","Gn 15:5","H3556",""],
+["כֶּלֶב","kélev","","s","ketel","masculino","perro","Éx 11:7","H3611",""],
+["כַּף","kaf","","s","","femenino","palma de la mano; planta del pie","Gn 8:9","H3709",""],
+["כַּפֹּרֶת","kapóret","כ-פ-ר","s","","femenino","propiciatorio (tapa del arca)","Éx 25:17","H3727",""],
+["כֶּרֶם","kérem","","s","ketel","masculino","viña","Gn 9:20","H3754",""],
+["כֻּתֹּנֶת","kutónet","","s","","femenino","túnica","Gn 37:3","H3801","Kutónet pasim: la túnica de Yosef."],
+["לְבוֹנָה","levoná","ל-ב-ן","s","","femenino","incienso (olíbano)","Éx 30:34","H3828",""],
+["לֵבָב","levav","","s","","masculino","corazón","Dt 6:5","H3824","Con dos bet: amar a Dios «con tus dos inclinaciones» (Berajot 54a)."],
+["לוּחַ","lúaj","","s","","masculino","tabla, tablilla","Éx 31:18","H3871","Lujot ha-berit: las tablas del pacto."],
+["מְגִלָּה","meguilá","ג-ל-ל","s","","femenino","rollo","Jer 36:2","H4039",""],
+["מִגְדָּל","migdal","ג-ד-ל","s","miktal","masculino","torre","Gn 11:4","H4026",""],
+["מָגֵן","maguén","ג-נ-ן","s","","masculino","escudo","Gn 15:1","H4043","Maguén Avraham: primera bendición de la Amidá."],
+["מְזוּזָה","mezuzá","","s","","femenino","jamba de la puerta","Dt 6:9","H4201",""],
+["מִזְרָח","mizraj","ז-ר-ח","s","miktal","masculino","oriente","Jos 1:15","H4217",""],
+["מַחֲנֶה","majané","ח-נ-ה","s","","masculino","campamento","Éx 14:19","H4264",""],
+["מָחָר","majar","","p","","adverbio","mañana (el día siguiente)","Éx 16:23","H4279",""],
+["מַטֶּה","maté","נ-ט-ה","s","","masculino","vara, bastón; tribu","Éx 4:2","H4294",""],
+["מָטָר","matar","","s","katal","masculino","lluvia","Dt 11:14","H4306",""],
+["מַכָּה","maká","נ-כ-ה","s","","femenino","golpe, herida; plaga","Dt 28:59","H4347",""],
+["מִכְשׁוֹל","mijshol","כ-ש-ל","s","","masculino","tropiezo, obstáculo","Lv 19:14","H4383","«No pondrás tropiezo ante el ciego»: los sabios lo extienden a todo consejo engañoso."],
+["מְלָאכָה","melajá","ל-א-ך","s","","femenino","obra, trabajo, labor","Gn 2:2","H4399","Las 39 melajot prohibidas en Shabat se deducen del Mishkán."],
+["מַלְכוּת","maljut","מ-ל-ך","s","","femenino","reino, reinado","Sal 145:13","H4438",""],
+["מַמְלָכָה","mamlajá","מ-ל-ך","s","","femenino","reino","Éx 19:6","H4467","Mamléjet kohanim: reino de sacerdotes."],
+["מָן","man","","s","","masculino","maná","Éx 16:31","H4478","«Man hu?», «¿qué es?» (Éx 16:15)."],
+["מְנוֹרָה","menorá","נ-ו-ר","s","","femenino","candelabro","Éx 25:31","H4501",""],
+["מוּסָר","musar","י-ס-ר","s","","masculino","disciplina, corrección, instrucción","Pr 1:2","H4148",""],
+["מוֹפֵת","mofet","","s","","masculino","prodigio, señal","Éx 7:9","H4159",""],
+["מַעְיָן","maayán","ע-י-ן","s","","masculino","manantial","Sal 114:8","H4599",""],
+["מַצָּה","matsá","","s","","femenino","pan ácimo","Éx 12:15","H4682",""],
+["מַצֵּבָה","matsevá","נ-צ-ב","s","","femenino","estela, pilar","Gn 28:18","H4676",""],
+["מִקְוֶה","mikvé","ק-ו-ה","s","","masculino","reunión (de aguas); esperanza","Gn 1:10","H4723","Mikvé Israel Adonai (Jer 17:13): «Dios es la esperanza» y el baño de purificación de Israel (Yomá 85b)."],
+["מִקְנֶה","miknè","ק-נ-ה","s","","masculino","ganado, posesiones","Gn 13:2","H4735",""],
+["מַרְאֶה","mar'é","ר-א-ה","s","","masculino","apariencia, aspecto; visión","Gn 12:11","H4758",""],
+["מָשָׁל","mashal","מ-ש-ל","s","katal","masculino","proverbio, parábola","Pr 1:6","H4912","Mishlé (Proverbios)."],
+["מִשְׁמֶרֶת","mishméret","ש-מ-ר","s","","femenino","custodia, ordenanza","Gn 26:5","H4931",""],
+["מִשְׁנֶה","mishné","ש-נ-ה","s","","masculino","doble; copia, segundo","Dt 17:18","H4932","Mishné Torá: copia de la Torá, nombre de Deuteronomio y de la obra de Maimónides."],
+["מִשְׁתֶּה","mishté","ש-ת-ה","s","","masculino","banquete","Gn 21:8","H4960",""],
+["נֶגֶב","néguev","","s","ketel","masculino","sur; el Néguev","Gn 12:9","H5045",""],
+["נֶגַע","néga","נ-ג-ע","s","","masculino","plaga, llaga (tsaráat)","Lv 13:2","H5061",""],
+["נֶדֶר","néder","נ-ד-ר","s","ketel","masculino","voto","Gn 28:20","H5088",""],
+["נָחָשׁ","najash","","s","katal","masculino","serpiente","Gn 3:1","H5175",""],
+["נְחֹשֶׁת","nejóshet","","s","","femenino","bronce, cobre","Éx 27:2","H5178",""],
+["נִיחֹחַ","nijóaj","נ-ו-ח","s","","masculino","grato, apaciguador (aroma)","Gn 8:21","H5207","«Reaj nijóaj»: Dios se complace en que se cumpla su voluntad (Rashí)."],
+["נֵס","nes","","s","","masculino","estandarte, señal","Nm 21:8","H5251","En hebreo posterior significa «milagro»: una señal alzada a la vista de todos."],
+["נֶצַח","nétsaj","","s","","masculino","perpetuidad; gloria, victoria","1 S 15:29","H5331",""],
+["נֵר","ner","","s","","masculino","lámpara","Éx 27:20","H5216","«Ner Adonai nishmat adam» (Pr 20:27)."],
+["נֶשֶׁר","nésher","","s","ketel","masculino","águila; buitre","Éx 19:4","H5404",""],
+["סוֹד","sod","","s","","masculino","consejo íntimo, secreto","Am 3:7","H5475",""],
+["סֻכָּה","suká","ס-כ-ך","s","","femenino","cabaña","Lv 23:42","H5521",""],
+["סֶלָה","sela","","p","","partícula","sela (indicación musical o pausa)","Hab 3:3","H5542","Su sentido exacto es incierto; la tradición lo entiende como «para siempre»."],
+["סֶלַע","sela","","s","","masculino","roca, peña","Nm 20:8","H5553",""],
+["סֹלֶת","sólet","","s","kotel","femenino","flor de harina","Lv 2:1","H5560",""],
+["עֲבֹדָה","avodá","ע-ב-ד","s","","femenino","trabajo, servicio; culto","Éx 12:25","H5656","Avodá she-ba-lev: la oración, «el servicio del corazón» (Taanit 2a)."],
+["עֵגֶל","éguel","","s","ketel","masculino","becerro","Éx 32:4","H5695",""],
+["עֲגָלָה","agalá","","s","","femenino","carreta","Gn 45:19","H5699",""],
+["עֵדוּת","edut","ע-ו-ד","s","","femenino","testimonio","Éx 25:16","H5715",""],
+["עֵדֶר","éder","","s","ketel","masculino","rebaño","Gn 29:2","H5739",""],
+["עוֹר","or","","s","","masculino","piel, cuero","Gn 3:21","H5785","En la Torá de Rabí Meir decía kotnot or con álef: «túnicas de luz» (Bereshit Rabá 20:12)."],
+["עֵז","ez","","s","","femenino","cabra","Gn 15:9","H5795",""],
+["עֵזֶר","ézer","ע-ז-ר","s","ketel","masculino","ayuda","Gn 2:18","H5828","Ézer kenegdó: «ayuda frente a él». El mismo término se aplica a Dios (Sal 121:2)."],
+["עֲטָרָה","atará","ע-ט-ר","s","","femenino","corona","Pr 12:4","H5850",""],
+["עָנָן","anán","","s","katal","masculino","nube","Éx 13:21","H6051",""],
+["עֵצָה","etsá","י-ע-ץ","s","","femenino","consejo, plan","Pr 19:21","H6098",""],
+["עֶצֶם","étsem","","s","ketel","femenino","hueso; esencia, mismo","Gn 2:23","H6106","Be'étsem ha-yom hazé: «en ese mismo día»."],
+["עֲצֶרֶת","atséret","ע-צ-ר","s","","femenino","asamblea solemne","Lv 23:36","H6116","Sheminí Atséret; los sabios llaman también atséret a Shavuot."],
+["עָקֵב","akev","ע-ק-ב","s","","masculino","talón","Gn 25:26","H6119",""],
+["עֹרֶף","óref","","s","kotel","masculino","nuca, cerviz","Éx 32:9","H6203","Am kshé óref: pueblo de dura cerviz."],
+["עֵשֶׂב","ésev","","s","ketel","masculino","hierba","Gn 1:11","H6212",""],
+["עֹשֶׁר","ósher","ע-ש-ר","s","kotel","masculino","riqueza","1 R 3:11","H6239",""],
+["פֶּלֶא","pele","פ-ל-א","s","ketel","masculino","maravilla, prodigio","Éx 15:11","H6382",""],
+["פֶּסֶל","pésel","פ-ס-ל","s","ketel","masculino","ídolo esculpido","Éx 20:4","H6459",""],
+["פַּעַם","páam","","s","","femenino","vez; paso","Gn 2:23","H6471",""],
+["פַּר","par","","s","","masculino","novillo, toro joven","Lv 4:3","H6499",""],
+["פָּרָה","pará","","s","","femenino","vaca","Nm 19:2","H6510","Pará adumá: la vaca roja, ejemplo clásico de jok."],
+["פֶּשַׁע","pésha","פ-ש-ע","s","ketel","masculino","rebelión, transgresión","Éx 34:7","H6588","En Éx 34:7 hay tres términos: avón (deliberado), pésha (rebeldía) y jataá (error) (Yomá 36b)."],
+["פֶּתַח","pétaj","פ-ת-ח","s","ketel","masculino","entrada, puerta","Gn 18:1","H6607",""],
+["צוֹם","tsom","צ-ו-ם","s","","masculino","ayuno","Is 58:5","H6685","Is 58 se lee en Yom Kipur."],
+["צוּר","tsur","","s","","masculino","roca","Dt 32:4","H6697","«Ha-Tsur tamim paolo»: Dios como Roca."],
+["צִיצִת","tsitsit","","s","","femenino","fleco, borla","Nm 15:38","H6734",""],
+["צֶלֶם","tsélem","","s","ketel","masculino","imagen","Gn 1:27","H6754","Tsélem Elohim: base de la dignidad de todo ser humano."],
+["צָפוֹן","tsafón","צ-פ-ן","s","katol","femenino","norte","Gn 13:14","H6828",""],
+["צִפּוֹר","tsipor","","s","","femenino","pájaro, ave","Gn 7:14","H6833",""],
+["צָרָה","tsará","צ-ר-ר","s","","femenino","angustia, aflicción","Gn 35:3","H6869",""],
+["קֶדֶם","kédem","","s","ketel","masculino","oriente; antigüedad","Gn 2:8","H6924","«Jadesh yaméinu ke-kédem» (Lm 5:21)."],
+["קְטֹרֶת","ketóret","ק-ט-ר","s","","femenino","incienso, sahumerio","Éx 30:1","H7004",""],
+["קַיִץ","káyits","","s","","masculino","verano","Gn 8:22","H7019",""],
+["קִיר","kir","","s","","masculino","pared, muro","Lv 14:37","H7023",""],
+["קָנֶה","kané","","s","","masculino","caña, tallo","Gn 41:5","H7070",""],
+["קֵץ","kets","ק-צ-ץ","s","","masculino","fin, término","Gn 6:13","H7093",""],
+["קָצֶה","katsé","","s","","masculino","extremo, borde","Gn 47:21","H7097",""],
+["קָצִיר","katsir","ק-צ-ר","s","katil","masculino","siega, cosecha","Gn 8:22","H7105",""],
+["קֶשֶׁת","késhet","","s","ketel","femenino","arco; arcoíris","Gn 9:13","H7198",""],
+["רֵאשִׁית","reshit","ר-א-ש","s","","femenino","principio; primicias","Pr 1:7","H7225","Los sabios: el mundo fue creado por lo que se llama reshit, la Torá e Israel (Rashí a Gn 1:1)."],
+["רֹב","rov","ר-ב-ב","s","","masculino","abundancia, mayoría","Gn 16:10","H7230",""],
+["רִמּוֹן","rimón","","s","","masculino","granada","Dt 8:8","H7416",""],
+["רֶכֶב","réjev","ר-כ-ב","s","ketel","masculino","carros (de guerra)","Éx 14:9","H7393",""],
+["רָצוֹן","ratsón","ר-צ-ה","s","katol","masculino","voluntad, favor","Lv 1:3","H7522",""],
+["רָקִיעַ","rakía","ר-ק-ע","s","katil","masculino","firmamento","Gn 1:6","H7549",""],
+["רֶשֶׁת","réshet","","s","ketel","femenino","red, enrejado","Éx 27:4","H7568",""],
+["שֶׂה","se","","s","","masculino","cordero o cabrito","Gn 22:7","H7716",""],
+["שֵׂיבָה","seivá","","s","","femenino","canas, vejez","Lv 19:32","H7872",""],
+["שִׂמְחָה","simjá","ש-מ-ח","s","","femenino","alegría","Dt 28:47","H8057",""],
+["שִׂמְלָה","simlá","","s","","femenino","vestido, manto","Gn 9:23","H8071",""],
+["שָׂעִיר","sair","","s","katil","masculino","macho cabrío","Lv 16:8","H8163",""],
+["שְׂעֹרָה","seorá","","s","","femenino","cebada","Éx 9:31","H8184",""],
+["שְׁבוּעָה","shevuá","ש-ב-ע","s","ktulá","femenino","juramento","Gn 26:3","H7621",""],
+["שָׁבוּעַ","shavúa","ש-ב-ע","s","katul","masculino","semana","Gn 29:27","H7620","Shavuot: la fiesta de las semanas."],
+["שׁוֹחַד","shójad","","s","","masculino","soborno","Éx 23:8","H7810",""],
+["שׁוֹפֵט","shofet","ש-פ-ט","s","","masculino","juez","Dt 16:18","H8199",""],
+["שׁוֹר","shor","","s","","masculino","buey","Éx 21:28","H7794",""],
+["שַׁחַר","shájar","","s","","masculino","aurora, alba","Gn 19:15","H7837",""],
+["שְׁכֶם","shejem","","s","ketel","masculino","hombro; Siquem","Gn 9:23","H7926",""],
+["שֵׁכָר","shejar","ש-כ-ר","s","","masculino","bebida embriagante","Lv 10:9","H7941",""],
+["שָׁלָל","shalal","","s","katal","masculino","botín","Gn 49:27","H7998",""],
+["שְׁלָמִים","shelamim","ש-ל-ם","s","","masculino (plural)","ofrendas de paz","Lv 3:1","H8002",""],
+["שֵׁן","shen","","s","","femenino","diente","Éx 21:24","H8127","«Ayin tájat ayin, shen tájat shen»: los sabios lo interpretan como compensación económica (Bavá Kamá 84a)."],
+["שֶׁקֶל","shékel","ש-ק-ל","s","ketel","masculino","siclo (peso, ~11 g de plata)","Gn 23:15","H8255","Majatsit ha-shékel: el medio siclo del censo (Éx 30:13)."],
+["שֶׁקֶר","shéker","","s","ketel","masculino","mentira, falsedad","Éx 23:7","H8267",""],
+["שֶׁרֶץ","shérets","ש-ר-ץ","s","ketel","masculino","animal que se arrastra, reptil","Lv 11:41","H8318",""],
+["שֹׁרֶשׁ","shóresh","","s","kotel","masculino","raíz","Is 11:10","H8328","En gramática hebrea, shóresh es la raíz de tres letras que usa este diccionario."],
+["תַּאֲוָה","taavá","א-ו-ה","s","","femenino","deseo, anhelo","Gn 3:6","H8378",""],
+["תְּאֵנָה","teená","","s","","femenino","higuera, higo","Dt 8:8","H8384",""],
+["תֵּבָה","tevá","","s","","femenino","arca (de Nóaj); cesta","Gn 6:14","H8392","Solo dos tevot en la Torá: la de Nóaj y la de Moshé niño (Éx 2:3)."],
+["תְּבוּאָה","tevuá","ב-ו-א","s","","femenino","cosecha, producto","Lv 23:39","H8393",""],
+["תֹּהוּ","tohu","","s","","masculino","caos, vacío","Gn 1:2","H8414","Tohu va-vohu."],
+["תְּהוֹם","tehom","","s","","femenino","abismo, océano primordial","Gn 1:2","H8415",""],
+["תּוֹלְדוֹת","toledot","י-ל-ד","s","","femenino (plural)","generaciones, historia","Gn 2:4","H8435",""],
+["תְּמוּנָה","temuná","","s","","femenino","figura, imagen","Éx 20:4","H8544",""],
+["תַּנִּין","tanín","","s","","masculino","monstruo marino; serpiente","Gn 1:21","H8577",""],
+["תִּקְוָה","tikvá","ק-ו-ה","s","","femenino","esperanza; cuerda","Jos 2:18","H8615","El cordón escarlata de Rajav. Ha-Tikvá: el himno de Israel."],
+["תְּרוּמָה","terumá","ר-ו-ם","s","","femenino","ofrenda, contribución","Éx 25:2","H8641",""],
+["תְּרוּעָה","teruá","ר-ו-ע","s","","femenino","toque de trompeta; aclamación","Lv 23:24","H8643","Yom Teruá: nombre bíblico de Rosh ha-Shaná."],
+["תְּשׁוּבָה","teshuvá","ש-ו-ב","s","","femenino","regreso; respuesta","1 S 7:17","H8666","En la Biblia significa «regreso»; los sabios la usan para el arrepentimiento."],
+// ——— Adjetivos (ampliación) ———
+["אַדִּיר","adir","א-ד-ר","a","kattil","masculino","poderoso, majestuoso","Éx 15:10","H117",""],
+["אֱוִיל","evil","","a","","masculino","necio, insensato","Pr 1:7","H191",""],
+["אַחֲרוֹן","ajarón","א-ח-ר","a","","masculino","último, postrero","Is 44:6","H314","«Aní rishón va-aní ajarón»."],
+["גָּבֹהַּ","gavóah","ג-ב-ה","a","katol","masculino","alto, elevado","1 S 16:7","H1364",""],
+["חָסִיד","jasid","ח-ס-ד","a","katil","masculino","piadoso, fiel","Sal 145:17","H2623",""],
+["חָפְשִׁי","jofshí","ח-פ-ש","a","","masculino","libre (de servidumbre)","Éx 21:2","H2670",""],
+["חֵרֵשׁ","jeresh","","a","","masculino","sordo","Lv 19:14","H2795",""],
+["יָפֶה","yafé","י-פ-ה","a","","masculino","hermoso","Gn 39:6","H3303",""],
+["יָקָר","yakar","י-ק-ר","a","katal","masculino","precioso, valioso","Sal 116:15","H3368",""],
+["כָּבֵד","kaved","כ-ב-ד","a","","masculino","pesado; grave","Éx 4:10","H3515","Moshé se describe «pesado de boca y de lengua»."],
+["כְּסִיל","ksil","","a","","masculino","necio","Pr 10:1","H3684",""],
+["לָבָן","lavan","ל-ב-ן","a","katal","masculino","blanco","Gn 49:12","H3836",""],
+["מְעַט","meat","","a","","masculino","poco","Gn 18:4","H4592",""],
+["נָקִי","nakí","נ-ק-ה","a","","masculino","inocente, limpio","Éx 23:7","H5355",""],
+["עִוֵּר","iver","","a","","masculino","ciego","Lv 19:14","H5787",""],
+["עָנָו","anav","ע-נ-ה","a","","masculino","humilde, manso","Nm 12:3","H6035","Moshé fue el más humilde de los hombres."],
+["עָרֵל","arel","ע-ר-ל","a","","masculino","incircunciso","Gn 17:14","H6189",""],
+["עָרוּם","arum","ע-ר-ם","a","katul","masculino","astuto, prudente","Gn 3:1","H6175","Juego de palabras con arumim, «desnudos» (Gn 2:25)."],
+["עָשִׁיר","ashir","ע-ש-ר","a","katil","masculino","rico","Pr 22:2","H6223",""],
+["צָמֵא","tsamé","צ-מ-א","a","","masculino","sediento","Is 55:1","H6771",""],
+["קָרוֹב","karov","ק-ר-ב","a","katol","masculino","cercano","Dt 30:14","H7138","«Ki karov elejá ha-davar me'od»."],
+["רָחוֹק","rajok","ר-ח-ק","a","katol","masculino","lejano","Dt 30:11","H7350",""],
+["רָעֵב","raev","ר-ע-ב","a","","masculino","hambriento","Pr 25:21","H7457",""],
+["שֵׁנִי","sheni","ש-נ-ה","a","","masculino","segundo","Gn 1:8","H8145",""],
+["שְׁלִישִׁי","shlishí","ש-ל-ש","a","","masculino","tercero","Gn 1:13","H7992",""],
+["שְׁבִיעִי","shvií","ש-ב-ע","a","","masculino","séptimo","Gn 2:2","H7637",""],
+// ——— Partículas (ampliación) ———
+["אוּלַי","ulai","","p","","adverbio","quizás","Gn 18:24","H194",""],
+["אֵיךְ","ej","","p","","interrogativo","¿cómo?","Dt 1:12","H349","Ejá, la forma lamentosa, da nombre al libro de Lamentaciones."],
+["אֵיפֹה","eifó","","p","","interrogativo","¿dónde?","Gn 37:16","H375",""],
+["אָנָּא","ana","","p","","interjección","¡te ruego!","Gn 50:17","H577",""],
+["נָא","na","","p","","partícula","por favor, te ruego; ahora","Gn 12:13","H4994",""],
+["אַחַר","ajar","א-ח-ר","p","","preposición","después de, detrás de","Gn 15:1","H310",""],
+["אָכֵן","ajén","","p","","adverbio","ciertamente, en verdad","Gn 28:16","H403",""],
+["אֵלֶּה","ele","","p","","demostrativo","estos, estas","Gn 2:4","H428",""],
+["אַשְׁרֵי","ashrei","א-ש-ר","p","","interjección","¡dichoso!, ¡feliz!","Sal 1:1","H835","Primera palabra del libro de los Salmos."],
+["אַתְּ","at","","p","","pronombre","tú (femenino)","Gn 12:11","H859",""],
+["אַתֶּם","atem","","p","","pronombre","vosotros","Gn 9:7","H859",""],
+["בִּלְתִּי","bilti","","p","","partícula","sin, para no, excepto","Gn 3:11","H1115",""],
+["בַּעֲבוּר","baavur","ע-ב-ר","p","","preposición","por causa de, para que","Gn 12:13","H5668",""],
+["הֲלֹא","halo","","p","","interrogativo","¿acaso no?","Gn 4:7","H3808",""],
+["הוֹי","hoy","","p","","interjección","¡ay!","Is 5:8","H1945",""],
+["הֵם","hem","","p","","pronombre","ellos","Gn 6:4","H1992",""],
+["זֶה","ze","","p","","demostrativo","este, esto","Gn 5:1","H2088",""],
+["זֹאת","zot","","p","","demostrativo","esta, esto","Gn 2:23","H2063",""],
+["טֶרֶם","térem","","p","","adverbio","antes de que, todavía no","Gn 2:5","H2962",""],
+["יַחַד","yájad","י-ח-ד","p","","adverbio","juntos","Gn 22:6","H3162","«Vayeljú shneihem yajdav»: padre e hijo con un mismo corazón."],
+["כְּמוֹ","kemó","","p","","preposición","como","Éx 15:5","H3644",""],
+["לְבַד","levad","ב-ד-ד","p","","adverbio","solo, aparte","Gn 2:18","H905",""],
+["לוּ","lu","","p","","partícula","¡ojalá!, si","Gn 17:18","H3863",""],
+["לְמַעַן","lemaan","","p","","conjunción","para que, a fin de","Gn 12:13","H4616",""],
+["מַדּוּעַ","madúa","","p","","interrogativo","¿por qué?","Éx 3:3","H4069",""],
+["מְאוּמָה","meúma","","p","","pronombre","algo; (con negación) nada","Gn 22:12","H3972",""],
+["מָתַי","matai","","p","","interrogativo","¿cuándo?","Gn 30:30","H4970",""],
+["סָבִיב","saviv","ס-ב-ב","p","","adverbio","alrededor","Gn 23:17","H5439",""],
+["עוֹד","od","","p","","adverbio","aún, todavía, más","Gn 8:22","H5750",""],
+["פִּתְאֹם","pitom","","p","","adverbio","de repente","Nm 12:4","H6597",""],
+["רַק","rak","","p","","adverbio","solo, solamente","Gn 6:5","H7535",""],
+// ——— Numerales (ampliación) ———
+["אַחַת","ajat","א-ח-ד","u","","femenino","una","Gn 2:21","H259",""],
+["חָמֵשׁ","jamesh","","u","","femenino","cinco","Gn 5:6","H2568","Jumash: el Pentateuco, los cinco libros."],
+["שֵׁשׁ","shesh","","u","","femenino","seis","Gn 7:6","H8337",""],
+["שְׁמֹנֶה","shmoné","","u","","femenino","ocho","Gn 17:12","H8083","La circuncisión al octavo día."],
+["תֵּשַׁע","tesha","","u","","femenino","nueve","Gn 5:5","H8672",""],
+["עֶשְׂרִים","esrim","","u","","común","veinte","Gn 18:31","H6242",""],
+["שְׁלֹשִׁים","shloshim","","u","","común","treinta","Gn 5:3","H7970",""],
+["אַרְבָּעִים","arbaim","","u","","común","cuarenta","Gn 7:4","H705","Número de purificación y prueba: el diluvio, Sinaí, el desierto."],
+["שִׁבְעִים","shivim","","u","","común","setenta","Gn 46:27","H7657","Las setenta naciones y los setenta ancianos."],
+["רְבָבָה","revavá","ר-ב-ב","u","","femenino","diez mil, miríada","Dt 33:2","H7233",""],
+// ——— Nombres propios y divinos (ampliación) ———
+["אֶהְיֶה","Ehyé","ה-י-ה","n","","nombre divino","Seré (el que seré)","Éx 3:14","H1961","«Ehyé asher ehyé»: estaré con ellos en esta aflicción como en las que vendrán (Berajot 9b)."],
+["שַׁדַּי","Shadai","","n","","nombre divino","Todopoderoso","Gn 17:1","H7706","Escrito en la mezuzá. Los sabios lo leen she-amar dai: «el que dijo basta» a la creación."],
+["עֶלְיוֹן","Elyón","ע-ל-ה","n","","nombre divino","el Altísimo","Gn 14:18","H5945",""],
+["חַוָּה","Javá","ח-י-ה","n","","femenino","Eva","Gn 3:20","H2332","«Madre de todo viviente (jai)»."],
+["נֹחַ","Nóaj","נ-ו-ח","n","","masculino","Noé","Gn 5:29","H5146",""],
+["שָׂרָה","Sará","","n","","femenino","Sara","Gn 17:15","H8283",""],
+["רִבְקָה","Rivká","","n","","femenino","Rebeca","Gn 22:23","H7259",""],
+["רָחֵל","Rajel","","n","","femenino","Raquel","Gn 29:6","H7354",""],
+["לֵאָה","Leá","","n","","femenino","Lea","Gn 29:16","H3812",""],
+["לֵוִי","Leví","","n","","masculino","Leví","Gn 29:34","H3878",""],
+["יוֹסֵף","Yosef","י-ס-ף","n","","masculino","José","Gn 30:24","H3130","«Yosef Adonai li ben ajer»: que Dios me añada otro hijo."],
+["בִּנְיָמִין","Binyamín","","n","","masculino","Benjamín","Gn 35:18","H1144",""],
+["יְהוֹשֻׁעַ","Yehoshúa","י-ש-ע","n","","masculino","Josué","Éx 17:9","H3091",""],
+["שְׁמוּאֵל","Shmuel","","n","","masculino","Samuel","1 S 1:20","H8050",""],
+["שְׁלֹמֹה","Shlomó","ש-ל-ם","n","","masculino","Salomón","2 S 12:24","H8010",""],
+["אֵלִיָּהוּ","Eliyahu","","n","","masculino","Elías","1 R 17:1","H452","«Mi Dios es Yah». Se le espera en el Séder y en cada brit milá."],
+["יְשַׁעְיָהוּ","Yeshayahu","י-ש-ע","n","","masculino","Isaías","Is 1:1","H3470",""],
+["יִרְמְיָהוּ","Yirmeyahu","","n","","masculino","Jeremías","Jer 1:1","H3414",""],
+["פַּרְעֹה","Paró","","n","","masculino","Faraón","Gn 12:15","H6547",""],
+["סִינַי","Sinai","","n","","masculino","Sinaí","Éx 19:11","H5514",""],
+["בָּבֶל","Bavel","","n","","femenino","Babel, Babilonia","Gn 11:9","H894","El texto lo relaciona con balal, «confundir»."],
+["אַשּׁוּר","Ashur","","n","","masculino","Asiria","Gn 10:11","H804",""],
+["מוֹאָב","Moav","","n","","masculino","Moab","Gn 19:37","H4124",""],
+["פְּלִשְׁתִּים","Pelishtim","","n","","masculino (plural)","filisteos","Gn 21:34","H6430",""],
+["בֵּית לֶחֶם","Beit Léjem","","n","","femenino","Belén («casa del pan»)","Gn 35:19","H1035",""],
+["חֶבְרוֹן","Jevrón","","n","","femenino","Hebrón","Gn 23:2","H2275",""]
+].map(a=>({h:a[0],t:a[1],r:a[2],c:a[3],m:a[4],g:a[5],s:a[6],ref:a[7],n:a[8],note:a[9]}));
+
+{const seen=new Set();for(let i=D.length-1;i>=0;i--){const k=D[i].h+"|"+D[i].c;if(seen.has(k))D.splice(i,1);else seen.add(k)}}
+const CAT={s:"Sustantivo",v:"Verbo",a:"Adjetivo",p:"Partícula",n:"Nombre propio",u:"Numeral"};
+const FIN={"ך":"כ","ם":"מ","ן":"נ","ף":"פ","ץ":"צ"};
+const heb=s=>s.normalize("NFD").replace(/[֑-ׇ]/g,"").replace(/[ךםןףץ]/g,c=>FIN[c]);
+const lat=s=>s.normalize("NFD").replace(/[̀-ͯ'’ʼ\-]/g,"").toLowerCase();
+D.forEach(d=>{d.hk=heb(d.h);d.rk=heb(d.r).replace(/-/g,"");d.tk=lat(d.t);d.sk=lat(d.s);d.first=d.hk[0]});
+D.sort((x,y)=>x.hk.localeCompare(y.hk,"he"));
+
+let dir="he",cat="all",letter="",root="",open=null;
+const $=id=>document.getElementById(id);
+const q=$("q"),tb=$("tb");
+
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+
+function catCell(d){
+  let s=CAT[d.c];
+  if(d.c==="v") return `${s} – <em>${d.g}</em>`;
+  if(d.m) s+=` – <span class="mod">modelo <em>${d.m}</em></span>,`; else if(d.g) s+=" –";
+  return d.g? `${s} ${d.g}`: s;
+}
+function cons(s){return s.normalize("NFD").replace(/[\u0591-\u05C7]/g,"")}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function list(){
+  const raw=q.value.trim(); const hq=heb(raw), lq=lat(raw);
+  const isHe=/[֐-׿]/.test(raw);
+  let r=D.filter(d=>{
+    if(cat!=="all" && d.c!==cat) return false;
+    if(root && d.r!==root) return false;
+    if(letter && d.first!==letter) return false;
+    if(!raw) return true;
+    if(isHe) return d.hk.includes(hq)||d.rk.includes(hq.replace(/\s|-/g,""));
+    if(dir==="es") return d.sk.split(/[^a-zñ]+/).some(w=>w.startsWith(lq))||d.sk.includes(lq);
+    return d.tk.includes(lq)||d.sk.includes(lq);
+  });
+  if(dir==="es" && !isHe) r=[...r].sort((a,b)=>a.sk.localeCompare(b.sk,"es"));
+  return r;
+}
+
+function render(){
+  const r=list();
+  $("count").textContent = root? `Familia de la raíz ${root} · ${r.length} palabras` : `${r.length} de ${D.length} palabras`;
+  $("reset").hidden=!root;
+  $("clr").hidden=!q.value;
+  if(!r.length){tb.innerHTML=`<tr><td colspan="4" class="empty">No hay coincidencias. Prueba sin nikud, con la transliteración o cambia la dirección de búsqueda.</td></tr>`;return}
+  tb.innerHTML=r.map(d=>{
+    const i=D.indexOf(d), isOpen=open===i;
+    const rootCell=d.r?`<button class="root" data-root="${d.r}" aria-label="Ver familia de la raíz ${d.r}">${d.r.split("-").join(" - ")}</button>`:`<span class="root none">–</span>`;
+    let html=`<tr class="row${isOpen?" open":""}" data-i="${i}" tabindex="0" aria-expanded="${isOpen}">
+      <td><div class="w"><div class="top"><button class="spk" data-say="${i}" aria-label="Escuchar ${esc(d.t)}">${SPK}</button><span class="tr">${esc(d.t)}</span></div><span class="he-w" lang="he">${d.h}</span><span class="rashi" lang="he" title="Escritura sefaradí semicursiva (letra Rashí)">${cons(d.h)}</span></div></td>
+      <td>${rootCell}</td>
+      <td class="cat">${catCell(d)}</td>
+      <td class="mean">${esc(d.s)}</td></tr>`;
+    if(isOpen) html+=`<tr class="det"><td colspan="4"><div class="box">
+      <div class="sefardi"><span class="big" lang="he">${cons(d.h)}</span><span class="cap">Escritura sefaradí semicursiva (letra Rashí), sin nikud como se escribía a mano</span></div>
+      <div class="meta"><span>Cita: <b>${d.ref}</b></span><span>Strong: <b>${d.n}</b></span><span>Categoría: <b>${CAT[d.c]}</b></span></div>
+      ${d.note?`<p class="note"><span class="lbl">Comentario</span>${esc(d.note)}</p>`:""}
+    </div></td></tr>`;
+    return html;
+  }).join("");
+}
+
+let voicesCache=[];
+function loadVoices(){return new Promise(res=>{try{const ss=speechSynthesis;let v=ss.getVoices();if(v.length)return res(v);let done=false;const fin=()=>{if(done)return;done=true;res(ss.getVoices())};ss.addEventListener("voiceschanged",fin,{once:true});setTimeout(fin,1500)}catch(e){res([])}})}
+function toast(msg,ms){const t=document.getElementById("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>{t.hidden=true},ms||6000)}
+function esText(d){let t=d.h==="יְהוָה"?"Adonai":d.t.replace(/\(.*?\)/g,"");return t.replace(/['’ʼ]/g,"").replace(/sh/gi,"ch").trim()}
+function speakWith(text,lang,voice,btn){return new Promise(res=>{const ss=speechSynthesis;const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.8;if(voice)u.voice=voice;let started=false;u.onstart=()=>{started=true;btn&&btn.classList.add("on")};u.onend=()=>{btn&&btn.classList.remove("on");res(true)};u.onerror=()=>{btn&&btn.classList.remove("on");res(started)};ss.speak(u);setTimeout(()=>{if(!started){ss.cancel();res(false)}},2500)})}
+async function say(d,btn){
+  if(!("speechSynthesis" in window)){toast("Este navegador no permite reproducir voz. Abre la app en Chrome.");return}
+  const ss=speechSynthesis;ss.cancel();
+  if(!voicesCache.length)voicesCache=await loadVoices();
+  const he=voicesCache.find(v=>/^(he|iw)/i.test(v.lang));
+  const es=voicesCache.find(v=>/^es/i.test(v.lang));
+  const heText=d.h==="יְהוָה"?"אֲדֹנָי":d.h;
+  if(he||!voicesCache.length){if(await speakWith(heText,"he-IL",he,btn))return}
+  if(await speakWith(esText(d),es?es.lang:"es-MX",es,btn)){
+    if(!say.warned){say.warned=true;toast("Tu teléfono no tiene voz en hebreo, así que se lee la transliteración. Para oír el hebreo: Ajustes → Sistema → Idiomas → Salida de texto a voz → Motor de Google → Instalar datos de voz → Hebreo.",10000)}
+    return}
+  toast("No se pudo reproducir el audio. Revisa que el volumen multimedia esté activo y que el teléfono tenga un motor de texto a voz instalado.",8000)
+}
+
+tb.addEventListener("click",e=>{
+  const s=e.target.closest("[data-say]"); if(s){e.stopPropagation();say(D[+s.dataset.say],s);return}
+  const rt=e.target.closest("[data-root]"); if(rt){e.stopPropagation();root=rt.dataset.root;letter="";q.value="";open=null;sync();render();window.scrollTo({top:0,behavior:"smooth"});return}
+  const tr=e.target.closest("tr.row"); if(tr){const i=+tr.dataset.i;open=open===i?null:i;render()}
+});
+tb.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches("tr.row")){const i=+e.target.dataset.i;open=open===i?null:i;render()}});
+
+const chips=[["all","Todas"],["s","Sustantivos"],["v","Verbos"],["a","Adjetivos"],["n","Nombres propios"],["p","Partículas"],["u","Numerales"]];
+$("chips").innerHTML=chips.map(([k,l])=>`<button class="chip" data-c="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("");
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;open=null;sync();render()});
+
+const AB="אבגדהוזחטיכלמנסעפצקרשת";
+$("letters").innerHTML=[...AB].map(c=>`<button data-l="${c}" aria-pressed="false" aria-label="Letra ${c}">${c}</button>`).join("");
+$("letters").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;letter=letter===b.dataset.l?"":b.dataset.l;root="";open=null;sync();render()});
+
+function sync(){
+  document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===cat));
+  document.querySelectorAll("#letters button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===letter));
+  $("d-he").setAttribute("aria-pressed",dir==="he");$("d-es").setAttribute("aria-pressed",dir==="es");
+  $("letters").hidden=dir==="es";
+  q.placeholder=dir==="he"?"Busca en hebreo (con o sin nikud) o transliteración":"Escribe una palabra en español: paz, luz, rey…";
+  q.classList.toggle("he",/[֐-׿]/.test(q.value));
+}
+$("d-he").onclick=()=>{dir="he";sync();render()};
+$("d-es").onclick=()=>{dir="es";letter="";sync();render()};
+q.addEventListener("input",()=>{letter="";open=null;sync();render()});
+$("clr").onclick=()=>{q.value="";sync();render();q.focus()};
+$("reset").onclick=()=>{root="";render()};
+
+// estado inicial: familia א-ב-ד abierta, como el ejemplo
+open=D.findIndex(d=>d.h==="אָבִיב");
+sync();render();
+</script>
+<script>
+let deferredInstall=null;const ib=document.getElementById("install");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;ib.hidden=false});
+ib.addEventListener("click",async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;ib.hidden=true});
+window.addEventListener("appinstalled",()=>{ib.hidden=true});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
+</body>
+</html>

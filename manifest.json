@@ -1,0 +1,17 @@
+{
+  "name": "Diccionario Hebreo Bíblico",
+  "short_name": "Hebreo Bíblico",
+  "description": "Diccionario hebreo bíblico ↔ español con raíces, binyanim, citas del Tanaj y comentario.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#1f4f8a",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
