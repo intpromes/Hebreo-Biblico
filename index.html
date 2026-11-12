@@ -149,6 +149,8 @@ tr.row:hover td,tr.row.open td{background:var(--surface)}
 .ab-text p{margin:0 0 9px;max-width:62ch}
 .ft-legal{color:var(--muted);font-size:.82rem;margin:14px 0 0}
 .ft-legal a{color:var(--tekhelet)}
+.vz-sel{width:100%;min-width:0;font:1rem var(--f-body);padding:9px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+#vz-pitch{width:100%;accent-color:var(--tekhelet)}
 .ab-copy-r{margin:0;padding:12px 20px 18px;color:var(--muted);font-size:.85rem;text-align:center}
 @media (max-width:420px){.ab-list>div{grid-template-columns:1fr}}
 footer{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:62ch}
@@ -162,6 +164,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
   <header>
     <h1>Diccionario Hebreo Español Hebreo <span class="heb" lang="he">מִלּוֹן</span></h1>
     <div class="top-actions">
+      <button id="vz-open" class="ab-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>Voz</button>
       <button id="ab-open" class="ab-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Acerca de</button>
       <button id="install" class="install" hidden>⬇ Instalar app</button>
     </div>
@@ -221,6 +224,30 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
   <footer>Los verbos arameos se citan en pe'al, pa'el, af'el o itpe'el; las citas talmúdicas indican tratado y folio del Bavli. Los verbos hebreos se citan en su forma léxica del Tanaj (perfecto, 3.ª persona masculina singular) con su binyán. Las citas usan los nombres hebreos de los libros y la numeración del texto masorético. El Nombre de cuatro letras no se pronuncia: en la lectura se dice <i>Adonai</i> y en la conversación <i>Hashem</i>. La línea dorada muestra la palabra en letra manuscrita (ktav yad). El vocabulario de Tehilim está completo: cada palabra indica su primera aparición.</footer>
   <p class="ft-legal">Versión 1.2.1 (Build 4) · © 2026 Intpromes · <a href="#" id="ft-about">Acerca de, privacidad y términos</a></p>
   <div id="toast" class="toast" role="status" hidden></div>
+
+<dialog id="voz" class="about" aria-labelledby="vz-title">
+  <div class="ab-head">
+    <div class="ab-logo" aria-hidden="true">ק</div>
+    <div class="ab-id"><h2 id="vz-title">Voz de pronunciación</h2><p class="ab-ver">Elige una voz de varón</p></div>
+    <button class="ab-x" id="vz-close" aria-label="Cerrar">×</button>
+  </div>
+  <div class="ab-body">
+    <p class="hint">La app usa las voces instaladas en tu teléfono. Si aparece una voz masculina, elígela. Si solo hay voz femenina, el tono grave la hace sonar más como voz de varón.</p>
+    <label class="lbl2" for="vz-he">Voz en hebreo</label>
+    <select id="vz-he" class="vz-sel"></select>
+    <label class="lbl2" for="vz-es">Voz en español (para la transliteración)</label>
+    <select id="vz-es" class="vz-sel"></select>
+    <label class="lbl2" for="vz-pitch">Tono: <span id="vz-pv"></span></label>
+    <input id="vz-pitch" type="range" min="0.5" max="1.2" step="0.05">
+    <div class="acts"><button id="vz-test" class="btn primary">Probar: שָׁלוֹם עֲלֵיכֶם</button><button id="vz-reset" class="btn">Restablecer</button></div>
+    <details class="ab-doc"><summary>Instalar una voz de varón en Android</summary><div class="ab-text">
+      <p>1. Abre <b>Ajustes → Sistema → Idiomas → Salida de texto a voz</b> (en Samsung: Administración general → Idioma).</p>
+      <p>2. Elige <b>Servicios de voz de Google</b> y toca el engrane ⚙.</p>
+      <p>3. Entra a <b>Instalar datos de voz → Hebreo</b>. Descárgalo y toca el nombre del idioma para ver las voces disponibles; elige una voz masculina si tu teléfono la ofrece.</p>
+      <p>4. Haz lo mismo con <b>Español</b>. Luego cierra y vuelve a abrir la app, y elige la voz aquí.</p>
+    </div></details>
+  </div>
+</dialog>
 <dialog id="about" class="about" aria-labelledby="ab-title">
   <div class="ab-head">
     <div class="ab-logo" aria-hidden="true">א</div>
@@ -3034,16 +3061,28 @@ function render(){
 }
 
 let voicesCache=[];
+// ——— Preferencias de voz (varón por defecto) ———
+const MALE_RE=/\b(male|man|masculin|hombre|asaf|avri|jorge|juan|diego|pablo|carlos|raul|raúl|alvaro|álvaro|enrique|jose|josé|antonio|miguel|daniel|david|tomas|tomás)\b|#male/i;
+const FEMALE_RE=/\b(female|woman|mujer|carmit|hila|sabina|paulina|monica|mónica|helena|laura|elvira|dalia|lucia|lucía|paloma|marisol)\b|#female/i;
+function vozPref(){try{return JSON.parse(localStorage.getItem("vozPref")||"{}")}catch(e){return {}}}
+function vozSave(p){try{localStorage.setItem("vozPref",JSON.stringify(p))}catch(e){}}
+function pickVoice(list,re,savedName){
+  const L=list.filter(v=>re.test(v.lang));if(!L.length)return null;
+  if(savedName){const s=L.find(v=>v.name===savedName);if(s)return s}
+  return L.find(v=>MALE_RE.test(v.name))||L.find(v=>!FEMALE_RE.test(v.name))||L[0];
+}
+function vozPitch(v){const p=vozPref();if(typeof p.pitch==="number")return p.pitch;return v&&MALE_RE.test(v.name)?1:0.7}
+
 function loadVoices(){return new Promise(res=>{try{const ss=speechSynthesis;let v=ss.getVoices();if(v.length)return res(v);let done=false;const fin=()=>{if(done)return;done=true;res(ss.getVoices())};ss.addEventListener("voiceschanged",fin,{once:true});setTimeout(fin,1500)}catch(e){res([])}})}
 function toast(msg,ms){const t=document.getElementById("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>{t.hidden=true},ms||6000)}
 function esText(d){let t=d.h==="יְהוָה"?"Adonai":d.t.replace(/\(.*?\)/g,"");return t.replace(/['’ʼ]/g,"").replace(/sh/gi,"ch").trim()}
-function speakWith(text,lang,voice,btn){return new Promise(res=>{const ss=speechSynthesis;const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.8;if(voice)u.voice=voice;let started=false;u.onstart=()=>{started=true;btn&&btn.classList.add("on")};u.onend=()=>{btn&&btn.classList.remove("on");res(true)};u.onerror=()=>{btn&&btn.classList.remove("on");res(started)};ss.speak(u);setTimeout(()=>{if(!started){ss.cancel();res(false)}},2500)})}
+function speakWith(text,lang,voice,btn){return new Promise(res=>{const ss=speechSynthesis;const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.8;if(voice)u.voice=voice;u.pitch=vozPitch(voice);let started=false;u.onstart=()=>{started=true;btn&&btn.classList.add("on")};u.onend=()=>{btn&&btn.classList.remove("on");res(true)};u.onerror=()=>{btn&&btn.classList.remove("on");res(started)};ss.speak(u);setTimeout(()=>{if(!started){ss.cancel();res(false)}},2500)})}
 async function say(d,btn){
   if(!("speechSynthesis" in window)){toast("Este navegador no permite reproducir voz. Abre la app en Chrome.");return}
   const ss=speechSynthesis;ss.cancel();
   if(!voicesCache.length)voicesCache=await loadVoices();
-  const he=voicesCache.find(v=>/^(he|iw)/i.test(v.lang));
-  const es=voicesCache.find(v=>/^es/i.test(v.lang));
+  const P=vozPref();const he=pickVoice(voicesCache,/^(he|iw)/i,P.he);
+  const es=pickVoice(voicesCache,/^es/i,P.es);
   const heText=d.h==="יְהוָה"?"אֲדֹנָי":d.h;
   if(he||!voicesCache.length){if(await speakWith(heText,"he-IL",he,btn))return}
   if(await speakWith(esText(d),es?es.lang:"es-MX",es,btn)){
@@ -3166,6 +3205,28 @@ async function runOCR(file){
 $("cam").addEventListener("change",e=>{runOCR(e.target.files[0]);e.target.value=""});
 $("gal").addEventListener("change",e=>{runOCR(e.target.files[0]);e.target.value=""});
 
+
+
+// ——— Diálogo de voz ———
+const vzD=$("voz");
+async function vzFill(){
+  if(!("speechSynthesis" in window)){$("vz-he").innerHTML="<option>Este navegador no tiene voces</option>";return}
+  if(!voicesCache.length)voicesCache=await loadVoices();
+  const p=vozPref();
+  const fill=(sel,re,saved)=>{const L=voicesCache.filter(v=>re.test(v.lang));const cur=pickVoice(voicesCache,re,saved);
+    sel.innerHTML=L.length?L.map(v=>`<option value="${esc(v.name)}"${cur&&v.name===cur.name?" selected":""}>${esc(v.name)}${MALE_RE.test(v.name)?" · varón":FEMALE_RE.test(v.name)?" · mujer":""}</option>`).join(""):"<option value=\"\">No hay voces instaladas para este idioma</option>"};
+  fill($("vz-he"),/^(he|iw)/i,p.he);fill($("vz-es"),/^es/i,p.es);
+  const hv=pickVoice(voicesCache,/^(he|iw)/i,p.he)||pickVoice(voicesCache,/^es/i,p.es);
+  const pv=vozPitch(hv);$("vz-pitch").value=pv;$("vz-pv").textContent=pv<0.9?"grave (varón)":pv>1.05?"agudo":"natural";
+}
+$("vz-open").onclick=async()=>{await vzFill();try{vzD.showModal()}catch(e){vzD.setAttribute("open","")}};
+$("vz-close").onclick=()=>vzD.close();
+vzD.addEventListener("click",e=>{if(e.target===vzD)vzD.close()});
+$("vz-he").onchange=e=>{const p=vozPref();p.he=e.target.value;vozSave(p)};
+$("vz-es").onchange=e=>{const p=vozPref();p.es=e.target.value;vozSave(p)};
+$("vz-pitch").oninput=e=>{const p=vozPref();p.pitch=+e.target.value;vozSave(p);const v=p.pitch;$("vz-pv").textContent=v<0.9?"grave (varón)":v>1.05?"agudo":"natural"};
+$("vz-reset").onclick=()=>{vozSave({});vzFill()};
+$("vz-test").onclick=()=>say({h:"שָׁלוֹם עֲלֵיכֶם",t:"shalom aleijem"},null);
 
 // ——— Acerca de ———
 const abD=$("about");

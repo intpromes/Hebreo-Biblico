@@ -1,5 +1,5 @@
 // Guarda la app y las fuentes para usarla sin conexión
-const CACHE = "hebreo-biblico-v9";
+const CACHE = "hebreo-biblico-v10";
 const FILES = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png"];
 
 self.addEventListener("install", e => {
