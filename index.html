@@ -83,11 +83,68 @@ tr.row:hover td,tr.row.open td{background:var(--surface)}
 .note{border-inline-start:3px solid var(--gold);padding-inline-start:10px;margin:0;max-width:62ch}
 .note .lbl{display:block;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700}
 .empty{text-align:center;color:var(--muted);padding:40px 8px}
-.install{align-self:flex-start;border:0;background:var(--tekhelet);color:var(--bg);font:700 .95rem var(--f-body);padding:9px 16px;border-radius:999px;cursor:pointer}
+.install{border:0;background:var(--tekhelet);color:var(--bg);font:700 .95rem var(--f-body);padding:9px 16px;border-radius:999px;cursor:pointer}
 .spk.on{color:var(--tekhelet);animation:pulse .8s ease-in-out infinite}
 @keyframes pulse{50%{transform:scale(1.15)}}
 @media (prefers-reduced-motion:reduce){.spk.on{animation:none}}
 .toast{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:.92rem;line-height:1.4;z-index:20;box-shadow:0 6px 20px rgb(0 0 0/.25)}
+.dir{grid-template-columns:repeat(3,1fr)!important}
+.dir button{font-size:.88rem!important;padding-inline:4px!important}
+.tag{display:inline-block;margin-top:4px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--tekhelet-soft);color:var(--tekhelet)}
+.tag.arc{background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold)}
+.txt{display:flex;flex-direction:column;gap:12px;padding-top:14px}
+.hint{margin:0;color:var(--muted);font-size:.95rem;max-width:62ch}
+.hint.small{font-size:.85rem}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);font:500 .95rem var(--f-body);padding:9px 14px;border-radius:10px;cursor:pointer;text-decoration:none}
+.btn.primary{background:var(--tekhelet);border-color:var(--tekhelet);color:var(--bg)}
+.btn:focus-visible,label.btn:focus-within{outline:2px solid var(--tekhelet);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.ocrbox{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:10px;padding:10px}
+.ocrbox img{width:96px;height:96px;object-fit:cover;border-radius:8px;flex:none}
+.ocrst{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;font-size:.92rem}
+.ocrst progress{width:100%;accent-color:var(--tekhelet)}
+.lbl2{font-weight:700;font-size:.9rem}
+#src{width:100%;min-width:0;font:1.5rem/1.6 var(--f-heb);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);color:var(--fg);resize:vertical}
+#src:focus{outline:none;border-color:var(--tekhelet)}
+.approx{background:var(--tekhelet-soft);border-radius:10px;padding:10px 14px;font-size:1rem;max-width:62ch}
+.approx b{display:block;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tekhelet);margin-bottom:2px}
+.gloss{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.gloss li{display:grid;grid-template-columns:minmax(80px,auto) 1fr;gap:4px 14px;padding:10px 4px;border-bottom:1px solid var(--line);align-items:baseline}
+.gloss .w2{font:600 1.35rem var(--f-heb);color:var(--tekhelet);direction:rtl;text-align:right}
+.gloss .m2{min-width:0;font-size:.98rem}
+.gloss .m2 small{color:var(--muted)}
+.gloss .m2 button{border:0;background:none;padding:0;color:var(--tekhelet);font:inherit;text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer;text-align:start}
+.gloss .unk{color:var(--muted);font-style:italic}
+.top-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ab-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--bg);color:var(--tekhelet);font:600 .9rem var(--f-body);padding:7px 14px;border-radius:999px;cursor:pointer}
+.ab-btn svg{width:16px;height:16px}
+.about{border:0;padding:0;border-radius:16px;width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 48px);background:var(--bg);color:var(--fg);box-shadow:0 20px 60px rgb(0 0 0/.35);overflow:auto}
+.about::backdrop{background:rgb(10 20 35/.55)}
+.ab-head{display:flex;align-items:center;gap:14px;padding:20px 20px 16px;background:var(--tekhelet);color:var(--bg);position:sticky;top:0}
+.ab-logo{flex:none;width:52px;height:52px;border-radius:12px;background:var(--bg);color:var(--tekhelet);display:grid;place-items:center;font:600 1.9rem var(--f-heb)}
+.ab-id{flex:1;min-width:0}
+.ab-id h2{margin:0;font:700 1.2rem/1.25 var(--f-display);text-wrap:balance}
+.ab-ver{margin:2px 0 0;font-size:.9rem;opacity:.9;font-variant-numeric:tabular-nums}
+.ab-ver span{opacity:.75}
+.ab-x{flex:none;align-self:flex-start;border:0;background:transparent;color:inherit;font-size:1.6rem;line-height:1;cursor:pointer;padding:2px 6px;border-radius:8px}
+.ab-body{display:flex;flex-direction:column;gap:14px;padding:18px 20px 6px}
+.ab-list{margin:0;display:flex;flex-direction:column}
+.ab-list>div{display:grid;grid-template-columns:130px 1fr;gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.ab-list dt{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+.ab-list dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.ab-list a{color:var(--tekhelet)}
+.ab-mail{user-select:all}
+.ab-copy{border:1px solid var(--line);background:var(--surface);color:var(--fg);font:500 .8rem var(--f-body);padding:2px 9px;border-radius:999px;cursor:pointer;margin-inline-start:6px}
+.ab-web{align-self:flex-start}
+.ab-doc{border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.ab-doc summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style-position:inside}
+.ab-text{padding:0 16px 12px;font-size:.92rem;line-height:1.55}
+.ab-text p{margin:0 0 9px;max-width:62ch}
+.ft-legal{color:var(--muted);font-size:.82rem;margin:14px 0 0}
+.ft-legal a{color:var(--tekhelet)}
+.ab-copy-r{margin:0;padding:12px 20px 18px;color:var(--muted);font-size:.85rem;text-align:center}
+@media (max-width:420px){.ab-list>div{grid-template-columns:1fr}}
 footer{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:62ch}
 button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outline-offset:2px}
 @media (max-width:480px){th,td{padding-inline:4px}.w,.mean{min-width:0}.cat,.mean{font-size:.9rem}.root{font-size:1rem}.he-w{font-size:1.45rem}th{font-size:.92rem}}
@@ -97,15 +154,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
 <body>
 <div class="wrap">
   <header>
-    <h1>Diccionario Hebreo Bíblico <span class="heb" lang="he">מִלּוֹן</span></h1>
-    <button id="install" class="install" hidden>⬇ Instalar app</button>
-    <p class="sub">Hebreo del Tanaj ↔ español. Debajo de cada palabra aparece su forma en <span class="rashi" style="font-size:1rem">כתב רש״י</span>, la semicursiva sefaradí. Toca una fila para ver cita, número Strong y comentario; toca la raíz para ver su familia.</p>
+    <h1>Diccionario Hebreo Bíblico y Talmúdico <span class="heb" lang="he">מִלּוֹן</span></h1>
+    <div class="top-actions">
+      <button id="ab-open" class="ab-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Acerca de</button>
+      <button id="install" class="install" hidden>⬇ Instalar app</button>
+    </div>
+    <p class="sub">Hebreo del Tanaj, hebreo rabínico y arameo del Talmud Bavli ↔ español. Debajo de cada palabra aparece su forma en <span class="rashi" style="font-size:1rem">כתב רש״י</span>, la semicursiva sefaradí. Toca una fila para ver cita, número Strong y comentario; toca la raíz para ver su familia.</p>
   </header>
 
   <div class="bar">
     <div class="dir" role="group" aria-label="Dirección">
       <button id="d-he" aria-pressed="true">Hebreo → Español</button>
       <button id="d-es" aria-pressed="false">Español → Hebreo</button>
+      <button id="d-tx" aria-pressed="false">Traducir texto</button>
     </div>
     <label class="search">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -113,8 +174,34 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
       <button class="clear" id="clr" aria-label="Borrar búsqueda" hidden>×</button>
     </label>
     <div class="chips" id="chips"></div>
+    <div class="chips" id="corp" aria-label="Corpus"></div>
     <div class="letters" id="letters" aria-label="Índice alfabético"></div>
   </div>
+
+
+  <section id="txt" class="txt" hidden aria-label="Traducir texto">
+    <p class="hint">Toma una foto de un texto hebreo o arameo impreso (Tanaj, Mishná, Guemará), o pégalo o escríbelo. La app reconoce las letras y traduce palabra por palabra con este diccionario.</p>
+    <div class="acts">
+      <label class="btn primary" for="cam"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Tomar foto</label>
+      <input id="cam" class="vh" type="file" accept="image/*" capture="environment">
+      <label class="btn" for="gal">Elegir imagen</label>
+      <input id="gal" class="vh" type="file" accept="image/*">
+    </div>
+    <div id="ocrbox" class="ocrbox" hidden>
+      <img id="prev" alt="Imagen a reconocer">
+      <div class="ocrst"><span id="ocrmsg">Preparando…</span><progress id="ocrbar" max="1" value="0"></progress></div>
+    </div>
+    <label class="lbl2" for="src">Texto en hebreo o arameo</label>
+    <textarea id="src" dir="rtl" lang="he" rows="4" spellcheck="false">תא שמע אמר רבי יוחנן הלכה כרבי מאיר</textarea>
+    <div class="acts">
+      <button id="gl" class="btn primary">Traducir palabra por palabra</button>
+      <button id="cp" class="btn">Copiar texto</button>
+      <a id="gt" class="btn" target="_blank" rel="noopener">Abrir en Google Traductor</a>
+    </div>
+    <div id="approx" class="approx" hidden></div>
+    <ol id="gloss" class="gloss"></ol>
+    <p class="hint small">La traducción palabra por palabra sirve para el arameo, que Google no traduce. Para el hebreo, Google da una versión más fluida pero sin matices rabínicos. El reconocimiento funciona mejor con letra impresa cuadrada, buena luz y la foto derecha. Todavía no reconoce letra Rashí ni manuscritos.</p>
+  </section>
 
   <div class="status"><span id="count"></span><button id="reset" hidden>Quitar filtro de raíz</button></div>
 
@@ -125,8 +212,55 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
     </table>
   </div>
 
-  <footer>Los verbos se citan en su forma léxica bíblica (perfecto, 3.ª persona masculina singular) con su binyán. Las citas siguen la numeración del texto hebreo masorético. El Nombre divino (יהוה) no se pronuncia: se lee <i>Adonai</i>. La línea dorada muestra la escritura semicursiva sefaradí, llamada «letra Rashí», que nació de la mano de los escribas de Sefarad y se usó para comentarios rabínicos y textos en ladino.</footer>
+  <footer>Los verbos arameos se citan en pe'al, pa'el, af'el o itpe'el; las citas talmúdicas indican tratado y folio del Bavli. Los verbos hebreos se citan en su forma léxica bíblica (perfecto, 3.ª persona masculina singular) con su binyán. Las citas siguen la numeración del texto hebreo masorético. El Nombre divino (יהוה) no se pronuncia: se lee <i>Adonai</i>. La línea dorada muestra la escritura semicursiva sefaradí, llamada «letra Rashí», que nació de la mano de los escribas de Sefarad y se usó para comentarios rabínicos y textos en ladino.</footer>
+  <p class="ft-legal">Versión 1.2.1 (Build 4) · © 2026 Intpromes · <a href="#" id="ft-about">Acerca de, privacidad y términos</a></p>
   <div id="toast" class="toast" role="status" hidden></div>
+<dialog id="about" class="about" aria-labelledby="ab-title">
+  <div class="ab-head">
+    <div class="ab-logo" aria-hidden="true">א</div>
+    <div class="ab-id">
+      <h2 id="ab-title">Diccionario Hebreo Español Hebreo</h2>
+      <p class="ab-ver">Versión 1.2.1 <span>(Build 4)</span></p>
+    </div>
+    <button class="ab-x" id="ab-close" aria-label="Cerrar">×</button>
+  </div>
+  <div class="ab-body">
+    <dl class="ab-list">
+      <div><dt>Desarrollado por</dt><dd>Intpromes</dd></div>
+      <div><dt>Sitio web</dt><dd><a href="https://www.intpromes.com" target="_blank" rel="noopener">www.intpromes.com</a></dd></div>
+      <div><dt>Soporte técnico</dt><dd><span class="ab-mail" id="ab-mail">apps@intpromes.com</span> <button class="ab-copy" id="ab-copy">Copiar</button></dd></div>
+    </dl>
+    <a class="btn primary ab-web" href="https://www.intpromes.com" target="_blank" rel="noopener">Visitar sitio web</a>
+
+    <details class="ab-doc">
+      <summary>Política de privacidad</summary>
+      <div class="ab-text">
+        <p><b>Última actualización:</b> noviembre de 2026.</p>
+        <p>Intpromes respeta su privacidad. Esta aplicación no requiere registro, no solicita datos personales y no utiliza cookies de seguimiento ni publicidad.</p>
+        <p><b>Datos que se procesan.</b> Las búsquedas y consultas del diccionario se realizan dentro de su dispositivo. Las fotografías que usted toma o selecciona para reconocer texto se procesan en el propio dispositivo y no se envían ni se almacenan en nuestros servidores.</p>
+        <p><b>Almacenamiento local.</b> La aplicación guarda en su dispositivo una copia de sus archivos y del lector de texto para funcionar sin conexión. Puede eliminarla en cualquier momento desde los ajustes del navegador o desinstalando la aplicación.</p>
+        <p><b>Servicios de terceros.</b> Para su funcionamiento, la aplicación descarga tipografías de Google Fonts y componentes del lector de texto desde jsDelivr. La pronunciación usa el motor de voz de su propio dispositivo. Si usted elige «Abrir en Google Traductor», el texto se envía a Google y queda sujeto a la política de privacidad de Google.</p>
+        <p><b>Menores de edad.</b> La aplicación no recopila de forma intencional información de ninguna persona, incluidos menores de edad.</p>
+        <p><b>Contacto.</b> Para cualquier duda sobre esta política, escriba a apps@intpromes.com.</p>
+      </div>
+    </details>
+
+    <details class="ab-doc">
+      <summary>Términos de uso</summary>
+      <div class="ab-text">
+        <p><b>Última actualización:</b> noviembre de 2026.</p>
+        <p><b>Uso.</b> Esta aplicación se ofrece como herramienta de consulta y estudio del hebreo bíblico, el hebreo rabínico y el arameo talmúdico. Puede usarla y compartir su enlace libremente para fines personales, educativos y comunitarios.</p>
+        <p><b>Contenido.</b> Las definiciones, comentarios y citas tienen fines de estudio. La traducción palabra por palabra y el reconocimiento de texto por foto son aproximados y pueden contener errores. No sustituyen el estudio con un maestro calificado ni constituyen una decisión halájica; para cuestiones de práctica religiosa consulte a su rabino.</p>
+        <p><b>Propiedad intelectual.</b> El diseño, la selección y redacción del contenido y el código de la aplicación son propiedad de Intpromes. Los textos bíblicos y talmúdicos citados pertenecen al dominio público. No está permitido copiar, modificar, vender o redistribuir la aplicación o su contenido como producto propio sin autorización escrita.</p>
+        <p><b>Garantía.</b> La aplicación se proporciona «tal cual», sin garantías de ningún tipo. Intpromes no será responsable de daños derivados de su uso o de la imposibilidad de usarla.</p>
+        <p><b>Cambios.</b> Intpromes puede actualizar la aplicación y estos términos en cualquier momento. El uso continuado implica la aceptación de la versión vigente.</p>
+        <p><b>Contacto.</b> apps@intpromes.com</p>
+      </div>
+    </details>
+  </div>
+  <p class="ab-copy-r">© 2026 Intpromes. Todos los derechos reservados.</p>
+</dialog>
+
 </div>
 
 <script>
@@ -930,24 +1064,471 @@ const D=[
 ["מוֹאָב","Moav","","n","","masculino","Moab","Gn 19:37","H4124",""],
 ["פְּלִשְׁתִּים","Pelishtim","","n","","masculino (plural)","filisteos","Gn 21:34","H6430",""],
 ["בֵּית לֶחֶם","Beit Léjem","","n","","femenino","Belén («casa del pan»)","Gn 35:19","H1035",""],
-["חֶבְרוֹן","Jevrón","","n","","femenino","Hebrón","Gn 23:2","H2275",""]
-].map(a=>({h:a[0],t:a[1],r:a[2],c:a[3],m:a[4],g:a[5],s:a[6],ref:a[7],n:a[8],note:a[9]}));
+["חֶבְרוֹן","Jevrón","","n","","femenino","Hebrón","Gn 23:2","H2275",""],
+// [palabra, translit, raíz, cat, modelo, género/binyán, significado, cita, Strong, nota, corpus]
+// ——— ARAMEO TALMÚDICO: verbos ———
+["אֲמַר","amar","א-מ-ר","v","","pe'al","decir","Berajot 2a","","Muy frecuente: «amar Rav…», «dijo Rav…».","arc"],
+["אֲזַל","azal","א-ז-ל","v","","pe'al","ir, irse","Bavli, frecuente","","Azal R. X le-taamei: «R. X sigue su propio razonamiento».","arc"],
+["אֲתָא","ata","א-ת-א","v","","pe'al","venir, llegar","Bavli, frecuente","","Ta, imperativo: «¡ven!», como en ta shema.","arc"],
+["אַיְיתִי","ayti","א-ת-א","v","","af'el","traer, aducir (una prueba)","Bavli, frecuente","","","arc"],
+["יְהַב","yehav","י-ה-ב","v","","pe'al","dar","Bavli, frecuente","","","arc"],
+["שְׁקַל","shakal","ש-ק-ל","v","","pe'al","tomar, llevar","Bavli, frecuente","","Shakil ve-tarya: «toma y lanza», es decir, discute a fondo.","arc"],
+["נְקַט","nakat","נ-ק-ט","v","","pe'al","tomar, sostener; enunciar","Bavli, frecuente","","","arc"],
+["חֲזָא","jaza","ח-ז-א","v","","pe'al","ver; (pasivo) ser apto","Bavli, frecuente","","Jazí: «es apto», «sirve».","arc"],
+["שְׁמַע","shema","ש-מ-ע","v","","pe'al","oír, entender","Bavli, frecuente","","Shema miná: «aprende de ello».","arc"],
+["יְדַע","yeda","י-ד-ע","v","","pe'al","saber, conocer","Bavli, frecuente","","","arc"],
+["קָם","kam","ק-ו-ם","v","","pe'al","levantarse, estar de pie","Berajot 2a","","Tana heija kai?: «¿dónde está parado el tanaíta?», o sea, ¿de dónde parte?","arc"],
+["אוֹקִים","okim","ק-ו-ם","v","","af'el","establecer; interpretar (un texto en un caso concreto)","Bavli, frecuente","","Okimta: la interpretación que limita una mishná a un caso.","arc"],
+["יְתִיב","yetiv","י-ת-ב","v","","pe'al","sentarse, estar sentado","Bavli, frecuente","","Yatvei: «estaban sentados» (estudiando).","arc"],
+["מוֹתֵיב","motiv","ת-ו-ב","v","","af'el","objetar (presentar una refutación)","Bavli, frecuente","","De aquí meitivei y tiyuvta.","arc"],
+["נְפַק","nefak","נ-פ-ק","v","","pe'al","salir","Bavli, frecuente","","Nafká minah: «sale de ello», la consecuencia práctica.","arc"],
+["אַפֵּיק","apik","נ-פ-ק","v","","af'el","sacar, excluir","Bavli, frecuente","","","arc"],
+["עַיֵּיל","ayel","ע-ל-ל","v","","pa'el","entrar","Bavli, frecuente","","","arc"],
+["עֲבַד","avad","ע-ב-ד","v","","pe'al","hacer","Bavli, frecuente","","Avad ke-mar: «actuó según la opinión de tal maestro».","arc"],
+["בְּעָא","baa","ב-ע-י","v","","pe'al","pedir; preguntar; querer","Bavli, frecuente","","Baa minei: «le preguntó».","arc"],
+["מְצֵי","metsei","מ-צ-י","v","","pe'al","poder","Bavli, frecuente","","","arc"],
+["סְבַר","savar","ס-ב-ר","v","","pe'al","opinar, pensar","Bavli, frecuente","","Mar savar… u-mar savar…: «uno opina… y el otro opina…».","arc"],
+["תְּנָא","tena","ת-נ-י","v","","pe'al","enseñar, recitar (la tradición oral)","Bavli, frecuente","","Equivale al hebreo shaná, repetir: el estudio oral es repetición.","arc"],
+["גְּמַר","gamar","ג-מ-ר","v","","pe'al","aprender; deducir","Bavli, frecuente","","De aquí Guemará: lo aprendido.","arc"],
+["הֲוָה","hava","ה-ו-י","v","","pe'al","ser, estar, haber","Bavli, frecuente","","Havei: «es»; havá amina: «yo habría pensado».","arc"],
+["מִית","mit","מ-ו-ת","v","","pe'al","morir","Bavli, frecuente","","","arc"],
+["קְטַל","ketal","ק-ט-ל","v","","pe'al","matar","Bavli, frecuente","","","arc"],
+["שְׁבַק","shevak","ש-ב-ק","v","","pe'al","dejar, abandonar","Bavli, frecuente","","«Eli, Eli, lama shevaktani» usa este verbo arameo.","arc"],
+["אַשְׁכַּח","ashkaj","ש-כ-ח","v","","af'el","encontrar","Bavli, frecuente","","","arc"],
+["פְּלִיג","pelig","פ-ל-ג","v","","pe'al","disentir, discrepar; dividir","Bavli, frecuente","","Pliguei: «disienten». De aquí plugta, disputa.","arc"],
+["תָּרֵיץ","tarets","ת-ר-ץ","v","","pa'el","resolver (una dificultad)","Bavli, frecuente","","Teruts: la respuesta a una kushya.","arc"],
+["פָּרֵיךְ","parij","פ-ר-ך","v","","pa'el","refutar","Bavli, frecuente","","","arc"],
+["שְׁאֵיל","sheil","ש-א-ל","v","","pe'al","preguntar","Bavli, frecuente","","","arc"],
+["אַהֲדַר","ahadar","ה-ד-ר","v","","af'el","devolver; responder","Bavli, frecuente","","Hadar: «volvió», «se retractó».","arc"],
+["רְמָא","rema","ר-מ-י","v","","pe'al","lanzar; contraponer (dos textos)","Bavli, frecuente","","Rami… ve-raminhu: «contrapone… y los enfrentan» para señalar una contradicción.","arc"],
+["סְלֵיק","selik","ס-ל-ק","v","","pe'al","subir; concluir","Bavli, frecuente","","Siluk: final.","arc"],
+["נְחֵית","nejit","נ-ח-ת","v","","pe'al","bajar","Bavli, frecuente","","","arc"],
+["שְׁרָא","shera","ש-ר-י","v","","pe'al","soltar; permitir; habitar","Bavli, frecuente","","Sharei: «está permitido».","arc"],
+["אֲסַר","asar","א-ס-ר","v","","pe'al","atar; prohibir","Bavli, frecuente","","","arc"],
+["דְּחָא","dejá","ד-ח-י","v","","pe'al","empujar, rechazar (un argumento)","Bavli, frecuente","","Dijuy: el rechazo de una prueba.","arc"],
+["שַׁנֵּי","shanei","ש-נ-י","v","","pa'el","responder (a una dificultad); cambiar","Bavli, frecuente","","Shinuya: la respuesta forzada a una objeción.","arc"],
+["קַבֵּיל","kabil","ק-ב-ל","v","","pa'el","recibir, aceptar","Bavli, frecuente","","","arc"],
+["פְּתַח","petaj","פ-ת-ח","v","","pe'al","abrir; comenzar (un discurso)","Bavli, frecuente","","Petijtá: la introducción homilética.","arc"],
+["שַׁדַּר","shadar","ש-ד-ר","v","","pa'el","enviar","Bavli, frecuente","","Shadrei minei: «se lo enviaron (preguntando)».","arc"],
+["אֲכַל","ajal","א-כ-ל","v","","pe'al","comer","Bavli, frecuente","","","arc"],
+["שְׁתָא","shata","ש-ת-י","v","","pe'al","beber","Bavli, frecuente","","","arc"],
+["צַלֵּי","tsalei","צ-ל-י","v","","pa'el","rezar","Bavli, frecuente","","","arc"],
+["בְּכָא","beja","ב-כ-י","v","","pe'al","llorar","Bavli, frecuente","","","arc"],
+["חֲדֵי","jadei","ח-ד-י","v","","pe'al","alegrarse","Bavli, frecuente","","","arc"],
+["דְּמַךְ","demaj","ד-מ-ך","v","","pe'al","dormir; morir","Bavli, frecuente","","Eufemismo: «se durmió» por «murió».","arc"],
+["סְנֵי","senei","ס-נ-י","v","","pe'al","odiar","Shabat 31a","","Hilel: «Lo que te es odioso (sani) no lo hagas a tu prójimo; esa es toda la Torá».","arc"],
+["רְחֵים","rejim","ר-ח-ם","v","","pe'al","amar","Bavli, frecuente","","","arc"],
+["מְטָא","meta","מ-ט-י","v","","pe'al","llegar, alcanzar","Bavli, frecuente","","","arc"],
+["תַּקֵּין","takkin","ת-ק-ן","v","","pa'el","establecer, instituir","Bavli, frecuente","","Takaná: la institución rabínica.","arc"],
+["נְפַל","nefal","נ-פ-ל","v","","pe'al","caer","Bavli, frecuente","","","arc"],
+["כְּתַב","ketav","כ-ת-ב","v","","pe'al","escribir","Bavli, frecuente","","Ketiv: «está escrito».","arc"],
+["קְרָא","kera","ק-ר-י","v","","pe'al","leer; llamar","Bavli, frecuente","","","arc"],
+["דְּרַשׁ","derash","ד-ר-ש","v","","pe'al","exponer, interpretar","Bavli, frecuente","","","arc"],
+["אִיתְּמַר","itmar","א-מ-ר","v","","itpe'el","se dijo (enseñanza de los amoraim)","Bavli, frecuente","","Introduce una disputa entre amoraim.","arc"],
+["אִיפְּלִיג","iflig","פ-ל-ג","v","","itpe'el","disputaron","Bavli, frecuente","","","arc"],
+["אִיבְּעֵי","ibei","ב-ע-י","v","","itpe'el","se preguntó, se planteó","Bavli, frecuente","","Ibaya lehu: «se les planteó».","arc"],
+["אִיצְטְרִיךְ","itstrij","צ-ר-ך","v","","itpe'el","fue necesario","Bavli, frecuente","","Itstrij: la Guemará explica por qué hacía falta cada enseñanza.","arc"],
+["יָלֵיף","yalif","א-ל-ף","v","","pe'al","aprender, deducir","Bavli, frecuente","","Yalif miné: «lo deduce de ahí».","arc"],
+["אַגְמַר","agmar","ג-מ-ר","v","","af'el","enseñar","Bavli, frecuente","","","arc"],
+["אוֹדִי","odi","י-ד-י","v","","af'el","admitir, reconocer","Bavli, frecuente","","Odí: «admitió»; hodaá: confesión.","arc"],
+["כְּפַר","kefar","כ-פ-ר","v","","pe'al","negar","Bavli, frecuente","","","arc"],
+["זְבַן","zevan","ז-ב-ן","v","","pe'al","comprar; (pa'el) vender","Bavli, frecuente","","","arc"],
+["אוֹזֵיף","ozif","י-ז-ף","v","","af'el","prestar","Bavli, frecuente","","","arc"],
+["פְּרַע","pera","פ-ר-ע","v","","pe'al","pagar (una deuda)","Bavli, frecuente","","Peraón: pago.","arc"],
+["שְׁלַח","shelaj","ש-ל-ח","v","","pe'al","enviar; quitarse","Bavli, frecuente","","","arc"],
+["תְּקַע","teka","ת-ק-ע","v","","pe'al","clavar; tocar el shofar","Bavli, frecuente","","","arc"],
+["עֲרַק","arak","ע-ר-ק","v","","pe'al","huir","Bavli, frecuente","","","arc"],
+["אִידְּכַר","idkar","ד-כ-ר","v","","itpe'el","recordar, acordarse","Bavli, frecuente","","","arc"],
+["אִינְשֵׁי","inshei","נ-ש-י","v","","pe'al","olvidar","Bavli, frecuente","","","arc"],
+["סַיַּיע","sayaa","ס-י-ע","v","","pa'el","ayudar; apoyar (una opinión)","Bavli, frecuente","","Siyata di-Shmaya: la ayuda del Cielo.","arc"],
+["קְרַב","kerav","ק-ר-ב","v","","pe'al","acercarse","Bavli, frecuente","","","arc"],
+["רְהַט","rehat","ר-ה-ט","v","","pe'al","correr","Bavli, frecuente","","","arc"],
+["מְחָא","meja","מ-ח-י","v","","pe'al","golpear; protestar","Bavli, frecuente","","Mejaá: protesta formal.","arc"],
+// ——— ARAMEO TALMÚDICO: sustantivos ———
+["אַבָּא","aba","","s","","masculino","padre","Bavli, frecuente","","Del arameo pasó al hebreo como «papá».","arc"],
+["אִימָּא","ima","","s","","femenino","madre","Bavli, frecuente","","","arc"],
+["בַּר","bar","","s","","masculino","hijo; (con nombre) hijo de","Bavli, frecuente","","Bar mitsvá: «sujeto a los mandamientos».","arc"],
+["בְּרַתָּא","berata","","s","","femenino","hija","Bavli, frecuente","","","arc"],
+["אֲחָא","aja","","s","","masculino","hermano","Bavli, frecuente","","","arc"],
+["גַּבְרָא","gavra","ג-ב-ר","s","","masculino","hombre; la persona","Bavli, frecuente","","Gavra vs. jefza: obligación de la persona o del objeto.","arc"],
+["אִיתְּתָא","itteta","","s","","femenino","mujer, esposa","Bavli, frecuente","","","arc"],
+["יָנוֹקָא","yanuka","","s","","masculino","niño pequeño","Bavli, frecuente","","","arc"],
+["עָלְמָא","alma","","s","","masculino","mundo; la gente","Bavli, frecuente","","Kulei alma: «todo el mundo», todos concuerdan.","arc"],
+["בֵּיתָא","beita","","s","","masculino","casa","Bavli, frecuente","","En estado constructo: bei, como en bei midrasha.","arc"],
+["מִילְּתָא","milta","מ-ל-ל","s","","femenino","palabra; cosa, asunto","Bavli, frecuente","","Milta de-ateya me-ileya: algo que se deduce por sí solo.","arc"],
+["יוֹמָא","yoma","","s","","masculino","día; Yom Kipur (tratado)","Bavli, frecuente","","El tratado sobre Yom Kipur se llama simplemente Yomá, «el Día».","arc"],
+["לֵילְיָא","leilya","","s","","masculino","noche","Bavli, frecuente","","","arc"],
+["שַׁתָּא","shata","","s","","femenino","año","Bavli, frecuente","","","arc"],
+["יַרְחָא","yarja","","s","","masculino","mes","Bavli, frecuente","","","arc"],
+["זִמְנָא","zimna","","s","","masculino","vez; tiempo","Bavli, frecuente","","Zimnin: «a veces».","arc"],
+["שַׁעְתָּא","shaata","","s","","femenino","hora, momento","Bavli, frecuente","","Shaat ha-dejak: situación de urgencia.","arc"],
+["מַיָּא","maya","","s","","masculino (plural)","agua","Bavli, frecuente","","","arc"],
+["לַחְמָא","lajma","","s","","masculino","pan","Bavli, frecuente","","Ha lajma anya: «este es el pan de la aflicción» (Hagadá).","arc"],
+["חַמְרָא","jamra","","s","","masculino","vino","Bavli, frecuente","","Distinto de jamará, asno.","arc"],
+["חֲמָרָא","jamará","","s","","masculino","asno","Bavli, frecuente","","","arc"],
+["אַרְעָא","ara","","s","","femenino","tierra, suelo","Bavli, frecuente","","","arc"],
+["שְׁמַיָּא","shemaya","","s","","masculino (plural)","cielo; el Cielo (Dios)","Bavli, frecuente","","Biydei Shmaya: «en manos del Cielo».","arc"],
+["נַהֲרָא","nahara","","s","","masculino","río","Bavli, frecuente","","","arc"],
+["טוּרָא","tura","","s","","masculino","monte","Bavli, frecuente","","","arc"],
+["מָתָא","mata","","s","","femenino","ciudad, pueblo","Bavli, frecuente","","Mará de-atra: la autoridad del lugar.","arc"],
+["שׁוּקָא","shuka","","s","","masculino","mercado, calle","Bavli, frecuente","","","arc"],
+["אוֹרְחָא","orja","","s","","femenino","camino; costumbre","Bavli, frecuente","","Orja de-milta: «la manera usual de hablar».","arc"],
+["אַתְרָא","atra","","s","","masculino","lugar","Bavli, frecuente","","Mara de-atra: el rabino del lugar.","arc"],
+["דּוּכְתָּא","dujta","","s","","femenino","lugar","Bavli, frecuente","","","arc"],
+["סִפְרָא","sifra","ס-פ-ר","s","","masculino","libro; Sifrá (midrash a Levítico)","Bavli, frecuente","","","arc"],
+["סָפְרָא","safra","ס-פ-ר","s","","masculino","escriba; maestro","Bavli, frecuente","","","arc"],
+["קְרָא","kera","ק-ר-א","s","","masculino","versículo de la Escritura","Bavli, frecuente","","Mai kera?: «¿de qué versículo se aprende?».","arc"],
+["מַתְנִיתִין","matnitín","ת-נ-י","s","","femenino","nuestra Mishná (la que se estudia)","Bavli, frecuente","","","arc"],
+["מַתְנִיתָא","matnita","ת-נ-י","s","","femenino","enseñanza tanaítica; baraita","Bavli, frecuente","","","arc"],
+["בָּרַיְיתָא","baraita","","s","","femenino","enseñanza tanaítica externa a la Mishná","Bavli, frecuente","","Literalmente «la de afuera».","arc"],
+["גְּמָרָא","Guemará","ג-מ-ר","s","","femenino","Guemará; tradición aprendida","Bavli, frecuente","","Comentario y discusión de la Mishná. Mishná más Guemará forman el Talmud.","arc"],
+["סְבָרָא","svara","ס-ב-ר","s","","femenino","razonamiento lógico","Bavli, frecuente","","Una svara puede tener la fuerza de un versículo: «svara hi».","arc"],
+["קוּשְׁיָא","kushya","ק-ש-י","s","","femenino","dificultad, objeción","Bavli, frecuente","","","arc"],
+["תְּיוּבְתָּא","tiyuvta","ת-ו-ב","s","","femenino","refutación definitiva","Bavli, frecuente","","Si no hay respuesta, la opinión queda rechazada.","arc"],
+["פִּירְכָא","pirja","פ-ר-ך","s","","femenino","refutación (de una inferencia)","Bavli, frecuente","","","arc"],
+["טַעְמָא","taama","ט-ע-ם","s","","masculino","razón, motivo; sabor","Bavli, frecuente","","Mai taama?: «¿cuál es la razón?».","arc"],
+["דִּינָא","dina","ד-י-ן","s","","masculino","ley, juicio, sentencia","Bavli, frecuente","","Dina de-maljuta dina: «la ley del reino es ley» (Shmuel).","arc"],
+["מָמוֹנָא","mamona","","s","","masculino","dinero, bienes","Bavli, frecuente","","De aquí la palabra «mamón».","arc"],
+["זוּזָא","zuza","","s","","masculino","zuz (moneda de plata)","Bavli, frecuente","","Jad gadya «di-zabin abba bitrei zuzei».","arc"],
+["מַלְכָּא","malka","מ-ל-ך","s","","masculino","rey","Bavli, frecuente","","","arc"],
+["מַלְכוּתָא","maljuta","מ-ל-ך","s","","femenino","reino; gobierno","Bavli, frecuente","","","arc"],
+["רַבָּנַן","rabanan","ר-ב-ב","s","","masculino (plural)","los sabios, los rabinos","Bavli, frecuente","","Tanu rabanan: «enseñaron nuestros sabios».","arc"],
+["תַּנָּא","tana","ת-נ-י","s","","masculino","tanaíta (sabio de la Mishná); recitador","Bavli, frecuente","","Los tanaím vivieron hasta cerca del 220 e. c.","arc"],
+["אָמוֹרָא","amora","א-מ-ר","s","","masculino","amoraíta (sabio del Talmud)","Bavli, frecuente","","Los amoraím (c. 220–500) explican la Mishná.","arc"],
+["מָר","mar","","s","","masculino","señor, maestro (título)","Bavli, frecuente","","Amar mar: «dijo el maestro», al citar algo ya enseñado.","arc"],
+["שְׁמַעְתָּא","shmaata","ש-מ-ע","s","","femenino","enseñanza legal, tradición","Bavli, frecuente","","","arc"],
+["אַגַּדְתָּא","agadeta","נ-ג-ד","s","","femenino","relato, enseñanza no legal","Bavli, frecuente","","","arc"],
+["הִלְכְתָא","hiljeta","ה-ל-ך","s","","femenino","halajá, norma establecida","Bavli, frecuente","","Hiljeta ke-Rav be-isurei: «la halajá sigue a Rav en prohibiciones».","arc"],
+["עוֹבָדָא","ovada","ע-ב-ד","s","","masculino","hecho, caso ocurrido","Bavli, frecuente","","Maasé rav: lo que hizo un maestro enseña.","arc"],
+["שְׁכִינְתָּא","Shejinta","ש-כ-ן","s","","femenino","la Presencia divina","Bavli, frecuente","","","arc"],
+["רַחֲמָנָא","Rajmana","ר-ח-ם","n","","nombre divino","el Misericordioso (Dios, la Torá)","Bavli, frecuente","","Amar Rajmana: «dijo el Misericordioso», es decir, la Torá enseña.","arc"],
+["אוֹרַיְיתָא","oraita","י-ר-י","s","","femenino","la Torá","Bavli, frecuente","","De-oraita: de origen bíblico, frente a de-rabanan.","arc"],
+["שְׁטָרָא","shtara","","s","","masculino","documento, contrato","Bavli, frecuente","","","arc"],
+["גִּיטָּא","gita","","s","","masculino","acta de divorcio","Bavli, frecuente","","","arc"],
+["כְּתוּבְּתָא","ketubta","כ-ת-ב","s","","femenino","contrato matrimonial","Bavli, frecuente","","","arc"],
+["נִכְסֵי","nijsei","","s","","masculino (plural)","bienes, propiedades","Bavli, frecuente","","","arc"],
+["עַבְדָּא","avda","ע-ב-ד","s","","masculino","siervo","Bavli, frecuente","","","arc"],
+["אַמְתָא","amta","","s","","femenino","sierva","Bavli, frecuente","","","arc"],
+["תּוֹרָא","tora","","s","","masculino","buey","Bavli, frecuente","","","arc"],
+["כַּלְבָּא","kalba","","s","","masculino","perro","Bavli, frecuente","","","arc"],
+["שׁוּנְרָא","shunra","","s","","masculino","gato","Bavli, frecuente","","","arc"],
+["חֵיוְתָא","jeiveta","ח-י-י","s","","femenino","animal","Bavli, frecuente","","","arc"],
+["צַפְרָא","tsafra","","s","","masculino","mañana","Bavli, frecuente","","","arc"],
+["פַּנְיָא","panya","","s","","masculino","tarde, anochecer","Bavli, frecuente","","","arc"],
+["אַפֵּי","apei","","s","","masculino (plural)","rostro, cara","Bavli, frecuente","","","arc"],
+["רֵישָׁא","reisha","","s","","masculino","cabeza; parte inicial (de la Mishná)","Bavli, frecuente","","Reisha… seifa…: la primera y la última parte de un texto.","arc"],
+["סֵיפָא","seifa","","s","","femenino","parte final (de la Mishná)","Bavli, frecuente","","","arc"],
+["מְצִיעֲתָא","metsiata","","s","","femenino","parte media","Bavli, frecuente","","Bavá Metsiá: «la puerta del medio».","arc"],
+["בָּבָא","bava","","s","","masculino","puerta; sección","Bavli, frecuente","","Bavá Kamá, Metsiá y Batrá: las tres «puertas» de Nezikín.","arc"],
+["יְדָא","yeda","","s","","femenino","mano","Bavli, frecuente","","","arc"],
+["עֵינָא","eina","","s","","femenino","ojo","Bavli, frecuente","","","arc"],
+["לִבָּא","liba","","s","","masculino","corazón","Sanhedrín 106b","","«Rajmana liba baei»: el Misericordioso quiere el corazón.","arc"],
+["פּוּמָּא","puma","","s","","masculino","boca","Bavli, frecuente","","","arc"],
+["לִישָּׁנָא","lishana","","s","","masculino","lengua; versión, redacción","Bavli, frecuente","","Lishana ajarina: «otra versión».","arc"],
+["רוּחָא","rúja","","s","","femenino","espíritu; viento","Bavli, frecuente","","","arc"],
+["נַפְשָׁא","nafsha","","s","","femenino","alma; uno mismo","Bavli, frecuente","","","arc"],
+["גּוּפָא","gufa","","s","","masculino","cuerpo; el asunto mismo","Bavli, frecuente","","Gufa: «(volvamos) al texto mismo».","arc"],
+["נוּרָא","nura","","s","","masculino","fuego","Bavli, frecuente","","","arc"],
+["מִטְרָא","mitra","","s","","masculino","lluvia","Bavli, frecuente","","","arc"],
+["חֶלְמָא","jelma","","s","","masculino","sueño","Berajot 55a","","«Un sueño no interpretado es como una carta no leída».","arc"],
+["רָזָא","raza","","s","","masculino","secreto, misterio","Bavli, frecuente","","","arc"],
+["בֵּי מִדְרְשָׁא","bei midrasha","","s","","masculino","casa de estudio","Bavli, frecuente","","","arc"],
+["כְּנִישְׁתָּא","kenishta","כ-נ-ש","s","","femenino","sinagoga","Bavli, frecuente","","","arc"],
+["מְתִיבְתָּא","metivta","י-ת-ב","s","","femenino","academia talmúdica","Bavli, frecuente","","«Lugar donde se sienta» a estudiar.","arc"],
+["רֵישׁ גָּלוּתָא","Reish Galuta","","s","","masculino","exilarca (jefe del exilio en Babilonia)","Bavli, frecuente","","","arc"],
+["פְּלוּגְתָּא","plugta","פ-ל-ג","s","","femenino","disputa, controversia","Bavli, frecuente","","","arc"],
+["סוּגְיָא","sugya","","s","","femenino","pasaje talmúdico, discusión","Bavli, frecuente","","Unidad de discusión de la Guemará sobre un tema.","arc"],
+["בַּת קוֹל","bat kol","","s","","femenino","voz celestial (lit. «hija de voz»)","Bavá Metsiá 59b","","En el horno de Ajnai la Torá «no está en el cielo»: no se decide por una bat kol.","rab"],
+["צְרִיכוּתָא","tserijuta","צ-ר-ך","s","","femenino","necesidad (de dos enseñanzas)","Bavli, frecuente","","","arc"],
+["חוּמְרָא","jumra","ח-מ-ר","s","","masculino","rigor, estrictez","Bavli, frecuente","","","arc"],
+["קוּלָּא","kula","ק-ל-ל","s","","femenino","indulgencia, criterio leniente","Bavli, frecuente","","","arc"],
+["אִיסּוּרָא","isura","א-ס-ר","s","","masculino","prohibición","Bavli, frecuente","","","arc"],
+["הֶתֵּירָא","hetera","נ-ת-ר","s","","masculino","permiso","Bavli, frecuente","","","arc"],
+["חִיּוּבָא","jiyuva","ח-י-ב","s","","masculino","obligación","Bavli, frecuente","","","arc"],
+["מִצְוְתָא","mitsvata","צ-ו-ה","s","","femenino","precepto","Bavli, frecuente","","","arc"],
+["צְדָקְתָא","tsedakta","צ-ד-ק","s","","femenino","limosna, caridad","Bavli, frecuente","","","arc"],
+["תַּלְמִידָא","talmida","ל-מ-ד","s","","masculino","discípulo","Bavli, frecuente","","","arc"],
+["סָבָא","saba","","s","","masculino","anciano; abuelo","Bavli, frecuente","","","arc"],
+["סָהֲדָא","sahada","","s","","masculino","testigo","Bavli, frecuente","","","arc"],
+["דַּיָּנָא","dayana","ד-י-ן","s","","masculino","juez","Bavli, frecuente","","","arc"],
+["אוּמָּנָא","umana","","s","","masculino","artesano; sangrador","Bavli, frecuente","","","arc"],
+["כַּסְפָּא","kaspa","","s","","masculino","plata, dinero","Bavli, frecuente","","","arc"],
+["דַּהֲבָא","dahava","","s","","masculino","oro","Bavli, frecuente","","","arc"],
+["בִּישְׂרָא","bisra","","s","","masculino","carne","Bavli, frecuente","","","arc"],
+["חַלְבָּא","jalba","","s","","masculino","leche","Bavli, frecuente","","","arc"],
+["כִּיס","kis","","s","","masculino","bolsa, monedero","Eruvín 65b","","«Be-koso, be-kiso u-ve-kaaso»: al hombre se le conoce por su copa, su bolsa y su enojo.","rab"],
+["כָּסָא","kasa","","s","","masculino","copa","Bavli, frecuente","","","arc"],
+["שִׁירְאָא","shira","","s","","masculino","seda","Bavli, frecuente","","","arc"],
+// ——— ARAMEO TALMÚDICO: pronombres y partículas ———
+["אֲנָא","ana","","p","","pronombre","yo","Bavli, frecuente","","","arc"],
+["אַתְּ","at","","p","","pronombre","tú","Bavli, frecuente","","","arc"],
+["אֲנַן","anan","","p","","pronombre","nosotros","Bavli, frecuente","","","arc"],
+["אַתּוּן","atun","","p","","pronombre","vosotros","Bavli, frecuente","","","arc"],
+["אִינְהוּ","inhu","","p","","pronombre","ellos","Bavli, frecuente","","","arc"],
+["אִיהוּ","ihu","","p","","pronombre","él","Bavli, frecuente","","","arc"],
+["אִיהִי","ihi","","p","","pronombre","ella","Bavli, frecuente","","","arc"],
+["מַאי","mai","","p","","interrogativo","¿qué?","Bavli, frecuente","","Mai ika?: «¿qué hay de eso?».","arc"],
+["מַאן","man","","p","","interrogativo","¿quién?","Bavli, frecuente","","Man tana?: «¿quién es el tanaíta (de esta enseñanza)?».","arc"],
+["הֵיכָא","heija","","p","","interrogativo","¿dónde?","Berajot 2a","","«Tana heija kai?»","arc"],
+["הֵיכִי","heiji","","p","","interrogativo","¿cómo?","Bavli, frecuente","","Heiji dami?: «¿cómo es el caso?».","arc"],
+["אַמַּאי","amai","","p","","interrogativo","¿por qué?","Bavli, frecuente","","","arc"],
+["אֵימַת","eimat","","p","","interrogativo","¿cuándo?","Bavli, frecuente","","","arc"],
+["כַּמָּה","kama","","p","","interrogativo","¿cuánto?, ¿cuántos?","Bavli, frecuente","","","arc"],
+["מַהוּ","mahu","","p","","interrogativo","¿cuál es (la ley)?","Bavli, frecuente","","Introduce una pregunta legal abierta.","arc"],
+["מִמַּאי","mimai","","p","","interrogativo","¿de dónde (se deduce)?","Bavli, frecuente","","","arc"],
+["הָכִי","haji","","p","","adverbio","así","Bavli, frecuente","","","arc"],
+["הָתָם","hatam","","p","","adverbio","allí","Bavli, frecuente","","Shaní hatam: «allí es diferente».","arc"],
+["הָכָא","haja","","p","","adverbio","aquí","Bavli, frecuente","","","arc"],
+["הַשְׁתָּא","hashta","","p","","adverbio","ahora; ahora bien","Bavli, frecuente","","Hashta… : «ahora bien, si…» (argumento a fortiori).","arc"],
+["הָאִידָּנָא","haidana","","p","","adverbio","hoy en día","Bavli, frecuente","","","arc"],
+["תּוּ","tu","","p","","adverbio","además, más","Bavli, frecuente","","Ve-tu lo: «y nada más».","arc"],
+["טוּבָא","tuva","","p","","adverbio","mucho","Bavli, frecuente","","","arc"],
+["פּוּרְתָּא","purta","","p","","adverbio","poco","Bavli, frecuente","","","arc"],
+["כּוּלֵּי","kulei","","p","","cuantificador","todo","Bavli, frecuente","","","arc"],
+["לֵית","leit","","p","","partícula","no hay","Bavli, frecuente","","Leit man de-palig: «no hay quien disienta».","arc"],
+["אִיכָּא","ika","","p","","partícula","hay, existe","Bavli, frecuente","","Ika de-amrei: «hay quienes dicen» (otra versión).","arc"],
+["אִית","it","","p","","partícula","hay","Bavli, frecuente","","","arc"],
+["לָאו","lav","","p","","adverbio","no; ¿acaso no?","Bavli, frecuente","","Lav davka: «no precisamente».","arc"],
+["אִי","i","","p","","conjunción","si","Bavli, frecuente","","","arc"],
+["אֶלָּא","ela","","p","","conjunción","sino, más bien","Bavli, frecuente","","","arc"],
+["נַמִי","nami","","p","","adverbio","también","Bavli, frecuente","","","arc"],
+["דַּוְקָא","davka","","p","","adverbio","precisamente, exactamente","Bavli, frecuente","","","arc"],
+["מִשּׁוּם","mishum","","p","","preposición","a causa de, en nombre de","Bavli, frecuente","","","arc"],
+["כְּגוֹן","kegón","","p","","adverbio","como, por ejemplo","Mishná, frecuente","","","rab"],
+["דְּ","de","","p","","prefijo relativo","que; de (genitivo)","Bavli, frecuente","","Equivale al hebreo she-: de-amar, «que dijo».","arc"],
+["הַאי","hai","","p","","demostrativo","este, esta","Bavli, frecuente","","","arc"],
+["הָא","ha","","p","","demostrativo","esto; he aquí","Bavli, frecuente","","Ha… ha…: «esta (opinión)… aquella…».","arc"],
+["הַהוּא","hahu","","p","","demostrativo","aquel, cierto","Bavli, frecuente","","Hahu gavra: «cierto hombre».","arc"],
+["הָנֵי","hanei","","p","","demostrativo","estos","Bavli, frecuente","","","arc"],
+["הָנָךְ","hanaj","","p","","demostrativo","aquellos","Bavli, frecuente","","","arc"],
+["בָּתַר","batar","","p","","preposición","después de, detrás","Bavli, frecuente","","Ba-tar rubá: «sigue a la mayoría».","arc"],
+["קַמֵּי","kamei","","p","","preposición","delante de, ante","Bavli, frecuente","","","arc"],
+["גַּבֵּי","gabei","","p","","preposición","junto a; respecto de","Bavli, frecuente","","","arc"],
+["בַּהֲדֵי","bahadei","","p","","preposición","con, junto con","Bavli, frecuente","","","arc"],
+["אַגַּב","agav","","p","","preposición","de paso, a raíz de","Bavli, frecuente","","Agav orja: «de paso», por asociación.","arc"],
+["מִיהוּ","mihu","","p","","adverbio","sin embargo","Bavli, frecuente","","","arc"],
+["וַדַּאי","vadai","","p","","adverbio","ciertamente","Bavli, frecuente","","","arc"],
+["בִּשְׁלָמָא","bishlama","ש-ל-ם","p","","adverbio","está bien en cuanto a…","Bavli, frecuente","","Bishlama X, ela Y…: «X se entiende, pero ¿Y?».","arc"],
+["אַטּוּ","atu","","p","","interrogativo","¿acaso…?","Bavli, frecuente","","","arc"],
+["מִכְּדִי","mikdi","","p","","adverbio","pues bien, considerando que","Bavli, frecuente","","","arc"],
+["דִּילְמָא","dilma","","p","","adverbio","quizás","Bavli, frecuente","","","arc"],
+["אַדְּרַבָּה","aderaba","","p","","adverbio","al contrario","Bavli, frecuente","","","arc"],
+["לְעוֹלָם","leolam","","p","","adverbio","en realidad; siempre","Bavli, frecuente","","Le-olam: «en realidad (el caso es…)», al rechazar una prueba.","arc"],
+["כִּדְאָמְרַן","kidamran","א-מ-ר","p","","adverbio","como dijimos","Bavli, frecuente","","","arc"],
+["אֲפִילּוּ","afilu","","p","","adverbio","incluso, aunque","Mishná, frecuente","","","rab"],
+["שֶׁמָּא","shema","","p","","conjunción","quizás, no sea que","Mishná, frecuente","","","rab"],
+["אִילּוּ","ilu","","p","","conjunción","si (hipotético)","Mishná, frecuente","","Ilu hotsianu mi-Mitsrayim… dayenu (Hagadá).","rab"],
+["אִילְמָלֵא","ilmale","","p","","conjunción","si no fuera porque","Bavli, frecuente","","","arc"],
+["לְפִיכָךְ","lefijaj","","p","","adverbio","por lo tanto","Mishná, frecuente","","","rab"],
+["כֵּיצַד","keitsad","","p","","interrogativo","¿cómo?","Mishná, frecuente","","Abre muchas mishnayot que explican un principio.","rab"],
+["מִנַּיִן","minayin","","p","","interrogativo","¿de dónde (se aprende)?","Mishná, frecuente","","Pregunta por la fuente bíblica de una ley.","rab"],
+["מִכָּאן","mikán","","p","","adverbio","de aquí (se aprende)","Mishná, frecuente","","Mikán amrú: «de aquí dijeron».","rab"],
+["הוֹאִיל","hoil","","p","","conjunción","puesto que, ya que","Mishná, frecuente","","","rab"],
+["אֵימָא","eima","א-מ-ר","p","","verbo / fórmula","di, podría decirse","Bavli, frecuente","","","arc"],
+// ——— FÓRMULAS Y EXPRESIONES DEL TALMUD ———
+["תָּא שְׁמַע","ta shema","","x","","arameo","ven y escucha (introduce una prueba)","Bavli, frecuente","","Se abrevia ת״ש.","arc"],
+["אִיבַּעְיָא לְהוּ","ibaya lehu","ב-ע-י","x","","arameo","se les planteó la pregunta","Bavli, frecuente","","Introduce un problema que los amoraim intentan resolver.","arc"],
+["תֵּיקוּ","teiku","ק-ו-ם","x","","arameo","quede en pie (la pregunta sin resolver)","Bavli, frecuente","","La tradición lo lee como sigla: «Tishbí yetarets kushiot ve-abaiot», Eliyahu resolverá las dudas.","arc"],
+["קַשְׁיָא","kashya","ק-ש-י","x","","arameo","es difícil (dificultad sin resolver)","Bavli, frecuente","","","arc"],
+["שְׁמַע מִינַּהּ","shema miná","ש-מ-ע","x","","arameo","aprende de ello, se deduce","Bavli, frecuente","","Se abrevia ש״מ.","arc"],
+["מַאי טַעְמָא","mai taama","ט-ע-ם","x","","arameo","¿cuál es la razón?","Bavli, frecuente","","Se abrevia מ״ט.","arc"],
+["מְנָא הָנֵי מִילֵּי","mena hanei milei","","x","","arameo","¿de dónde se aprenden estas cosas?","Bavli, frecuente","","Pide la fuente bíblica.","arc"],
+["מְנָא לַן","mena lan","","x","","arameo","¿de dónde lo sabemos?","Bavli, frecuente","","","arc"],
+["הָכִי נַמִי מִסְתַּבְּרָא","haji nami mistabra","ס-ב-ר","x","","arameo","así también es lógico","Bavli, frecuente","","Refuerza una opinión con razonamiento.","arc"],
+["לָא קַשְׁיָא","la kashya","ק-ש-י","x","","arameo","no es difícil (se resuelve así)","Bavli, frecuente","","Introduce la solución de una contradicción: «ha… ha…».","arc"],
+["אָמַר מָר","amar mar","א-מ-ר","x","","arameo","dijo el maestro (retomando una cita)","Bavli, frecuente","","","arc"],
+["תָּנוּ רַבָּנַן","tanu rabanan","ת-נ-י","x","","arameo","enseñaron nuestros sabios (baraita)","Berajot 2b","","Se abrevia ת״ר.","arc"],
+["תַּנְיָא","tanya","ת-נ-י","x","","arameo","se enseñó (en una baraita)","Bavli, frecuente","","","arc"],
+["תְּנַן","tenan","ת-נ-י","x","","arameo","hemos aprendido (en la Mishná)","Bavli, frecuente","","","arc"],
+["אֲמַר לֵיהּ","amar leih","א-מ-ר","x","","arameo","le dijo","Bavli, frecuente","","Se abrevia א״ל.","arc"],
+["מֵיתִיבֵי","meitivei","ת-ו-ב","x","","arameo","objetan (citando una fuente)","Bavli, frecuente","","","arc"],
+["וּרְמִינְהוּ","u-raminhu","ר-מ-י","x","","arameo","y los contraponen (hay contradicción)","Bavli, frecuente","","","arc"],
+["אִי בָּעֵית אֵימָא","i baeit eima","ב-ע-י","x","","arameo","si quieres, di (otra respuesta)","Bavli, frecuente","","Se abrevia איבע״א.","arc"],
+["לָא צְרִיכָא","la tserija","צ-ר-ך","x","","arameo","no hace falta (salvo para el caso de…)","Bavli, frecuente","","","arc"],
+["פְּשִׁיטָא","peshita","פ-ש-ט","x","","arameo","¡es obvio! (¿para qué enseñarlo?)","Bavli, frecuente","","","arc"],
+["מַהוּ דְּתֵימָא","mahu detema","א-מ-ר","x","","arameo","podrías haber pensado…","Bavli, frecuente","","Seguido de ka mashma lan.","arc"],
+["קָא מַשְׁמַע לַן","ka mashma lan","ש-מ-ע","x","","arameo","nos enseña (que…)","Bavli, frecuente","","Se abrevia קמ״ל.","arc"],
+["הָכָא בְּמַאי עָסְקִינַן","haja be-mai askinan","ע-ס-ק","x","","arameo","¿de qué caso tratamos aquí?","Bavli, frecuente","","Restringe una mishná a un caso concreto.","arc"],
+["אֶלָּא מַאי","ela mai","","x","","arameo","¿pero entonces qué?","Bavli, frecuente","","","arc"],
+["שָׁאנֵי הָתָם","shaní hatam","ש-נ-י","x","","arameo","allí es diferente","Bavli, frecuente","","","arc"],
+["כּוּלֵּי עָלְמָא","kulei alma","","x","","arameo","todos (concuerdan)","Bavli, frecuente","","Se abrevia כ״ע.","arc"],
+["בְּמַאי קָמִיפַּלְגִי","be-mai kamiflegui","פ-ל-ג","x","","arameo","¿en qué disienten?","Bavli, frecuente","","","arc"],
+["מַאי בֵּינַיְיהוּ","mai beinaihu","","x","","arameo","¿qué diferencia práctica hay entre ellos?","Bavli, frecuente","","","arc"],
+["נָפְקָא מִינַּהּ","nafka miná","נ-פ-ק","x","","arameo","consecuencia práctica","Bavli, frecuente","","Se abrevia נ״מ.","arc"],
+["הַוָה אַמִינָא","hava amina","א-מ-ר","x","","arameo","yo habría pensado (hipótesis inicial)","Bavli, frecuente","","Opuesto a maskana, la conclusión.","arc"],
+["מַסְקָנָא","maskana","ס-ל-ק","x","","arameo","conclusión (de la discusión)","Bavli, frecuente","","","arc"],
+["אָמַר רַחֲמָנָא","amar Rajmana","ר-ח-ם","x","","arameo","dijo el Misericordioso (la Torá dice)","Bavli, frecuente","","","arc"],
+["לֵיתָא","leita","","x","","arameo","no es así (opinión rechazada)","Bavli, frecuente","","","arc"],
+["אִין הָכִי נַמִי","in haji nami","","x","","arameo","sí, efectivamente así es","Bavli, frecuente","","","arc"],
+["וּלְטַעְמָיךְ","u-letaamaj","ט-ע-ם","x","","arameo","y según tu razonamiento…","Bavli, frecuente","","Devuelve la dificultad a quien la planteó.","arc"],
+["מָר סָבַר","mar savar","ס-ב-ר","x","","arameo","uno opina (y el otro opina…)","Bavli, frecuente","","","arc"],
+["וְתִסְבְּרָא","ve-tisbera","ס-ב-ר","x","","arameo","¿y acaso lo crees? (rechazo)","Bavli, frecuente","","","arc"],
+["תִּסְתַּיֵּים","tistayem","ס-י-ם","x","","arameo","concluyamos (que…)","Bavli, frecuente","","","arc"],
+["הֲדְרָן עֲלָךְ","hadran alaj","ה-ד-ר","x","","arameo","volveremos a ti (fin de capítulo)","Bavli, al final de cada capítulo","","Se recita al terminar un tratado: el estudio nunca se da por acabado.","arc"],
+["אִיכָּא דְּאָמְרֵי","ika de-amrei","א-מ-ר","x","","arameo","hay quienes dicen (otra versión)","Bavli, frecuente","","","arc"],
+["גּוּפָא","gufa","","x","","arameo","(volvamos) al texto mismo","Bavli, frecuente","","Retoma un texto citado de paso para analizarlo.","arc"],
+["סִימָן","simán","","x","","hebreo","señal mnemotécnica","Bavli, frecuente","","Las siglas sirven para recordar el orden de las enseñanzas orales.","rab"],
+["קַל וָחוֹמֶר","kal va-jomer","","x","","hebreo","argumento a fortiori (de lo leve a lo grave)","Baraíta de R. Ishmael","","Primera de las trece reglas de interpretación.","rab"],
+["גְּזֵרָה שָׁוָה","guezerá shavá","","x","","hebreo","analogía verbal (misma palabra en dos versículos)","Baraíta de R. Ishmael","","Solo se aplica si se recibió por tradición.","rab"],
+["אֵלּוּ וָאֵלּוּ","elu va-elu","","x","","hebreo","estas y aquellas (son palabras del Dios vivo)","Eruvín 13b","","Sobre Beit Hilel y Beit Shamai; la halajá sigue a Hilel por su humildad.","rab"],
+["דָּבָר אַחֵר","davar ajer","ד-ב-ר","x","","hebreo","otra interpretación","Midrash, frecuente","","","rab"],
+["בִּשְׁלָמָא לְמַאן דְּאָמַר","bishlama le-man de-amar","","x","","arameo","se entiende según quien dice…","Bavli, frecuente","","","arc"],
+["דִּינָא דְּמַלְכוּתָא דִּינָא","dina de-maljuta dina","ד-י-ן","x","","arameo","la ley del reino es ley","Nedarim 28a","","Principio de Shmuel: obligación de respetar la ley civil del país.","arc"],
+["כׇּל יִשְׂרָאֵל עֲרֵבִים","kol Israel arevim","ע-ר-ב","x","","hebreo","todo Israel es responsable uno por otro","Shevuot 39a","","","rab"],
+// ——— HEBREO RABÍNICO (Mishná y Talmud) ———
+["מִשְׁנָה","Mishná","ש-נ-ה","s","","femenino","Mishná; enseñanza repetida","Mishná","","Compilada por Rabí Yehudá ha-Nasí hacia el 200 e. c., en seis órdenes.","rab"],
+["תַּלְמוּד","Talmud","ל-מ-ד","s","","masculino","Talmud; estudio","Bavli","","El Bavli, de Babilonia, es más extenso que el Yerushalmi.","rab"],
+["שַׁ״ס","Shas","","s","","masculino","Shas: los seis órdenes (el Talmud entero)","Bavli","","Sigla de shishá sedarim.","rab"],
+["הֲלָכָה","halajá","ה-ל-ך","s","","femenino","ley, norma; camino de conducta","Mishná, frecuente","","«Halajá le-Moshé mi-Sinai»: tradición oral recibida en el Sinaí.","rab"],
+["אַגָּדָה","agadá","נ-ג-ד","s","","femenino","relato, enseñanza no legal","Bavli, frecuente","","","rab"],
+["מִדְרָשׁ","midrash","ד-ר-ש","s","miktal","masculino","interpretación, exposición","2 Cr 13:22","H4097","Aparece ya en Crónicas; en los sabios es la exégesis del texto.","rab"],
+["מַחֲלוֹקֶת","majloket","ח-ל-ק","s","","femenino","disputa, controversia","Avot 5:17","","«Toda disputa por el Cielo perdurará»: como la de Hilel y Shamai.","rab"],
+["כָּשֵׁר","kasher","כ-ש-ר","a","","masculino","apto, válido, permitido","Ecl 11:6","H3787","","rab"],
+["פָּסוּל","pasul","פ-ס-ל","a","katul","masculino","no apto, inválido","Mishná, frecuente","","","rab"],
+["טְרֵפָה","treifá","ט-ר-ף","s","","femenino","animal herido mortalmente; no apto","Éx 22:30","H2966","Por extensión, todo alimento no kasher.","rab"],
+["חַיָּב","jayav","ח-י-ב","a","kattal","masculino","obligado; culpable","Mishná, frecuente","","","rab"],
+["פָּטוּר","patur","פ-ט-ר","a","katul","masculino","exento","Mishná, frecuente","","","rab"],
+["מוּתָּר","mutar","נ-ת-ר","a","","masculino","permitido","Mishná, frecuente","","","rab"],
+["אָסוּר","asur","א-ס-ר","a","katul","masculino","prohibido","Mishná, frecuente","","","rab"],
+["טֻמְאָה","tumá","ט-מ-א","s","","femenino","impureza ritual","Lv 5:3","H2932","","rab"],
+["טׇהֳרָה","tahorá","ט-ה-ר","s","","femenino","pureza ritual","Lv 12:4","H2893","Toharot: sexto orden de la Mishná.","rab"],
+["סָפֵק","safek","","s","","masculino","duda","Mishná, frecuente","","Safek de-oraita le-jumra: en duda bíblica, se es estricto.","rab"],
+["חֲזָקָה","jazaká","ח-ז-ק","s","","femenino","presunción legal; posesión","Mishná, frecuente","","","rab"],
+["רוֹב","rov","ר-ב-ב","s","","masculino","mayoría","Bavli, frecuente","","Ajarei rabim le-hatot: se sigue a la mayoría (Éx 23:2).","rab"],
+["מִנְהָג","minhag","נ-ה-ג","s","miktal","masculino","costumbre","Bavli, frecuente","","Minhag Israel Torá hu: la costumbre de Israel es Torá.","rab"],
+["גְּזֵרָה","guezerá","ג-ז-ר","s","","femenino","decreto rabínico (preventivo)","Bavli, frecuente","","","rab"],
+["תַּקָּנָה","takaná","ת-ק-ן","s","","femenino","institución, ordenanza rabínica","Bavli, frecuente","","","rab"],
+["סְיָג","syag","","s","","masculino","cerco, valla","Avot 1:1","","«Hagan una valla a la Torá».","rab"],
+["מוּקְצֶה","muktsé","ק-צ-ה","s","","masculino","objeto apartado (no se mueve en Shabat)","Bavli, frecuente","","","rab"],
+["עֵרוּב","eruv","ע-ר-ב","s","","masculino","unión legal de dominios o de comidas","Eruvín","","Da nombre a un tratado.","rab"],
+["תְּחוּם","tejum","","s","","masculino","límite (de Shabat, 2000 codos)","Bavli, frecuente","","","rab"],
+["רְשׁוּת","reshut","","s","","femenino","dominio; permiso; opcional","Mishná, frecuente","","Reshut ha-rabim / ha-yajid: dominio público / privado.","rab"],
+["כַּוָּנָה","kavaná","כ-ו-ן","s","","femenino","intención, concentración","Rosh ha-Shaná 28a","","Mitsvot tserijot kavaná: ¿requieren intención los preceptos?","rab"],
+["לִשְׁמָהּ","lishmá","","p","","adverbio","por sí misma, con intención pura","Pesajim 50b","","«Que uno estudie aunque sea she-lo lishmá, porque de ahí llegará a lishmá».","rab"],
+["גְּמִילוּת חֲסָדִים","guemilut jasadim","ג-מ-ל","s","","femenino","actos de bondad","Avot 1:2","","Uno de los tres pilares del mundo: Torá, culto y bondad.","rab"],
+["תְּפִלִּין","tefilín","פ-ל-ל","s","","femenino (plural)","filacterias","Mishná, frecuente","","","rab"],
+["טַלִּית","talit","","s","","femenino","manto de oración","Mishná, frecuente","","","rab"],
+["קִדּוּשׁ","kidush","ק-ד-ש","s","","masculino","santificación (sobre el vino)","Pesajim 106a","","«Zajor et yom ha-Shabat le-kadsho: recuérdalo sobre el vino».","rab"],
+["הַבְדָּלָה","havdalá","ב-ד-ל","s","","femenino","separación (fin del Shabat)","Berajot 33a","","","rab"],
+["סְעוּדָה","seudá","ס-ע-ד","s","","femenino","comida festiva","Bavli, frecuente","","","rab"],
+["עוֹלָם הַבָּא","olam ha-ba","","s","","masculino","el mundo venidero","Sanhedrín 90a","","«Todo Israel tiene parte en el mundo venidero» (Mishná Sanhedrín 10:1).","rab"],
+["עוֹלָם הַזֶּה","olam ha-zé","","s","","masculino","este mundo","Avot 4:16","","«Este mundo es como un vestíbulo ante el mundo venidero».","rab"],
+["גֵּיהִנֹּם","Gueihinom","","n","","masculino","Guehinom, lugar de purificación","Bavli, frecuente","","Del valle de Ben-Hinom, al sur de Jerusalén.","rab"],
+["גַּן עֵדֶן","Gan Éden","","n","","masculino","Paraíso","Bavli, frecuente","","","rab"],
+["תְּחִיַּת הַמֵּתִים","tejiyat ha-metim","ח-י-ה","s","","femenino","resurrección de los muertos","Sanhedrín 90b","","","rab"],
+["מָשִׁיחַ","mashíaj","מ-ש-ח","s","katil","masculino","ungido; el Mesías","1 S 24:7","H4899","En la Biblia, el rey o sacerdote ungido; en los sabios, el redentor futuro.","rab"],
+["שְׁכִינָה","Shejiná","ש-כ-ן","s","","femenino","la Presencia divina","Avot 3:6","","«Diez que se sientan a estudiar: la Shejiná reposa entre ellos».","rab"],
+["הַקָּדוֹשׁ בָּרוּךְ הוּא","ha-Kadosh Barúj Hu","ק-ד-ש","n","","nombre divino","el Santo, bendito sea","Mishná, frecuente","","En arameo: Kudshá brij hu.","rab"],
+["רִבּוֹנוֹ שֶׁל עוֹלָם","Ribonó shel olam","","n","","nombre divino","Señor del mundo","Bavli, frecuente","","","rab"],
+["הַמָּקוֹם","ha-Makom","ק-ו-ם","n","","nombre divino","el Lugar (Dios)","Mishná, frecuente","","","rab"],
+["בֵּית דִּין","beit din","ד-י-ן","s","","masculino","tribunal rabínico","Mishná, frecuente","","","rab"],
+["סַנְהֶדְרִין","Sanhedrín","","s","","femenino","Sanedrín (tribunal de 71)","Mishná Sanhedrín","","Del griego synedrion.","rab"],
+["דַּיָּן","dayán","ד-י-ן","s","kattal","masculino","juez","Mishná, frecuente","","","rab"],
+["קְנָס","knas","","s","","masculino","multa","Mishná, frecuente","","","rab"],
+["נֶזֶק","nézek","נ-ז-ק","s","ketel","masculino","daño","Est 7:4","H5143","Nezikín: cuarto orden de la Mishná.","rab"],
+["גָּזֵל","guezel","ג-ז-ל","s","","masculino","robo (con violencia)","Lv 5:23","H1499","","rab"],
+["שׁוֹמֵר","shomer","ש-מ-ר","s","","masculino","custodio, depositario","Mishná, frecuente","","Cuatro tipos de shomrim según su responsabilidad.","rab"],
+["בַּעַל הַבַּיִת","baal ha-báyit","","s","","masculino","dueño de casa, propietario","Mishná, frecuente","","","rab"],
+["פּוֹעֵל","poel","פ-ע-ל","s","","masculino","jornalero, trabajador","Mishná, frecuente","","","rab"],
+["שָׂכָר","sajar","ש-כ-ר","s","katal","masculino","salario; recompensa","Avot 2:16","","«Fiel es tu patrón para pagarte el salario de tu trabajo».","rab"],
+["רִבִּית","ribit","ר-ב-ה","s","","femenino","interés, usura","Mishná, frecuente","","","rab"],
+["מַשְׁכּוֹן","mashkón","ש-כ-ן","s","","masculino","prenda, garantía","Mishná, frecuente","","","rab"],
+["גֵּט","guet","","s","","masculino","acta de divorcio","Mishná Guitín","","","rab"],
+["כְּתוּבָּה","ketubá","כ-ת-ב","s","","femenino","contrato matrimonial","Mishná Ketubot","","Protege los derechos de la esposa.","rab"],
+["קִדּוּשִׁין","kidushín","ק-ד-ש","s","","masculino (plural)","consagración matrimonial","Mishná Kidushín","","","rab"],
+["יִבּוּם","yibum","י-ב-ם","s","","masculino","matrimonio de levirato","Mishná Yevamot","","","rab"],
+["חֲלִיצָה","jalitsá","ח-ל-ץ","s","","femenino","rito de liberación del levirato","Mishná Yevamot","","","rab"],
+["תַּעֲנִית","taanit","ע-נ-ה","s","","femenino","ayuno","Esd 9:5","H8589","","rab"],
+["מַעֲשֵׂר","maaser","ע-ש-ר","s","","masculino","diezmo","Gn 14:20","H4643","","rab"],
+["חַלָּה","jalá","","s","","femenino","porción de la masa; pan trenzado","Nm 15:20","H2471","","rab"],
+["עׇרְלָה","orlá","ע-ר-ל","s","","femenino","fruto de los tres primeros años","Lv 19:23","H6190","","rab"],
+["כִּלְאַיִם","kilayim","","s","","masculino (plural)","mezclas prohibidas","Lv 19:19","H3610","","rab"],
+["שְׁבִיעִית","sheviit","ש-ב-ע","s","","femenino","año sabático (de la tierra)","Mishná Sheviit","","","rab"],
+["בִּכּוּרִים","bikurim","ב-כ-ר","s","","masculino (plural)","primicias","Éx 23:16","H1061","","rab"],
+["פֵּאָה","peá","","s","","femenino","rincón del campo (para el pobre)","Lv 19:9","H6285","Abre la Mishná Peá: «cosas que no tienen medida».","rab"],
+["לֶקֶט","léket","ל-ק-ט","s","ketel","masculino","espigas caídas (para el pobre)","Lv 19:9","H3951","","rab"],
+["שִׁכְחָה","shijjá","ש-כ-ח","s","","femenino","gavilla olvidada (para el pobre)","Dt 24:19","","","rab"],
+["דְּמַאי","demai","","s","","masculino","producto dudoso (si se diezmó)","Mishná Demai","","","rab"],
+["בֵּית הַמִּדְרָשׁ","beit ha-midrash","ד-ר-ש","s","","masculino","casa de estudio","Mishná, frecuente","","","rab"],
+["בֵּית הַכְּנֶסֶת","beit ha-kneset","כ-נ-ס","s","","masculino","sinagoga","Mishná, frecuente","","","rab"],
+["תַּלְמִיד חָכָם","talmid jajam","ל-מ-ד","s","","masculino","erudito de la Torá","Bavli, frecuente","","«Los talmidei jajamim aumentan la paz en el mundo» (Berajot 64a).","rab"],
+["רַבָּן","Rabán","ר-ב-ב","s","","masculino","nuestro maestro (título del Nasí)","Mishná, frecuente","","Rabán Gamliel, Rabán Yojanán ben Zakai.","rab"],
+["רַבִּי","Rabí","ר-ב-ב","s","","masculino","mi maestro; título de los tanaím","Mishná, frecuente","","Solo, «Rabí» designa a Rabí Yehudá ha-Nasí.","rab"],
+["חָבֵר","javer","ח-ב-ר","s","","masculino","compañero; asociado (fiel a la pureza)","Avot 1:6","","«Kné lejá javer»: adquiere un compañero de estudio.","rab"],
+["עַם הָאָרֶץ","am ha-árets","","s","","masculino","ignorante (en la Torá)","Avot 2:5","","","rab"],
+["אֶפִּיקוֹרוֹס","apikoros","","s","","masculino","hereje, burlador","Mishná Sanhedrín 10:1","","De Epicuro.","rab"],
+["שְׁטָר","shtar","","s","","masculino","documento, escritura","Mishná, frecuente","","","rab"],
+["פְּרוֹזְבּוּל","prozbul","","s","","masculino","prosbul (cesión de deudas al tribunal)","Mishná Sheviit 10:3","","Institución de Hilel para que los préstamos no se detengan antes del año sabático.","rab"],
+["לָשׁוֹן הָרָע","lashón ha-rá","","s","","femenino","maledicencia","Arajín 15b","","","rab"],
+["דֶּרֶךְ אֶרֶץ","dérej érets","","s","","masculino","buenos modales; trabajo","Avot 3:17","","«Sin Torá no hay dérej érets; sin dérej érets no hay Torá».","rab"],
+["יִרְאַת שָׁמַיִם","yirat shamáyim","י-ר-א","s","","femenino","temor del Cielo","Berajot 33b","","«Todo está en manos del Cielo, salvo el temor del Cielo».","rab"],
+["מִנְיָן","minyán","מ-נ-ה","s","","masculino","cuórum de diez","Meguilá 23b","","","rab"],
+["חַזָּן","jazán","","s","","masculino","oficial de la sinagoga; cantor","Mishná, frecuente","","En la Mishná es el bedel; más tarde, quien dirige el rezo.","rab"],
+["קְרִיאַת שְׁמַע","kriat Shemá","ק-ר-א","s","","femenino","recitación del Shemá","Berajot 2a","","El Talmud abre con: «¿Desde cuándo se recita el Shemá por la noche?».","rab"],
+["שְׁמוֹנֶה עֶשְׂרֵה","Shemoné Esré","","s","","femenino","las Dieciocho (bendiciones), la Amidá","Berajot 28b","","","rab"],
+["שַׁחֲרִית","shajarit","ש-ח-ר","s","","femenino","oración de la mañana","Berajot 26b","","Atribuida a Avraham.","rab"],
+["עַרְבִית","arvit","ע-ר-ב","s","","femenino","oración de la noche","Berajot 26b","","Atribuida a Yaakov.","rab"],
+["מוּסָף","musaf","י-ס-ף","s","","masculino","oración adicional (Shabat y fiestas)","Mishná, frecuente","","","rab"],
+["פָּרָשָׁה","parashá","פ-ר-ש","s","","femenino","sección de la Torá","Mishná, frecuente","","","rab"],
+["הַפְטָרָה","haftará","פ-ט-ר","s","","femenino","lectura de los Profetas","Meguilá 23a","","","rab"],
+["סִיּוּם","siyum","ס-י-ם","s","","masculino","conclusión (de un tratado), celebración","Shabat 118b","","","rab"],
+["חֲנֻכָּה","Janucá","ח-נ-ך","s","","femenino","Janucá; inauguración","Shabat 21b","","«¿Qué es Janucá?»: el milagro del aceite.","rab"],
+["פּוּרִים","Purim","","s","","masculino","Purim («suertes»)","Est 9:26","H6332","","rab"],
+["רֹאשׁ הַשָּׁנָה","Rosh ha-Shaná","","s","","masculino","Año Nuevo","Mishná Rosh ha-Shaná 1:1","","Cuatro «años nuevos» enumera la Mishná.","rab"],
+["יוֹם הַכִּפּוּרִים","Yom ha-Kipurim","כ-פ-ר","s","","masculino","Día de las Expiaciones","Lv 23:27","H3725","","rab"],
+["אוֹנֵס","ones","א-נ-ס","s","","masculino","fuerza mayor; coacción","Bavli, frecuente","","Ones Rajmana patrei: la Torá exime al forzado.","rab"],
+["פִּקּוּחַ נֶפֶשׁ","pikuaj néfesh","פ-ק-ח","s","","masculino","salvar una vida","Yomá 85b","","Desplaza al Shabat: «vivirás por ellos (los preceptos), no morirás por ellos».","rab"],
+["מִדָּה","midá","מ-ד-ד","s","","femenino","medida; atributo; regla","Avot 5:10","","Las trece midot de interpretación; las trece midot de misericordia.","rab"],
+["זְכוּת","zejut","ז-כ-ה","s","","femenino","mérito","Avot 1:6","","«Dan lekaf zejut»: juzga a todos favorablemente.","rab"],
+["תִּיקּוּן עוֹלָם","tikún olam","ת-ק-ן","s","","masculino","reparación del mundo (orden social)","Mishná Guitín 4:2","","En la Mishná, justificación de ordenanzas para el bien común.","rab"],
+["מַרְאִית עַיִן","marit áyin","ר-א-ה","s","","femenino","apariencia (de transgresión)","Bavli, frecuente","","","rab"],
+["אָבוֹת","Avot","","s","","masculino (plural)","padres; categorías principales","Mishná Avot","","Pirké Avot y también las 39 avot melajá del Shabat.","rab"],
+["תּוֹלָדָה","toladá","י-ל-ד","s","","femenino","derivado (de una categoría)","Mishná Bavá Kamá 1:1","","","rab"],
+// ——— Nombres propios del Talmud ———
+["הִלֵּל","Hilel","ה-ל-ל","n","","masculino","Hilel el Anciano","Shabat 31a","","«Lo que te es odioso no lo hagas a tu prójimo».","rab"],
+["שַׁמַּאי","Shamai","","n","","masculino","Shamai","Shabat 31a","","","rab"],
+["רַבִּי עֲקִיבָא","Rabí Akiva","","n","","masculino","Rabí Akiva","Berajot 61b","","Murió con el Shemá en los labios.","rab"],
+["רַבִּי מֵאִיר","Rabí Meir","","n","","masculino","Rabí Meir","Sanhedrín 86a","","«Stam Mishná, Rabí Meir»: una mishná anónima sigue su opinión.","rab"],
+["רַבִּי יְהוּדָה הַנָּשִׂיא","Rabí Yehudá ha-Nasí","","n","","masculino","Rabí (el redactor de la Mishná)","Bavli, frecuente","","","rab"],
+["רַבִּי יוֹחָנָן","Rabí Yojanán","","n","","masculino","Rabí Yojanán (amoraíta, Tierra de Israel)","Bavá Metsiá 84a","","","arc"],
+["רֵישׁ לָקִישׁ","Reish Lakish","","n","","masculino","Rabí Shimón ben Lakish","Bavá Metsiá 84a","","Compañero de estudio de Rabí Yojanán.","arc"],
+["רַב","Rav","","n","","masculino","Rav (Abá Arija), fundador de Sura","Bavli, frecuente","","","arc"],
+["שְׁמוּאֵל","Shmuel","","n","","masculino","Shmuel de Nehardea","Bavli, frecuente","","En disputa: la halajá sigue a Rav en lo ritual y a Shmuel en lo civil.","arc"],
+["אַבַּיֵּי","Abaye","","n","","masculino","Abaye","Bavli, frecuente","","Las disputas de Abaye y Rava: la halajá sigue a Rava salvo en seis casos (yaal kegam).","arc"],
+["רָבָא","Rava","","n","","masculino","Rava","Bavli, frecuente","","","arc"],
+["רַב אַשִׁי","Rav Ashi","","n","","masculino","Rav Ashi, redactor del Bavli","Bavli, frecuente","","","arc"],
+["רָבִינָא","Ravina","","n","","masculino","Ravina","Bavli, frecuente","","«Rav Ashi y Ravina: fin de la enseñanza» (Bavá Metsiá 86a).","arc"],
+["רַב פָּפָּא","Rav Papa","","n","","masculino","Rav Papa","Bavli, frecuente","","","arc"],
+["רַב נַחְמָן","Rav Najmán","","n","","masculino","Rav Najmán","Bavli, frecuente","","","arc"],
+["סוּרָא","Sura","","n","","femenino","Sura (academia en Babilonia)","Bavli, frecuente","","","arc"],
+["פּוּמְבְּדִיתָא","Pumbedita","","n","","femenino","Pumbedita (academia en Babilonia)","Bavli, frecuente","","","arc"],
+["נְהַרְדְּעָא","Nehardea","","n","","femenino","Nehardea","Bavli, frecuente","","","arc"],
+["אֶרֶץ יִשְׂרָאֵל","Érets Israel","","n","","femenino","la Tierra de Israel","Mishná, frecuente","","","rab"],
+["זְרָעִים","Zeraim","","n","","masculino (plural)","Semillas (1.er orden de la Mishná)","Mishná","","Leyes agrícolas y Berajot.","rab"],
+["מוֹעֵד","Moed","","n","","masculino","Festividades (2.º orden)","Mishná","","","rab"],
+["נָשִׁים","Nashim","","n","","femenino (plural)","Mujeres (3.er orden)","Mishná","","Matrimonio y divorcio.","rab"],
+["נְזִיקִין","Nezikín","","n","","masculino (plural)","Daños (4.º orden)","Mishná","","Derecho civil y penal; incluye Avot.","rab"],
+["קׇדָשִׁים","Kodashim","","n","","masculino (plural)","Cosas santas (5.º orden)","Mishná","","Sacrificios y Templo.","rab"],
+["טׇהֳרוֹת","Toharot","","n","","femenino (plural)","Purezas (6.º orden)","Mishná","","","rab"]
+].map(a=>({h:a[0],t:a[1],r:a[2],c:a[3],m:a[4],g:a[5],s:a[6],ref:a[7],n:a[8],note:a[9],l:a[10]||"bib"}));
 
-{const seen=new Set();for(let i=D.length-1;i>=0;i--){const k=D[i].h+"|"+D[i].c;if(seen.has(k))D.splice(i,1);else seen.add(k)}}
-const CAT={s:"Sustantivo",v:"Verbo",a:"Adjetivo",p:"Partícula",n:"Nombre propio",u:"Numeral"};
+{const seen=new Set();for(let i=D.length-1;i>=0;i--){const k=D[i].h+"|"+D[i].c+"|"+D[i].l;if(seen.has(k))D.splice(i,1);else seen.add(k)}}
+const CAT={s:"Sustantivo",v:"Verbo",a:"Adjetivo",p:"Partícula",n:"Nombre propio",u:"Numeral",x:"Expresión"};
+const CORP={bib:"Hebreo bíblico",rab:"Hebreo rabínico",arc:"Arameo talmúdico"};
 const FIN={"ך":"כ","ם":"מ","ן":"נ","ף":"פ","ץ":"צ"};
 const heb=s=>s.normalize("NFD").replace(/[֑-ׇ]/g,"").replace(/[ךםןףץ]/g,c=>FIN[c]);
 const lat=s=>s.normalize("NFD").replace(/[̀-ͯ'’ʼ\-]/g,"").toLowerCase();
 D.forEach(d=>{d.hk=heb(d.h);d.rk=heb(d.r).replace(/-/g,"");d.tk=lat(d.t);d.sk=lat(d.s);d.first=d.hk[0]});
 D.sort((x,y)=>x.hk.localeCompare(y.hk,"he"));
 
-let dir="he",cat="all",letter="",root="",open=null;
+let dir="he",corp="all",cat="all",letter="",root="",open=null;
 const $=id=>document.getElementById(id);
 const q=$("q"),tb=$("tb");
 
 const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
 
-function catCell(d){
+function catCell(d){const t=d.l==="bib"?"":`<br><span class="tag ${d.l}">${d.l==="arc"?"Arameo":"Rabínico"}</span>`;return catCell0(d)+t}
+function catCell0(d){
   let s=CAT[d.c];
   if(d.c==="v") return `${s} – <em>${d.g}</em>`;
   if(d.m) s+=` – <span class="mod">modelo <em>${d.m}</em></span>,`; else if(d.g) s+=" –";
@@ -961,6 +1542,7 @@ function list(){
   const isHe=/[֐-׿]/.test(raw);
   let r=D.filter(d=>{
     if(cat!=="all" && d.c!==cat) return false;
+    if(corp!=="all" && d.l!==corp) return false;
     if(root && d.r!==root) return false;
     if(letter && d.first!==letter) return false;
     if(!raw) return true;
@@ -988,7 +1570,7 @@ function render(){
       <td class="mean">${esc(d.s)}</td></tr>`;
     if(isOpen) html+=`<tr class="det"><td colspan="4"><div class="box">
       <div class="sefardi"><span class="big" lang="he">${cons(d.h)}</span><span class="cap">Escritura sefaradí semicursiva (letra Rashí), sin nikud como se escribía a mano</span></div>
-      <div class="meta"><span>Cita: <b>${d.ref}</b></span><span>Strong: <b>${d.n}</b></span><span>Categoría: <b>${CAT[d.c]}</b></span></div>
+      <div class="meta"><span>Cita: <b>${d.ref}</b></span>${d.n?`<span>Strong: <b>${d.n}</b></span>`:""}<span>Corpus: <b>${CORP[d.l]}</b></span><span>Categoría: <b>${CAT[d.c]}</b></span></div>
       ${d.note?`<p class="note"><span class="lbl">Comentario</span>${esc(d.note)}</p>`:""}
     </div></td></tr>`;
     return html;
@@ -1021,7 +1603,10 @@ tb.addEventListener("click",e=>{
 });
 tb.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches("tr.row")){const i=+e.target.dataset.i;open=open===i?null:i;render()}});
 
-const chips=[["all","Todas"],["s","Sustantivos"],["v","Verbos"],["a","Adjetivos"],["n","Nombres propios"],["p","Partículas"],["u","Numerales"]];
+const chips=[["all","Todas"],["s","Sustantivos"],["v","Verbos"],["a","Adjetivos"],["n","Nombres propios"],["p","Partículas"],["u","Numerales"],["x","Expresiones"]];
+const corps=[["all","Todo el corpus"],["bib","Bíblico"],["rab","Rabínico"],["arc","Arameo (Talmud)"]];
+$("corp").innerHTML=corps.map(([k,l])=>`<button class="chip" data-k="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("");
+$("corp").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;corp=b.dataset.k;open=null;sync();render()});
 $("chips").innerHTML=chips.map(([k,l])=>`<button class="chip" data-c="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("");
 $("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;open=null;sync();render()});
 
@@ -1030,18 +1615,97 @@ $("letters").innerHTML=[...AB].map(c=>`<button data-l="${c}" aria-pressed="false
 $("letters").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;letter=letter===b.dataset.l?"":b.dataset.l;root="";open=null;sync();render()});
 
 function sync(){
-  document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===cat));
+  document.querySelectorAll("#chips .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===cat));
+  document.querySelectorAll("#corp .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===corp));
+  const tx=dir==="tx";$("txt").hidden=!tx;document.querySelectorAll(".search,#chips,#corp,.status,.tbl").forEach(el=>el.hidden=tx);$("d-tx").setAttribute("aria-pressed",tx);
   document.querySelectorAll("#letters button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===letter));
   $("d-he").setAttribute("aria-pressed",dir==="he");$("d-es").setAttribute("aria-pressed",dir==="es");
-  $("letters").hidden=dir==="es";
+  $("letters").hidden=dir!=="he";
   q.placeholder=dir==="he"?"Busca en hebreo (con o sin nikud) o transliteración":"Escribe una palabra en español: paz, luz, rey…";
   q.classList.toggle("he",/[֐-׿]/.test(q.value));
 }
 $("d-he").onclick=()=>{dir="he";sync();render()};
 $("d-es").onclick=()=>{dir="es";letter="";sync();render()};
+$("d-tx").onclick=()=>{dir="tx";sync();if(!$("gloss").children.length)glossText()};
 q.addEventListener("input",()=>{letter="";open=null;sync();render()});
 $("clr").onclick=()=>{q.value="";sync();render();q.focus()};
 $("reset").onclick=()=>{root="";render()};
+
+
+// ——— Traducir texto: foto (OCR) + glosa palabra por palabra ———
+const TESS_URL="https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.min.js";
+const HEB_DATA="https://cdn.jsdelivr.net/npm/@tesseract.js-data/heb@1.0.0/4.0.0_best_int";
+const strip=s=>heb(s).replace(/[^א-ת ]/g,"");
+const IDX=new Map(), IDXM=new Map(), PH=new Map();
+const noM=k=>k.length>2?k[0]+k.slice(1).replace(/[וי]/g,""):k;
+D.forEach(d=>{const k=strip(d.h).trim();if(!k)return;
+  if(k.includes(" ")){(PH.get(k)||PH.set(k,[]).get(k)).push(d);return}
+  (IDX.get(k)||IDX.set(k,[]).get(k)).push(d);const m=noM(k);(IDXM.get(m)||IDXM.set(m,[]).get(m)).push(d)});
+const PREF="ושהבכלמד",SUFF=["יהון","יהו","הון","תא","יא","ים","ין","ות","כם","הם","נו","יה","יך","ה","י","ו","ך","א","ן","ת","ם"];
+function lookup(w){
+  const tried=new Set(),out=[];
+  const tryK=(k,cost,how)=>{if(k.length<2||tried.has(k))return;tried.add(k);
+    const e=IDX.get(k);if(e)out.push({e,cost,how});else{const m=IDXM.get(noM(k));if(m)out.push({e:m,cost:cost+3,how})}};
+  const bases=[[w,0,""]];
+  for(let i=1;i<=3&&i<w.length-1;i++){const p=w.slice(0,i);if([...p].every(c=>PREF.includes(c)))bases.push([w.slice(i),i,p])}
+  for(const [b,c,p] of bases){tryK(b,c*2,p);for(const s of SUFF)if(b.length-s.length>=2&&b.endsWith(s)){tryK(b.slice(0,-s.length),c*2+2,p);tryK(b.slice(0,-s.length)+"ה",c*2+3,p)}}
+  out.sort((a,b)=>a.cost-b.cost);return out[0]||null;
+}
+const PREF_ES={"ו":"y","ה":"el/la","ב":"en","כ":"como","ל":"a/para","מ":"de","ש":"que","ד":"que/de"};
+function glossText(){
+  const raw=$("src").value; const toks=strip(raw.replace(/[־\-\s]+/g," ")).split(/\s+/).filter(Boolean);
+  const ul=$("gloss"); ul.innerHTML=""; const approx=[];
+  for(let i=0;i<toks.length;i++){
+    let hit=null,span=1;
+    for(const n of [4,3,2]){if(i+n<=toks.length){const k=toks.slice(i,i+n).join(" ");if(PH.has(k)){hit={e:PH.get(k),how:""};span=n;break}
+      const f=toks[i];if(f.length>2&&PREF.includes(f[0])){const k2=f.slice(1)+" "+toks.slice(i+1,i+n).join(" ");if(PH.has(k2)){hit={e:PH.get(k2),how:f[0]};span=n;break}}}}
+    const w=toks.slice(i,i+span).join(" ");
+    if(!hit) hit=lookup(w);
+    const li=document.createElement("li");
+    if(hit){const d=hit.e[0];const pre=hit.how?[...hit.how].map(c=>PREF_ES[c]).join(" ")+" ":"";
+      const first=d.s.split(/[;,](?![^(]*\))/)[0].trim();approx.push(pre+first);
+      li.innerHTML=`<span class="w2" lang="he">${esc(w)}</span><span class="m2">${hit.how?`<small>${esc(pre)}+ </small>`:""}<button data-go="${D.indexOf(d)}">${esc(d.s)}</button> <small>(${esc(d.t)}${d.l==="arc"?", arameo":""})</small>${hit.e.length>1?` <small>· también: ${hit.e.slice(1,3).map(x=>esc(x.s.split(/[;,]/)[0])).join(" / ")}</small>`:""}</span>`}
+    else{approx.push("["+w+"]");li.innerHTML=`<span class="w2" lang="he">${esc(w)}</span><span class="m2 unk">no está en el diccionario (puede ser un nombre o una forma conjugada)</span>`}
+    ul.appendChild(li); i+=span-1;
+  }
+  const ap=$("approx"); ap.hidden=!toks.length; ap.innerHTML=`<b>Lectura aproximada</b>${esc(approx.join(" · "))}`;
+  $("gt").href="https://translate.google.com/?sl=iw&tl=es&op=translate&text="+encodeURIComponent(raw.trim());
+}
+$("gloss").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;const d=D[+b.dataset.go];
+  dir="he";cat="all";corp="all";letter="";root="";q.value=cons(d.h);open=D.indexOf(d);sync();render();window.scrollTo({top:0,behavior:"smooth"})});
+$("gl").onclick=glossText;
+$("src").addEventListener("input",()=>{$("gt").href="https://translate.google.com/?sl=iw&tl=es&op=translate&text="+encodeURIComponent($("src").value.trim())});
+$("cp").onclick=async()=>{const t=$("src");try{await navigator.clipboard.writeText(t.value);toast("Texto copiado.",2500)}catch(e){t.select();toast("Selecciona y copia el texto manualmente.",3500)}};
+
+let tessP=null;
+function loadTess(){if(window.Tesseract)return Promise.resolve();if(tessP)return tessP;
+  tessP=new Promise((res,rej)=>{const s=document.createElement("script");s.src=TESS_URL;s.onload=res;s.onerror=()=>{tessP=null;rej(new Error("net"))};document.head.appendChild(s)});return tessP}
+function prep(file){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const max=2200,sc=Math.min(1,max/Math.max(img.width,img.height));
+  const c=document.createElement("canvas");c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);const x=c.getContext("2d");x.filter="grayscale(1) contrast(1.35)";x.drawImage(img,0,0,c.width,c.height);res(c)};img.onerror=rej;img.src=URL.createObjectURL(file)})}
+async function runOCR(file){
+  if(!file)return;const box=$("ocrbox"),msg=$("ocrmsg"),bar=$("ocrbar");
+  box.hidden=false;$("prev").src=URL.createObjectURL(file);bar.value=0;msg.textContent="Cargando el lector de hebreo…";
+  try{
+    await loadTess();
+    const canvas=await prep(file);
+    const w=await Tesseract.createWorker("heb",1,{langPath:HEB_DATA,logger:m=>{if(m.status==="recognizing text"){msg.textContent="Leyendo el texto…";bar.value=m.progress}else if(/load|init/.test(m.status)){msg.textContent="Preparando el idioma (solo la primera vez)…";if(m.progress)bar.value=m.progress}}});
+    const r=await w.recognize(canvas);await w.terminate();
+    const txt=r.data.text.replace(/[^֐-׿\s"'״׳\-]/g," ").replace(/[ \t]+/g," ").replace(/\n\s*\n+/g,"\n").trim();
+    if(!txt){msg.textContent="No se reconoció texto hebreo. Prueba con más luz, más cerca y la hoja derecha.";bar.value=0;return}
+    $("src").value=txt;bar.value=1;msg.textContent=`Listo: ${txt.split(/\s+/).length} palabras reconocidas. Revisa el texto y corrige si hace falta.`;glossText();
+  }catch(e){bar.value=0;msg.textContent="No se pudo usar el lector de fotos aquí. Funciona en la app instalada con conexión a internet la primera vez. Mientras tanto, puedes pegar o escribir el texto."}
+}
+$("cam").addEventListener("change",e=>{runOCR(e.target.files[0]);e.target.value=""});
+$("gal").addEventListener("change",e=>{runOCR(e.target.files[0]);e.target.value=""});
+
+
+// ——— Acerca de ———
+const abD=$("about");
+$("ab-open").onclick=()=>{try{abD.showModal()}catch(e){abD.setAttribute("open","")}};
+$("ab-close").onclick=()=>abD.close();
+abD.addEventListener("click",e=>{if(e.target===abD)abD.close()});
+$("ab-copy").onclick=async()=>{try{await navigator.clipboard.writeText("apps@intpromes.com");toast("Correo copiado.",2500)}catch(e){const r=document.createRange();r.selectNodeContents($("ab-mail"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Correo seleccionado; cópialo manualmente.",3500)}};
+const fab=$("ft-about");if(fab)fab.onclick=e=>{e.preventDefault();$("ab-open").click()};
 
 // estado inicial: familia א-ב-ד abierta, como el ejemplo
 open=D.findIndex(d=>d.h==="אָבִיב");

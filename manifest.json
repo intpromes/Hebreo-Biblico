@@ -1,7 +1,7 @@
 {
-  "name": "Diccionario Hebreo Bíblico",
+  "name": "Diccionario Hebreo Bíblico y Talmúdico",
   "short_name": "Hebreo Bíblico",
-  "description": "Diccionario hebreo bíblico ↔ español con raíces, binyanim, citas del Tanaj y comentario.",
+  "description": "Hebreo bíblico, hebreo rabínico y arameo del Talmud ↔ español, con traducción de texto por foto.",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
