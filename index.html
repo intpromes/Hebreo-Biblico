@@ -153,6 +153,16 @@ tr.row:hover td,tr.row.open td{background:var(--surface)}
 #vz-pitch{width:100%;accent-color:var(--tekhelet)}
 .ab-copy-r{margin:0;padding:12px 20px 18px;color:var(--muted);font-size:.85rem;text-align:center}
 @media (max-width:420px){.ab-list>div{grid-template-columns:1fr}}
+.nk-tog{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--tekhelet);font:600 1.1rem var(--f-heb);min-width:44px;height:34px;border-radius:8px;cursor:pointer;padding:0 8px}
+.nk-tog[aria-expanded="true"]{background:var(--tekhelet);color:var(--bg);border-color:var(--tekhelet)}
+.nk-tog.wide{align-self:flex-start;font:600 .9rem var(--f-body);padding:0 14px}
+.nik{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px}
+.nik button{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:8px;padding:6px 2px;cursor:pointer;touch-action:manipulation}
+.nik button:active{background:var(--tekhelet-soft)}
+.nik .g{font:600 1.7rem/1.2 var(--f-heb);color:var(--tekhelet);direction:rtl}
+.nik .n{font-size:.68rem;color:var(--muted);text-align:center;line-height:1.15}
+.nik .tip{grid-column:1/-1;font-size:.78rem;color:var(--muted);margin:0}
+.nik button.del .g{font:600 1.2rem var(--f-body)}
 footer{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:62ch}
 button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outline-offset:2px}
 @media (max-width:480px){th,td{padding-inline:4px}.w,.mean{min-width:0}.cat,.mean{font-size:.9rem}.root{font-size:1rem}.he-w{font-size:1.45rem}th{font-size:.92rem}}
@@ -181,7 +191,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
       <input id="q" type="search" autocomplete="off" placeholder="Busca en hebreo (con o sin nikud) o transliteración">
       <button class="clear" id="clr" aria-label="Borrar búsqueda" hidden>×</button>
+      <button class="nk-tog" id="nk-tog1" type="button" aria-expanded="false" aria-controls="nk1" title="Teclado de nekudot">אָ</button>
     </label>
+    <div class="nik" id="nk1" data-for="q" hidden></div>
     <div class="chips" id="chips"></div>
     <div class="chips" id="corp" aria-label="Corpus"></div>
     <div class="letters" id="letters" aria-label="Índice alfabético"></div>
@@ -202,6 +214,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--tekhelet);outli
     </div>
     <label class="lbl2" for="src">Texto en hebreo o arameo</label>
     <textarea id="src" dir="rtl" lang="he" rows="4" spellcheck="false">תא שמע אמר רבי יוחנן הלכה כרבי מאיר</textarea>
+    <button class="nk-tog wide" id="nk-tog2" type="button" aria-expanded="false" aria-controls="nk2">Teclado de nekudot</button>
+    <div class="nik" id="nk2" data-for="src" hidden></div>
     <div class="acts">
       <button id="gl" class="btn primary">Traducir palabra por palabra</button>
       <button id="cp" class="btn">Copiar texto</button>
@@ -3137,7 +3151,7 @@ $("letters").addEventListener("click",e=>{const b=e.target.closest("button");if(
 function sync(){
   document.querySelectorAll("#chips .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===cat));
   document.querySelectorAll("#corp .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===corp));
-  const tx=dir==="tx";$("txt").hidden=!tx;document.querySelectorAll(".search,#chips,#corp,.status,.tbl").forEach(el=>el.hidden=tx);$("d-tx").setAttribute("aria-pressed",tx);
+  const tx=dir==="tx";$("txt").hidden=!tx;if(tx&&$("nk1")){$("nk1").hidden=true;$("nk-tog1").setAttribute("aria-expanded","false")}document.querySelectorAll(".search,#chips,#corp,.status,.tbl").forEach(el=>el.hidden=tx);$("d-tx").setAttribute("aria-pressed",tx);
   document.querySelectorAll("#letters button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===letter));
   $("d-he").setAttribute("aria-pressed",dir==="he");$("d-es").setAttribute("aria-pressed",dir==="es");
   $("letters").hidden=dir!=="he";
@@ -3251,6 +3265,24 @@ $("vz-es").onchange=e=>{const p=vozPref();p.es=e.target.value;vozSave(p)};
 $("vz-pitch").oninput=e=>{const p=vozPref();p.pitch=+e.target.value;vozSave(p);const v=p.pitch;$("vz-pv").textContent=v<0.9?"grave (varón)":v>1.05?"agudo":"natural"};
 $("vz-reset").onclick=()=>{vozSave({});vzFill()};
 $("vz-test").onclick=()=>say({h:"שָׁלוֹם עֲלֵיכֶם",t:"shalom aleijem"},null);
+
+
+// ——— Teclado de nekudot ———
+const NIK=[["ָ","kamats"],["ַ","pataj"],["ֵ","tsere"],["ֶ","segol"],["ִ","jirik"],["ֹ","jolam"],["ֻ","kubuts"],["ְ","shvá"],
+  ["ֲ","jataf pataj"],["ֱ","jataf segol"],["ֳ","jataf kamats"],["ּ","dagesh"],["ׁ","punto de shin"],["ׂ","punto de sin"],
+  ["וּ","shuruk",1],["וֹ","jolam malé",1],["־","maqaf"]];
+function nkBuild(el){
+  el.innerHTML='<p class="tip">Escribe la letra y después toca la nekudá.</p>'+NIK.map(([c,n,full],i)=>`<button type="button" data-i="${i}" aria-label="${n}"><span class="g">${full?c:"◌"+c}</span><span class="n">${n}</span></button>`).join("")+
+    '<button type="button" class="del" data-del="1" aria-label="Borrar"><span class="g">⌫</span><span class="n">borrar</span></button>';
+  el.addEventListener("pointerdown",e=>{if(e.target.closest("button"))e.preventDefault()});
+  el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const f=$(el.dataset.for);
+    const s=f.selectionStart??f.value.length,t=f.selectionEnd??s;
+    if(b.dataset.del){if(s===t&&s>0)f.setRangeText("",s-1,s,"end");else f.setRangeText("",s,t,"end")}
+    else f.setRangeText(NIK[+b.dataset.i][0],s,t,"end");
+    f.focus();f.dispatchEvent(new Event("input",{bubbles:true}))});
+}
+[["nk-tog1","nk1"],["nk-tog2","nk2"]].forEach(([t,p])=>{const tg=$(t),pn=$(p);if(!tg||!pn)return;nkBuild(pn);
+  tg.onclick=()=>{pn.hidden=!pn.hidden;tg.setAttribute("aria-expanded",!pn.hidden);if(!pn.hidden)$(pn.dataset.for).focus()}});
 
 // ——— Acerca de ———
 const abD=$("about");
